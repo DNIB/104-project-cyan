@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Players;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,4 +37,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * 用來建立與 Player 對應的關聯
+     * 
+     * @return Players
+     */
+    public function player()
+    {
+        return $this->belongsTo(
+            Players::class,
+            'member_id',
+            'id'
+        );
+    }
 }

@@ -17,7 +17,8 @@ class CreateTripLocationTable extends Migration
             $table->bigIncrements('id');
             $table->integer('trip_id');
             $table->integer('location_id');
-            $table->integer('arrival_method')->default(0);
+            $table->integer('arrival_method')->default(1);
+            $table->dateTime('time')->nullable();
             $table->integer('trip_order');
             $table->timestamps();
         });

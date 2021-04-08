@@ -32,5 +32,9 @@ class DatabaseSeeder extends Seeder
 
         $trip_location = new TripLocationSeeder;
         $trip_location->run($trip_count, $location_count);
+
+        // Construct Test User
+        $user = new UserSeeder;
+        $user->run();
     }
 }
