@@ -16,11 +16,11 @@ class CreatePlayer extends Migration
         Schema::create('player', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
-            $table->integer('member_id');
-            $table->string('sex');
-            $table->string('email');
-            $table->string('phone');
+            $table->string('description')->nullable();
+            $table->integer('member_id')->nullable();
+            $table->string('sex')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }

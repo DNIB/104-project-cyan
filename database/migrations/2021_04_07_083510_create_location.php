@@ -16,7 +16,7 @@ class CreateLocation extends Migration
         Schema::create('location', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->double('coordinateN');
             $table->double('coordinateE');
             $table->timestamps();

@@ -16,7 +16,7 @@ class CreateTrip extends Migration
         Schema::create('trip', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
