@@ -29,5 +29,8 @@ class DatabaseSeeder extends Seeder
 
         $trip_participate = new TripParticipateSeeder;
         $trip_participate->run($trip_count, $player_count);
+
+        $trip_location = new TripLocationSeeder;
+        $trip_location->run($trip_count, $location_count);
     }
 }

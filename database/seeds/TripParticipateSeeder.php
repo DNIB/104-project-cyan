@@ -19,8 +19,8 @@ class TripParticipateSeeder extends Seeder
         {
             $trip_participate = new TripParticipates;
 
-            $trip_participate->trip_id = random_int(0, $max_trip);
-            $trip_participate->participate_id = random_int(0, $max_player);
+            $trip_participate->trip_id = random_int(1, $max_trip);
+            $trip_participate->participate_id = random_int(1, $max_player);
 
             $trip_participate->save();
         }
