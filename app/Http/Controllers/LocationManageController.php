@@ -69,10 +69,10 @@ class LocationManageController extends Controller
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $isStringValid = !( Empty( $name ) or Empty( $desc ) );
-        $isNumValid = is_numeric( $lat ) and is_numeric( $lng );
+        $isStringValid = !( Empty( $name ) || Empty( $desc ) );
+        $isNumValid = is_numeric( $lat ) && is_numeric( $lng );
 
-        $isInputValid = $isStringValid and $isNumValid;
+        $isInputValid = $isStringValid && $isNumValid;
 
         if ( $isInputValid ) {
             $location = new Locations;
