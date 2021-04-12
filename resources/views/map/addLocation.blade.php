@@ -108,7 +108,7 @@
           // Show LatLng Infomation if Place only exited one place
           setLatLngValueByPlace(places);
 
-          // For each place, get the icon, name and location.
+          // For each place, get the name and location.
           const bounds = new google.maps.LatLngBounds();
           places.forEach((place) => {
             if (!place.geometry || !place.geometry.location) {
@@ -158,12 +158,16 @@
        */
       function setLatLngValueByPlace(places)
       {
-        console.log("Hello");
         isPlaceOnlyOne = (Object.keys(places).length == 1);
+
         if ( isPlaceOnlyOne ) {
           place = places[0];
+
+          setInputName( place.name );
+
           location_select = place.geometry.location;
           setTextOfLatLng( location_select.lat(), location_select.lng() );
+
         } else {
           setTextOfLatLng( "(Too Many Places)", "(Too Many Places)" );
         }
@@ -185,6 +189,17 @@
 
         lat_submit.value = lat_text;
         lng_submit.value = lng_text;
+      }
+
+      /**
+       * Auto Fill Location Name of Input
+       */
+      function setInputName( target_name )
+      {
+        console.log("TRY");
+        console.log(target_name);
+
+        document.getElementById('select_name').value = target_name;
       }
     </script>
   </head>
