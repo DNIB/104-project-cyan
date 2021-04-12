@@ -19,6 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/trip/{trip_id}', 'TripManageController@viewTrip');
+
 Route::get('/mapView', function(){
-    return view('mapViewer');
+    return view('map.addLocation');
 });

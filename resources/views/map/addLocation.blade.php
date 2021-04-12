@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
     <title>Simple Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style type="text/css">
@@ -148,22 +149,6 @@
       }
 
       /**
-       * Connected to input button
-       * Used to submit information
-       */
-      function selectPos()
-      {
-        isPositionSelected = ( position != null );
-
-        if (isPositionSelected) {
-          console.log( position.lat(), position.lng() );
-        } else {
-          console.log( "Marker doesn't exist" );
-        }
-        return;
-      }
-
-      /**
        * Set LatLng Value on the Page By Place
        */
       function setLatLngValueByPlace(places)
@@ -190,6 +175,22 @@
         lat.innerHTML = lat_text;
         lng.innerHTML = lng_text;
       }
+
+      /**
+       * Connected to input button
+       * Used to submit information
+       */
+      function selectPos()
+      {
+        isPositionSelected = ( position != null );
+
+        if (isPositionSelected) {
+          console.log( position.lat(), position.lng() );
+        } else {
+          console.log( "Marker doesn't exist" );
+        }
+        return;
+      }
     </script>
   </head>
   <body>
@@ -205,8 +206,10 @@
 
       <label for="select_name" class="inner"> 地點名稱 </label>
       <input type="text" class="inner" id="select_name" name="select_name">
+
       <label for="select_des" class="inner"> 地點描述 </label>
-      <input type="text" class="inner text-submit" id="select_des" name="select_des">
+      <textarea class="inner text-submit" id="select_des" name="select_des"></textarea>
+
       <input type="button" class="inner button-submit" id="select_pos" name="select_pos" value="選擇地點" onclick="selectPos()">
 
       <input type="text" class="search-text" id="search" name="search">

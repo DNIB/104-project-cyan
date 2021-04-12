@@ -43,8 +43,8 @@ class TripLocations extends Model
     {
         return $this->belongsTo(
             Trips::class,
-            'id',
-            'trip_id'
+            'trip_id',
+            'id'
         );
     }
 
@@ -71,8 +71,8 @@ class TripLocations extends Model
     {
         return $this->belongsTo(
             Locations::class,
-            'id',
-            'location_id'
+            'location_id',
+            'id'
         );
     }
 }

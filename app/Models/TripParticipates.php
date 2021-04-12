@@ -22,8 +22,8 @@ class TripParticipates extends Model
     {
         return $this->belongsTo(
             Trips::class,
-            'id',
-            'trip_id'
+            'trip_id',
+            'id'
         );
     }
 
@@ -34,8 +34,8 @@ class TripParticipates extends Model
     {
         return $this->belongsTo(
             Players::class,
-            'id',
-            'participate_id'
+            'participate_id',
+            'id'
         );
     }
 }

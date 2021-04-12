@@ -16,3 +16,11 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('location')->group( function(){
+    Route::get('/{location}', 'TripManageController@showLocation');
+});
+
+Route::prefix('trip')->group( function(){
+    Route::get('/getLocation/{trip_id}', 'TripManageController@showTripLocation');
+});
