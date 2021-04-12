@@ -18,8 +18,8 @@ class LocationResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'lng' => $this->coordinateN,
-            'lat' => $this->coordinateE
+            'lat' => $this->coordinateN,
+            'lng' => $this->coordinateE
         ];
     }
 }

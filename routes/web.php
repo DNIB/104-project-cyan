@@ -26,3 +26,5 @@ Route::prefix('/trip')->group( function(){
 Route::prefix('/location')->group( function(){
     Route::get('/{action}', 'LocationManageController@request');
 });
+
+Route::post('/location', 'LocationManageController@createLocation');

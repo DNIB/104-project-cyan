@@ -106,7 +106,7 @@
                         地點
                     </div>
                     <div class="links">
-                        <a href="/location/create"> 新增地點（未完成）</a>
+                        <a href="/location/create"> 新增地點 </a>
                         <a href="/location/read"> 閱覽地點 </a>
                         <a href="/location/update"> 修改地點（未完成）</a>
                         <a href="/location/delete"> 刪除地點（未完成）</a>

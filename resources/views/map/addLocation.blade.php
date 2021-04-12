@@ -56,6 +56,11 @@
         width: 50%;
         height: 20px;
         margin-top: 20px;
+        display: hide;
+      }
+
+      .hide {
+        display: hide;
       }
     </style>
     <script>
@@ -67,7 +72,7 @@
       function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
           center: { lat: 24.978797790777875, lng: 121.5500428733606 },
-          zoom: 16,
+          zoom: 12,
         });
 
         // This event listener will call addMarker() when the map is clicked.
@@ -169,27 +174,17 @@
        */
       function setTextOfLatLng(lat_text, lng_text)
       {
-        lat = document.getElementById('lat_value');
-        lng = document.getElementById('lng_value');
+        lat_show = document.getElementById('lat_value');
+        lng_show = document.getElementById('lng_value');
 
-        lat.innerHTML = lat_text;
-        lng.innerHTML = lng_text;
-      }
+        lat_show.innerHTML = lat_text;
+        lng_show.innerHTML = lng_text;
 
-      /**
-       * Connected to input button
-       * Used to submit information
-       */
-      function selectPos()
-      {
-        isPositionSelected = ( position != null );
+        lat_submit = document.getElementById('lat_submit');
+        lng_submit = document.getElementById('lng_submit');
 
-        if (isPositionSelected) {
-          console.log( position.lat(), position.lng() );
-        } else {
-          console.log( "Marker doesn't exist" );
-        }
-        return;
+        lat_submit.value = lat_text;
+        lng_submit.value = lng_text;
       }
     </script>
   </head>
@@ -197,22 +192,28 @@
     <div id="map"></div>
     
     <div class="mapInfo">
-      <div class="inner">
-        <label for="lat_value"> 緯度 </label>
-        <h3 name="lat_value" id="lat_value"> (No Value) </h3>
-        <label for="lng_value"> 經度 </label>
-        <h3 name="lng_value" id="lng_value"> (No Value) </h3>
-      </div>
+      <form action="/location" method="POST">
+      @csrf
+        <div class="inner">
+          <label for="lat_value"> 緯度 </label>
+          <h3 name="lat_value" id="lat_value"> (No Value) </h3>
+          <label for="lng_value"> 經度 </label>
+          <h3 name="lng_value" id="lng_value"> (No Value) </h3>
+        </div>
 
-      <label for="select_name" class="inner"> 地點名稱 </label>
-      <input type="text" class="inner" id="select_name" name="select_name">
+        <label for="select_name" class="inner"> 地點名稱 </label>
+        <input type="text" class="inner" id="select_name" name="select_name" value="（地點名稱）">
 
-      <label for="select_des" class="inner"> 地點描述 </label>
-      <textarea class="inner text-submit" id="select_des" name="select_des"></textarea>
+        <label for="select_des" class="inner"> 地點描述 </label>
+        <textarea class="inner text-submit" id="select_desc" name="select_desc">（地點描述）</textarea>
 
-      <input type="button" class="inner button-submit" id="select_pos" name="select_pos" value="選擇地點" onclick="selectPos()">
+        <input type="submit" class="inner button-submit" value="Submit">
 
-      <input type="text" class="search-text" id="search" name="search">
+        <input type="hidden" id="lat_submit" name="lat_submit" value="no_value">
+        <input type="hidden" id="lng_submit" name="lng_submit" value="no_value">
+
+        <input type="text" class="search-text" id="search" name="search">
+      </form>
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->

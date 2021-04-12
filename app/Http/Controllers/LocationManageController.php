@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Locations;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,7 @@ class LocationManageController extends Controller
     {
         switch ( $action ) {
         case "create":
+            return view('map.addLocation');
             break;
         case "read":
             return $this->readLocation();
@@ -56,5 +58,32 @@ class LocationManageController extends Controller
         }
 
         return view('map.showLocation', ['trip_id' => $trip_id]);
+    }
+
+    public function createLocation( Request $request )
+    {
+        $location = new Locations;
+
+        $name = $request->select_name;
+        $desc = $request->select_desc;
+        $lat = $request->lat_submit;
+        $lng = $request->lng_submit;
+
+        $isStringValid = !( Empty( $name ) or Empty( $desc ) );
+        $isNumValid = is_numeric( $lat ) and is_numeric( $lng );
+
+        $isInputValid = $isStringValid and $isNumValid;
+
+        if ( $isInputValid ) {
+            $location = new Locations;
+            $location->name = $name;
+            $location->description = $desc;
+            $location->coordinateN = $lat;
+            $location->coordinateE = $lng;
+            $location->save();
+            return view('welcome', ['status' => '新增地點成功']);
+        } else {
+            return view('welcome', ['status' => '新增地點失敗']);
+        }
     }
 }

@@ -53,13 +53,15 @@
         fetch(api_url, {method: 'GET'})
         .then( res => {
           return res.json();
+
         }).then( result => {
           locations_data = result;
           initMap();
-        })/*.catch( function (){
+
+        }).catch( function (){
           console.log( 'Get Data from API Failed' );
           console.log( 'url: ' + api_url );
-        });*/
+        });
       }
 
       // Init Map
