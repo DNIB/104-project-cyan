@@ -19,8 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/trip/{trip_id}', 'TripManageController@viewTrip');
+Route::prefix('/trip')->group( function(){
+    Route::get('/{action}', 'TripManageController@request');
+});
 
-Route::get('/mapView', function(){
-    return view('map.addLocation');
+Route::prefix('/location')->group( function(){
+    Route::get('/{action}', 'LocationManageController@request');
 });

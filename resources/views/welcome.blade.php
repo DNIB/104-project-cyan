@@ -48,6 +48,10 @@
                 font-size: 84px;
             }
 
+            .link-title {
+                font-size: 42px;
+            }
+
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
@@ -60,6 +64,10 @@
 
             .m-b-md {
                 margin-bottom: 30px;
+            }
+
+            .m-u {
+                margin-top: 30px;
             }
         </style>
     </head>
@@ -81,19 +89,34 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    行程管理
                 </div>
+                @if ( Auth::check() )
+                    <div class="link-title m-b-md">
+                        行程
+                    </div>
+                    <div class="links">
+                        <a href="https://laravel.com/docs"> 新增行程（未完成）</a>
+                        <a href="https://laracasts.com"> 確認行程（未完成）</a>
+                        <a href="https://laravel-news.com"> 修改行程（未完成）</a>
+                        <a href="https://blog.laravel.com"> 刪除行程（未完成）</a>
+                    </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+                    <div class="link-title m-b-md m-u">
+                        地點
+                    </div>
+                    <div class="links">
+                        <a href="/location/create"> 新增地點（未完成）</a>
+                        <a href="/location/read"> 閱覽地點 </a>
+                        <a href="/location/update"> 修改地點（未完成）</a>
+                        <a href="/location/delete"> 刪除地點（未完成）</a>
+                    </div>
+                @else
+                    <div class="links">
+                        <a href="{{ route('login') }}"> 點此登入以使用功能 </a>
+                        <a href="{{ route('register') }}"> 尚未有帳號？點此註冊 </a>
+                    </div>
+                @endif
             </div>
         </div>
     </body>
