@@ -80,7 +80,7 @@ class LocationManageController extends Controller
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $isStringValid = !( Empty( $name ) || Empty( $desc ) );
+        $isStringValid = !( empty( $name ) || empty( $desc ) );
         $isNumValid = is_numeric( $lat ) && is_numeric( $lng );
 
         $isInputValid = $isStringValid && $isNumValid;
@@ -95,6 +95,30 @@ class LocationManageController extends Controller
             return view('welcome', ['status' => '新增地點成功']);
         } else {
             return view('welcome', ['status' => '新增地點失敗']);
+        }
+    }
+
+    public function updateLocation( Request $request )
+    {
+        $id = $request->location_id;
+        $location = Locations::where('id', $id);
+
+        $name = $request->select_name;
+        $desc = $request->select_desc;
+
+        $isStringValid = !( empty( $name ) || empty( $desc ) );
+        $isLocationValid = ! empty( $location );
+
+        $isInputValid = $isStringValid && $isLocationValid;
+
+        if ( $isInputValid ) {
+            Locations::where('id', $id)->update([
+                'name' => $name,
+                'description' => $desc,
+            ]);
+            return view('welcome', ['status' => '更新地點成功']);
+        } else {
+            return view('welcome', ['status' => '更新地點失敗']);
         }
     }
 

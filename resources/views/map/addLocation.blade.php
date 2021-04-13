@@ -207,30 +207,16 @@
     <div id="map"></div>
     
     <div class="mapInfo">
-      <form action="/location" method="POST">
-      @csrf
-        <div class="inner">
-          <label for="lat_value"> 緯度 </label>
-          <h3 name="lat_value" id="lat_value"> (No Value) </h3>
-          <label for="lng_value"> 經度 </label>
-          <h3 name="lng_value" id="lng_value"> (No Value) </h3>
-        </div>
-
-        <label for="select_name" class="inner"> 地點名稱 </label>
-        <input type="text" class="inner" id="select_name" name="select_name" value="（地點名稱）">
-
-        <label for="select_des" class="inner"> 地點描述 </label>
-        <textarea class="inner text-submit" id="select_desc" name="select_desc">（地點描述）</textarea>
-
-        <input type="submit" class="inner button-submit" value="Submit">
-
-        <input type="hidden" id="lat_submit" name="lat_submit" value="no_value">
-        <input type="hidden" id="lng_submit" name="lng_submit" value="no_value">
-
-        <input type="text" class="search-text" id="search" name="search">
-      </form>
+      @component ( 'map.unit.infoLocationUnit' )
+        @slot ( 'action' )
+          {{ 'create' }}
+        @endslot
+        @slot ( 'method' )
+          {{ 'POST' }}
+        @endslot
+      @endcomponent
+      <input type="text" class="search-text" id="search" name="search">
     </div>
-
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc&callback=initMap&libraries=places&v=weekly"

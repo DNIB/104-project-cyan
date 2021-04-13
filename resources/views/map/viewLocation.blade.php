@@ -59,6 +59,21 @@
         width: 65%;
     }
 
+    .inner {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10%;
+        width: 80%;
+      }
+
+      .text-submit {
+        height: 80px;
+      }
+
+      .button-submit {
+        height: 40px;
+      }
+
     </style>
     <script>
         let map;
@@ -87,7 +102,7 @@
         // Init Map
         function initMap() {
             map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 24.978797790777875, lng: 121.5500428733606 },
+                center: { lat: locations_data[0].lat, lng: locations_data[0].lng },
                 zoom: 12,
             });
 
@@ -129,11 +144,6 @@
         function setMarker() {
             for ( var key in markers) {
                 element = markers[ key ];
-                element.addListener("click", () => {
-                    infoWindow.close();
-                    infoWindow.setContent( element.getTitle() );
-                    infoWindow.open(element.getMap(), element);
-                });
                 element.setMap(map);
             }
         }
@@ -166,7 +176,13 @@
          */
         function selectAction( target_id )
         {
-            new_center = markers[ target_id ].position;
+            target_marker = markers[ target_id ];
+            
+            infoWindow.close();
+            infoWindow.setContent( target_marker.getTitle() );
+            infoWindow.open(target_marker.getMap(), target_marker);
+
+            new_center = target_marker.position;
             map.panTo( new_center );
         }
 
@@ -178,10 +194,20 @@
             console.log( "Update" );
             console.log( target_id );
 
-            document.getElementById("mapInfo").style.display = "none";
-            document.getElementById("editWindows").style.display = "initial";
+            console.log( markers[ target_id ] );
 
-            //window.location = "/";
+            document.getElementById( "mapInfo" ).style.display = "none";
+            document.getElementById( "editWindows" ).style.display = "initial";
+
+            document.getElementById( "location_id").value = target_id;
+            locations_data.forEach( location => {
+                if ( target_id == location['id'] ) {
+                    document.getElementById( "select_name" ).value = location[ "name" ];
+                    document.getElementById( "select_desc" ).value = location[ "description" ];
+                }
+            });
+
+            map.panTo( markers[ target_id ].position );
         }
 
         /**
@@ -237,7 +263,14 @@
     </div>
 
     <div class="editWindows hide" id="editWindows" name="editWindows">
-        <h1> 編輯 </h1>
+        @component ( 'map.unit.infoLocationUnit' )
+            @slot ( 'action' )
+                {{ 'update' }}
+            @endslot
+            @slot ( 'method' )
+                {{ 'POST' }}
+            @endslot
+        @endcomponent
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
