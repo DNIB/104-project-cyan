@@ -60,7 +60,7 @@
       }
 
       .hide {
-        display: hide;
+        display: none;
       }
     </style>
     <script>

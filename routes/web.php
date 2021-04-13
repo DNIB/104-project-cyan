@@ -28,3 +28,5 @@ Route::prefix('/location')->group( function(){
 });
 
 Route::post('/location', 'LocationManageController@createLocation');
+
+Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');

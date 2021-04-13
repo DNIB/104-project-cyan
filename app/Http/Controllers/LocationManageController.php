@@ -24,11 +24,10 @@ class LocationManageController extends Controller
             return view('map.addLocation');
             break;
         case "read":
-            return $this->readLocation();
+            return $this->readLocation( 'read' );
             break;
-        case "update":
-            break;
-        case "delete":
+        case "edit":
+            return $this->readLocation( 'edit' );
             break;
         }
     }
@@ -37,11 +36,12 @@ class LocationManageController extends Controller
      * 回傳行程內的地點，若參數為 0 則是回傳所有地點
      * 若無對應行程，則傳 -1 至 view
      * 
-     * @param integer $trip_id
+     * @param string action = read
+     * @param integer $trip_id = 0
      * 
      * @return view
      */
-    public function readLocation( $trip_id = 0 )
+    public function readLocation( $action = 'read', $trip_id = 0 )
     {
         switch ( $trip_id ) {
         case 0:
@@ -57,7 +57,20 @@ class LocationManageController extends Controller
             break;
         }
 
-        return view('map.showLocation', ['trip_id' => $trip_id]);
+        $ret = [];
+        if ( $action == 'read' ) {
+            $VIEW = 'map.showLocation';
+        } else if ( $action == 'edit' ) {
+            $VIEW = 'map.editLocation';
+            $locations = new Locations;
+            $locations = $locations->all()->toArray();
+            $ret['locations'] = $locations;
+        } else {
+            abort(404);
+        }
+         
+        $ret['trip_id'] = $trip_id;
+        return view($VIEW, $ret);
     }
 
     public function createLocation( Request $request )
@@ -84,6 +97,25 @@ class LocationManageController extends Controller
             return view('welcome', ['status' => '新增地點成功']);
         } else {
             return view('welcome', ['status' => '新增地點失敗']);
+        }
+    }
+
+    public function deleteLocation( $target_id )
+    {
+        $location = Locations::find( $target_id );
+        $isLocationValid = !empty( $location );
+
+        if ( $isLocationValid ) {
+            $location->delete();
+            return response()->json([
+                'result' => 'Success',
+                'status' => 'Resource Delete',
+            ]);
+        } else {
+            return response()->json([
+                'result' => 'Fail',
+                'status' => 'Resource Not Exist',
+            ]);
         }
     }
 }
