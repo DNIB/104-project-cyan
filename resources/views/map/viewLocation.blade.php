@@ -143,12 +143,6 @@
          */
         function setTextOfLatLng(lat_text, lng_text)
         {
-            lat_show = document.getElementById('lat_value');
-            lng_show = document.getElementById('lng_value');
-
-            lat_show.innerHTML = lat_text;
-            lng_show.innerHTML = lng_text;
-
             lat_submit = document.getElementById('lat_submit');
             lng_submit = document.getElementById('lng_submit');
 
@@ -177,14 +171,17 @@
         }
 
         /**
-         * 刪除對應位置
+         * 修改對應位置
          */
         function updateAction( target_id )
         {
             console.log( "Update" );
-            console.log( target_id )
+            console.log( target_id );
 
-            window.location = "/";
+            document.getElementById("mapInfo").style.display = "none";
+            document.getElementById("editWindows").style.display = "initial";
+
+            //window.location = "/";
         }
 
         /**
@@ -221,19 +218,26 @@
   <body>
     <div id="map"></div>
 
-    <div class="mapInfo">
-      @if ( count( $locations ) )
-        @foreach ( $locations as $location)
-            @component ( 'map.unit.editLocationUnit' )
-                @slot ( 'id' )
-                    {{ $location['id'] }}
-                @endslot
-                @slot ( 'name' )
-                    {{ $location['name'] }}
-                @endslot
-            @endcomponent
-        @endforeach
-      @endif
+    <div class="mapInfo" id="mapInfo" name="mapInfo">
+        @if ( count( $locations ) )
+            @foreach ( $locations as $location)
+                <?php
+                    $target_unit = ( $action == 'edit' ) ? 'map.unit.editLocationUnit' : 'map.unit.showLocationUnit';
+                ?>
+                @component ( $target_unit )
+                    @slot ( 'id' )
+                        {{ $location['id'] }}
+                    @endslot
+                    @slot ( 'name' )
+                        {{ $location['name'] }}
+                    @endslot
+                @endcomponent
+            @endforeach
+        @endif
+    </div>
+
+    <div class="editWindows hide" id="editWindows" name="editWindows">
+        <h1> 編輯 </h1>
     </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->

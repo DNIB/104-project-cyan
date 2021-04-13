@@ -58,19 +58,17 @@ class LocationManageController extends Controller
         }
 
         $ret = [];
-        if ( $action == 'read' ) {
-            $VIEW = 'map.showLocation';
-        } else if ( $action == 'edit' ) {
-            $VIEW = 'map.editLocation';
-            $locations = new Locations;
-            $locations = $locations->all()->toArray();
+        $isActionValid = ( $action == 'read' ) || ( $action == 'edit' );
+        if ( $isActionValid ) {
+            $VIEW = 'map.viewLocation';
+            $locations = Locations::all()->toArray();
+            $ret['action'] = $action;
             $ret['locations'] = $locations;
+            $ret['trip_id'] = $trip_id;
+            return view($VIEW, $ret);
         } else {
             abort(404);
         }
-         
-        $ret['trip_id'] = $trip_id;
-        return view($VIEW, $ret);
     }
 
     public function createLocation( Request $request )
