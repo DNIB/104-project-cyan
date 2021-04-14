@@ -19,5 +19,13 @@ class UserSeeder extends Seeder
         $user->password =  '$2y$10$mX/JKiT0nDrq9exJNUwJh.pcJEck5nCk8cUXzqPtxzV2stp2Y4Tx2';
 
         $user->save();
+
+        $user = new User;
+
+        $user->name = "Test";
+        $user->email = "test@gmail.com";
+        $user->password =  '$2y$10$mX/JKiT0nDrq9exJNUwJh.pcJEck5nCk8cUXzqPtxzV2stp2Y4Tx2';
+
+        $user->save();
     }
 }

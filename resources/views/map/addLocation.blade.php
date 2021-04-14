@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  @if ( Auth::check() )
   <head>
     <meta charset="utf-8">
     <title>Simple Map</title>
@@ -224,3 +225,7 @@
     ></script>
 
   </body>
+  @else
+    <h1> 非法操作：請登入後嘗試</h1>
+  @endif
+</html>

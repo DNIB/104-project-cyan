@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
+  @if ( Auth::check() )
   <head>
     <meta name="csrf" id="csrf" content="{{ csrf_token() }}">
+    <meta name="user_id" id="user_id" content="{{ Auth::id() }}">
     <meta charset="utf-8">
-    <meta id="trip_id" name="trip_id" content="{{ $trip_id }}"> 
     <title>Simple Map</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <style type="text/css">
@@ -84,8 +85,8 @@
 
         // Get Data from Locations
         function initLocation() { 
-            var trip_id = document.getElementById('trip_id').content;
-            const api_url = '/api/trip/getLocation/' + trip_id;
+            var user_id = document.getElementById('user_id').content;
+            const api_url = '/api/user/getLocation/' + user_id;
 
             fetch(api_url, {method: 'GET'})
             .then( res => {
@@ -280,3 +281,7 @@
     ></script>
 
   </body>
+  @else
+    <h1> 非法操作：請登入後嘗試</h1>
+  @endif
+</html>

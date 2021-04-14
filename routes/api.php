@@ -22,5 +22,9 @@ Route::prefix('location')->group( function(){
 });
 
 Route::prefix('trip')->group( function(){
-    Route::get('/getLocation/{trip_id}', 'TripManageController@showTripLocation');
+    Route::get('/getLocation/{trip_id}', 'LocationManageController@showTripLocation');
+});
+
+Route::prefix('user')->group( function(){
+    Route::get('/getLocation/{trip_id}', 'LocationManageController@showUserLocation');
 });

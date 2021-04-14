@@ -28,10 +28,10 @@ class LocationSeeder extends Seeder
 
             $location->name = $locations[$index];
             $location->description = str_random(10);
-            $location->coordinateE = random_int(121182952, 121902783) / 1000000;
-            $location->coordinateN = random_int(24907016, 25285858) / 1000000;
+            $location->lat = random_int(24907016, 25285858) / 1000000;
+            $location->lng = random_int(121182952, 121902783) / 1000000;
 
-            $location->save();
+            $location->appendLocation();
         }
 
         return $max;

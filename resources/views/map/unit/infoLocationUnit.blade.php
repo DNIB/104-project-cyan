@@ -20,4 +20,6 @@
     <textarea class="inner text-submit" id="select_desc" name="select_desc">（地點描述）</textarea>
 
     <input type="submit" class="inner button-submit" value="Submit">
+
+    <input type="hidden" id="user_id" name="user_id" value="{{ Auth::id() }}">
 </form>
