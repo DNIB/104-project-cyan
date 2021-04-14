@@ -41,6 +41,10 @@ class User extends Authenticatable
 
     /**
      * 用來取出相關的地點
+     * 
+     * @param boolean $isEditor
+     * 
+     * @return array
      */
     public function locations( $isEditor = false )
     {

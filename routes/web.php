@@ -30,3 +30,5 @@ Route::prefix('/location')->group( function(){
 });
 
 Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');
+
+Route::put('/test', 'SuperUserController@update');
