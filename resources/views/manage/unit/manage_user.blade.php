@@ -56,4 +56,16 @@
         <br>
         <button type="submit" class="btn btn-primary"> 更改會員資料 </button>
     </form>
+
+    
+</div>
+
+<div class="card-body" style="display: none;" id="delete_table" name="delete_table">
+    <form action="/test" method="POST">
+    @method( 'DELETE' )
+    @csrf
+        <input type="hidden" id="delete_id" name="delete_id" value="-1"> 
+        <button type="submit" class="btn btn-primary"> 確認刪除 </button>
+        <button type="button" class="btn btn-danger" onclick="cancelDelete()"> 取消刪除 </button>
+    </form>
 </div>

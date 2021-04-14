@@ -47,8 +47,21 @@ function editAction( user_id )
     document.getElementById("email").value = email;
     document.getElementById("name").value = name;
 }
-function deleteAction( $user_id )
+
+function deleteAction( user_id )
 {
     console.log( "del" );
+    document.getElementById("user_table").style = "display: none;";
+    document.getElementById("delete_table").style = "display: initail;";
+
+    document.getElementById("delete_id").value = user_id;
+}
+
+function cancelDelete()
+{
+    document.getElementById("user_table").style = "display: initail;";
+    document.getElementById("delete_table").style = "display: none;";
+
+    document.getElementById("delete_id").value = "-1";
 }
 </script>

@@ -37,4 +37,23 @@ class SuperUserController extends Controller
             return view('welcome', ['status' => '存在非法輸入']);
         }
     }
+
+    public function delete( Request $request )
+    {
+        $id = $request->delete_id;
+
+        $isIdValid = is_numeric( $id );
+        if ( $isIdValid ) {
+            $user = User::find( $id );
+            $isUserExist = !empty( $user );
+            if ( $isUserExist ) {
+                $user->delete();
+                return view('welcome', ['status' => '刪除帳號成功']);
+            } else {
+                return view('welcome', ['status' => '無對應帳號']);
+            }
+        } else {
+            return view('welcome', ['status' => '存在非法輸入']);
+        }
+    }
 }
