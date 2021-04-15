@@ -34,6 +34,16 @@ class Locations extends Model
     }
 
     /**
+     * 刪除地點時，一併刪除關聯資料
+     */
+    public function delete()
+    {
+        $trip_location = $this->trip_location();
+        $trip_location->delete();
+        parent::delete();
+    }
+
+    /**
      * 建立與 TripLocation 的一對多連結
      * 
      * @return TripLocations
