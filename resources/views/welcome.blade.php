@@ -96,10 +96,7 @@
                         行程
                     </div>
                     <div class="links">
-                        <a href="https://laravel.com/docs"> 新增行程（未完成）</a>
-                        <a href="https://laracasts.com"> 確認行程（未完成）</a>
-                        <a href="https://laravel-news.com"> 修改行程（未完成）</a>
-                        <a href="https://blog.laravel.com"> 刪除行程（未完成）</a>
+                        <a href="https://laravel.com/docs"> 管理行程</a>
                     </div>
 
                     <div class="link-title m-b-md m-u">

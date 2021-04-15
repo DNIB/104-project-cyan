@@ -29,7 +29,9 @@ Route::prefix('/location')->group( function(){
     Route::post('/update', 'LocationManageController@updateLocation');
 });
 
-Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');
+Route::prefix('/user')->group( function(){
+    Route::put('/', 'SuperUserController@update');
+    Route::delete('/', 'SuperUserController@delete');
+});
 
-Route::put('/test', 'SuperUserController@update');
-Route::delete('/test', 'SuperUserController@delete');
+Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');
