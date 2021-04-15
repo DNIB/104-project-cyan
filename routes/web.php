@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/trip')->group( function(){
     Route::get('/index', 'TripManageController@index');
+    Route::put('/location', 'TripManageController@updateLocation');
 });
 
 Route::prefix('/location')->group( function(){

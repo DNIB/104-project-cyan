@@ -77,7 +77,7 @@ class User extends Authenticatable
         foreach ( $trips as $trip ) {
             $locations[] = [
                 'trip' => $trip,
-                'locations' => $trip->locationsWithOrder()
+                'locations' => $trip->locationsWithOrder(),
             ];
         }
         return $locations;

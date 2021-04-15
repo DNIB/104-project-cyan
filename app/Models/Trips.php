@@ -41,7 +41,12 @@ class Trips extends Model
         $locations_info = [];
 
         foreach ( $locations as $location) {
-            $locations_info[] = $location->location()->get()[0];
+            $locations_info[] = [
+                'location' => $location->location()->get()[0],
+                'arrival_method' => $location->arrival_method()->get()[0]->name,
+                'time' => $location->time,
+                'order' => $location->trip_order,
+            ];
         }
 
         return $locations_info;
