@@ -13,24 +13,14 @@ class TripManageController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        
-    }
-
-    public function viewTrip( $trip_id )
-    {
-        $ret = [];
-
-        $trips = new Trips;
-        $trip = $trips->find( $trip_id );
-
-        $trip_locations_info = $trip->getAllLocationInfo();
-
-        $ret[ 'locations' ] = $trip_locations_info;
-        $ret[ 'trip_id'] = $trip_id;
-        
-        //return view('map.showLocation', ['trip_id' => $trip_id]);
-        //return view( 'map.locationList', $ret );
-        return view('view_trip', $ret);
+        $isLogin = Auth::check();
+        if ( $isLogin ) {
+            $user = Auth::user();
+            $trips = $user->getTripInfo();
+            $ret = ['trips' => $trips ];
+            return view( 'trip.index', $ret);
+        } else {
+            return view( 'error.invalid_request' );
+        }
     }
 }

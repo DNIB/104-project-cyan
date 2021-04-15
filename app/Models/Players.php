@@ -14,6 +14,16 @@ class Players extends Model
      */
     protected $table = 'player';
 
+    public function trips()
+    {
+        $trips_participated = $this->trip_participate()->get();
+        $trips = [];
+        foreach ($trips_participated as $trip) {
+            $trips[] = $trip->trip;
+        }
+        return $trips;
+    }
+
     /**
      * 建立與會員的關聯
      * 
@@ -24,7 +34,7 @@ class Players extends Model
         return $this->hasOne(
             User::class,
             'id',
-            'member_id'
+            'user_id'
         );
     }
 

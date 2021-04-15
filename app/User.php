@@ -64,6 +64,36 @@ class User extends Authenticatable
 
         return $ret;
     }
+    
+    /**
+     * 回傳所有該名使用者有參加的行程中的地點，並按照其旅行順序
+     * 
+     * @return array
+     */
+    public function getTripInfo()
+    {
+        $trips = $this->trips();
+        $locations  = [];
+        foreach ( $trips as $trip ) {
+            $locations[] = [
+                'trip' => $trip,
+                'locations' => $trip->locationsWithOrder()
+            ];
+        }
+        return $locations;
+    }
+
+    /**
+     * 回傳所有該名使用者參加的行程，並以陣列回傳
+     * 
+     * @return array
+     */
+    public function trips()
+    {
+        $player = $this->player()->get()[0];
+        $trips = $player->trips();
+        return $trips;
+    }
 
     /**
      * 在呼叫此函式時，一併新增或更新 player 資料庫裡的資料
@@ -107,8 +137,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(
             Players::class,
-            'member_id',
-            'id'
+            'id',
+            'user_id'
         );
     }
 

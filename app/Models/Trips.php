@@ -31,6 +31,23 @@ class Trips extends Model
     }
 
     /**
+     * 回傳屬於該行程的地點，並按照其順序
+     * 
+     * @return array
+     */
+    public function locationsWithOrder()
+    {
+        $locations = $this->locations()->OrderBy('trip_order')->get();
+        $locations_info = [];
+
+        foreach ( $locations as $location) {
+            $locations_info[] = $location->location()->get()[0];
+        }
+
+        return $locations_info;
+    }
+
+    /**
      * 建立與 TripLocations 的一對多關聯
      * 
      * @return TripLocations

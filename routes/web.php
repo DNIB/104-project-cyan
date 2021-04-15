@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix('/trip')->group( function(){
-    Route::get('/{action}', 'TripManageController@request');
+    Route::get('/index', 'TripManageController@index');
 });
 
 Route::prefix('/location')->group( function(){
@@ -32,10 +32,6 @@ Route::prefix('/location')->group( function(){
 Route::prefix('/user')->group( function(){
     Route::put('/', 'SuperUserController@update');
     Route::delete('/', 'SuperUserController@delete');
-});
-
-Route::prefix('/trip')->group( function(){
-    //Route::get('/index', '');
 });
 
 Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');

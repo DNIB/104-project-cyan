@@ -15,6 +15,12 @@ class Locations extends Model
      */
     protected $table = 'location';
 
+    /**
+     * 按傳入的作者編號，儲存作者資訊進 Location 裏
+     * 預設作者為超級使用者
+     * 
+     * @param integer $author = 1
+     */
     public function appendLocation( $author=1 )
     {
         $this->save();
