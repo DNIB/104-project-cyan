@@ -19,10 +19,12 @@ class TripManageController extends Controller
             $user = Auth::user();
             $trips = $user->getTripInfo();
             $locations = $user->locations( true );
+
             $ret = [
                 'trips' => $trips,
                 'locations' => $locations,
             ];
+            
             return view( 'trip.index', $ret);
         } else {
             return view( 'error.invalid_request' );
@@ -54,7 +56,7 @@ class TripManageController extends Controller
     public function updateLocation(Request $request)
     {
         $trip_id = $request->trip_id;
-        $order_id = $request->order_id-1;
+        $order_id = $request->order_id;
         $location_id = $request->location_id;
 
         $isTripIdValid = is_numeric( $trip_id );
@@ -65,7 +67,9 @@ class TripManageController extends Controller
 
         if ( $isRequestValid ){
             $trip = Trips::find( $trip_id )->locations();
-            $target = $trip->where('trip_order', $order_id)->get()[0];
+
+            $target = $trip->where( 'trip_order', $order_id )->get()[0];
+
             $target->location_id = $location_id;
             $target->save();
             return view('welcome', ['status' => 'Request Valid']);
@@ -77,7 +81,7 @@ class TripManageController extends Controller
     public function deleteLocation(Request $request)
     {
         $trip_id = $request->trip_id;
-        $order_id = $request->order_id-1;
+        $order_id = $request->order_id;
 
         $isTripIdValid = is_numeric( $trip_id );
         $isOrderIdValid = is_numeric( $order_id );
@@ -86,18 +90,9 @@ class TripManageController extends Controller
 
         if ( $isRequestValid ){
             $trip = Trips::find( $trip_id )->locations();
-            $targets = $trip->where('trip_order', '>=', $order_id)->get();
 
-            $isDelete = true;
-            foreach ( $targets as $target ) {
-                if ( $isDelete ) {
-                    $target->delete();
-                    $isDelete = false;
-                } else {
-                    $target->trip_order -= 1;
-                    $target->save();
-                }
-            }
+            $target = $trip->where( 'trip_order', $order_id )->get()[0];
+            $target->delete();
 
             return view('welcome', ['status' => 'Request Valid']);
         } else {

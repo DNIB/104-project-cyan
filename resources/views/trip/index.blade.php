@@ -48,7 +48,7 @@
                         <button 
                             type="button" 
                             class="btn btn-primary" 
-                            id="{{ $trip_id }}-{{ $index }}" 
+                            id="{{ $trip_id }}-{{ $location[ 'order' ] }}" 
                             onclick="editAction( this.id )"
                             data-toggle="modal" 
                             data-target="#editLocation">編輯</button>
@@ -57,7 +57,7 @@
                         <button 
                             type="button" 
                             class="btn btn-danger" 
-                            id="{{ $trip_id }}-{{ $index }}" 
+                            id="{{ $trip_id }}-{{ $location[ 'order' ] }}" 
                             onclick="deleteAction( this.id )"
                             data-toggle="modal" 
                             data-target="#deleteLocation">刪除</button>
