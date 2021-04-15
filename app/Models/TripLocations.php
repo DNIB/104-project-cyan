@@ -21,15 +21,15 @@ class TripLocations extends Model
      * 
      * @return void
      */
-    public function appendLocation(TripLocations $data)
+    public function appendLocation()
     {
-        $trip_id = $data->trip_id;
-        $trip_same_id = $this->where('trip_id', $trip_id)->get();
+        $trip_id = $this->trip_id;
+        $trip_same_id = Triplocations::where('trip_id', $trip_id)->get();
 
         $trip_same_id_count = count($trip_same_id);
 
-        $data->trip_order =$trip_same_id_count;
-        $data->save();
+        $this->trip_order =$trip_same_id_count;
+        $this->save();
 
         return;
     }
