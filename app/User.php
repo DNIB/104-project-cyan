@@ -7,6 +7,7 @@ use App\Models\LocationEditor;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use phpDocumentor\Reflection\Types\Parent_;
 
 class User extends Authenticatable
 {
@@ -62,6 +63,19 @@ class User extends Authenticatable
         }
 
         return $ret;
+    }
+
+    /**
+     * 在新增使用者的時候，一併建立新的參加者資料
+     */
+    public function save(array $options = [])
+    {
+        parent::save( $options );
+        $player = new Players;
+        $player->name = $this->name;
+        $player->email = $this->email;
+        $player->user_id = $this->id;
+        $player->save();
     }
 
     /**

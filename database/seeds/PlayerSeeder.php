@@ -30,6 +30,7 @@ class PlayerSeeder extends Seeder
 
             $player->name = $names[$index];
             $player->description = str_random(10);
+            $player->email = ($index+1)."@123.com";
 
             $player->save();
         }

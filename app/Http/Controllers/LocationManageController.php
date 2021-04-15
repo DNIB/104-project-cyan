@@ -102,6 +102,13 @@ class LocationManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，於資料庫增加地點
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function createLocation( Request $request )
     {
         $location = new Locations;
@@ -132,6 +139,13 @@ class LocationManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，於資料庫更新地點
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function updateLocation( Request $request )
     {
         $id = $request->location_id;
@@ -156,6 +170,13 @@ class LocationManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，於資料庫刪除地點
+     * 
+     * @param Request $request
+     * 
+     * @return json
+     */
     public function deleteLocation( $target_id )
     {
         $location = Locations::find( $target_id );
@@ -176,6 +197,14 @@ class LocationManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求以及行程編號，回傳行程中的地點
+     * 
+     * @param Request $request
+     * @param integer $trip_id
+     * 
+     * @return array
+     */
     public function showTripLocation( Request $request, $trip_id )
     {        
         $trip = new Trips;
@@ -200,6 +229,14 @@ class LocationManageController extends Controller
         return $ret;
     }
 
+    /**
+     * 依傳入的請求以及行程編號，回傳使用者的地點
+     * 
+     * @param Request $request
+     * @param integer $user_id
+     * 
+     * @return array
+     */
     public function showUserLocation( Request $request, $user_id )
     {   
         $isRequestLoginValid = true;

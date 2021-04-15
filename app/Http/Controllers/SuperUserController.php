@@ -8,6 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class SuperUserController extends Controller
 {
+    /**
+     * 依據傳入的請求，更新使用者的資訊
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function update( Request $request )
     {
         $id = $request->id;
@@ -38,6 +45,13 @@ class SuperUserController extends Controller
         }
     }
 
+    /**
+     * 依據傳入的請求，刪除使用者的資訊
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function delete( Request $request )
     {
         $id = $request->delete_id;
