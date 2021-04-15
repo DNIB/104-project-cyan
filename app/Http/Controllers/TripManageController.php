@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Locations;
 use App\Models\Trips;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\isEmpty;
 
 class TripManageController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+        
+    }
+
     public function viewTrip( $trip_id )
     {
         $ret = [];

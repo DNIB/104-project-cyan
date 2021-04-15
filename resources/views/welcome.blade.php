@@ -96,7 +96,7 @@
                         行程
                     </div>
                     <div class="links">
-                        <a href="https://laravel.com/docs"> 管理行程</a>
+                        <a href="/trip/index"> 管理行程</a>
                     </div>
 
                     <div class="link-title m-b-md m-u">

@@ -34,4 +34,9 @@ Route::prefix('/user')->group( function(){
     Route::delete('/', 'SuperUserController@delete');
 });
 
+Route::prefix('/trip')->group( function(){
+    //Route::get('/index', '');
+});
+
 Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');
+

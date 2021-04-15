@@ -66,16 +66,36 @@ class User extends Authenticatable
     }
 
     /**
-     * 在新增使用者的時候，一併建立新的參加者資料
+     * 在呼叫此函式時，一併新增或更新 player 資料庫裡的資料
      */
     public function save(array $options = [])
     {
         parent::save( $options );
-        $player = new Players;
+
+        $target_player = Players::where('user_id', $this->id)->get();
+        $isPlayerExist = count( $target_player ) > 0;
+
+        if ( $isPlayerExist ) {
+            $player = $target_player[0];
+        } else {
+            $player = new Players;
+        }
         $player->name = $this->name;
         $player->email = $this->email;
         $player->user_id = $this->id;
         $player->save();
+    }
+
+    /**
+     * 在呼叫此函式時，一併刪除 player 資料庫裡的資料
+     */
+    public function delete()
+    {
+        $target_player = Players::where('user_id', $this->id)->get();
+        $player = $target_player[0];
+
+        $player->delete();
+        parent::delete();
     }
 
     /**

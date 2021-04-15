@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Players;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
+        // Construct Test User
+        $user = new UserSeeder;
+        $user->run();
+
         // This is what must be executed
         $arrival_method = new ArrivalMethodSeeder;
         $arrival_method->run();
@@ -23,18 +28,16 @@ class DatabaseSeeder extends Seeder
         $trip = new TripSeeder;
         $location = new LocationSeeder;
 
-        $player_count = $player->run();
+        $player->run();
         $trip_count = $trip->run();
         $location_count = $location->run();
+
+        $player_count = count(Players::all());
 
         $trip_participate = new TripParticipateSeeder;
         $trip_participate->run($trip_count, $player_count);
 
         $trip_location = new TripLocationSeeder;
         $trip_location->run($trip_count, $location_count);
-
-        // Construct Test User
-        $user = new UserSeeder;
-        $user->run();
     }
 }
