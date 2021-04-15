@@ -17,7 +17,13 @@
             data-target="#createLocation">新增地點</button>
         
         <h1 class="display-6">{{ $trip[ 'trip' ]->name }}</h1>
-        <button type="button" class="btn btn-secondary btn-lg disabled" style="margin-left: 5%;">刪除行程</button>
+
+        <button type="button" class="btn btn-secondary btn-lg disabled" style="margin-left: 5%;"
+            id="{{ $trip_id }}" 
+            onclick="deleteTrip( this.id )"
+            data-toggle="modal" 
+            data-target="#deleteTrip">刪除行程</button>
+
         <table class="table" style="margin-top: 20px;">
             <thead>
                 <tr>
@@ -156,6 +162,30 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteTrip" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">刪除行程</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/trip/" method="POST">
+      @csrf
+      @method( 'DELETE' )
+        <input type="hidden" id="delete_trip" name="trip_id" value="-1">
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary">確定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 @endsection
 
 <script>
@@ -182,8 +212,14 @@ function deleteAction( id )
 function createAction( id )
 {
     trip_id = id;
-    console.log( trip_id );
 
     document.getElementById('create_trip_id').value = trip_id;
+}
+
+function deleteTrip( id )
+{
+    trip_id = id;
+    
+    document.getElementById('delete_trip').value = trip_id;
 }
 </script>

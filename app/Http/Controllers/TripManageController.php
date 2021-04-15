@@ -104,4 +104,19 @@ class TripManageController extends Controller
             return view('welcome', ['status' => 'Request Invalid']);
         }
     }
+
+    public function deleteTrip(Request $request)
+    {
+        $trip_id = $request->trip_id;
+
+        $isTripIdValid = is_numeric( $trip_id );
+
+        if ( $isTripIdValid ) {
+            $trip = Trips::find( $trip_id );
+            $trip->delete();
+            return view('welcome', ['status' => 'Request Valid']);
+        } else {
+            return view('welcome', ['status' => 'Request Invalid']);
+        }
+    }
 }

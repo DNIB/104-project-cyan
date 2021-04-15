@@ -52,6 +52,16 @@ class Trips extends Model
         return $locations_info;
     }
 
+    public function delete()
+    {
+        $locations = $this->locations();
+        $participates = $this->participates();
+
+        $locations->delete();
+        $participates->delete();
+        parent::delete();
+    }
+
     /**
      * 建立與 TripLocations 的一對多關聯
      * 
