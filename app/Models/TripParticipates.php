@@ -14,6 +14,28 @@ class TripParticipates extends Model
     protected $table = 'trip_participate';
 
     /**
+     * 避免更新資料的時候，出現重複資料
+     */
+    public function save(array $options = [])
+    {
+        $player = $this->participate_id;
+        $trip = $this->trip_id;
+        $target = TripParticipates::where('participate_id', $player);
+        $isTargetNotEmpty = count( $target->get() ) > 0;
+
+        if ( $isTargetNotEmpty ) {
+            $target = $target->where('trip_id', $trip)->get();
+            $isTargetNotEmpty = count( $target ) > 0;
+        }
+
+        if ( $isTargetNotEmpty ) {
+            return;
+        } else {
+            parent::save();
+        }
+    }
+
+    /**
      * 建立與 Trips 對應一對多的關聯
      * 
      * @return Trips
