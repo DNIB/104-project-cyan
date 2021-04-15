@@ -67,6 +67,12 @@ class User extends Authenticatable
     
     /**
      * 回傳所有該名使用者有參加的行程中的地點，並按照其旅行順序
+     * 回傳陣列中 key 為 locations 的部分，會回傳行程的資料，其格式為陣列
+     * 可按以下 key 取相關的數值 
+     * 'location' => Locations
+     * 'arrival_method' => 抵達方式
+     * 'time' => 抵達時間
+     * 'order' => 抵達順序（若無更改，則將會同於 TripLocations 的主鍵
      * 
      * @return array
      */
