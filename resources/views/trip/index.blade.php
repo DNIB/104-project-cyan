@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+    <div class="float-start row justify-content-center">
+        <button 
+          type="button" 
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#createTrip">新增行程</button>
+    </div><br>
     <div class="row justify-content-center">
         @if ( count( $trips ) )
         @foreach ( $trips as $trip )
@@ -179,6 +186,43 @@
         <input type="hidden" id="delete_trip" name="trip_id" value="-1">
 
         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary">確定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="createTrip" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">新增行程</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/trip/" method="POST">
+      @csrf
+        <div class="row justify-content-center">
+          <div class="row justify-content-center" style="width:100%; margin-top:10px;">
+            <p class="h5">行程名稱</p>
+          </div>
+          <div style="width: 80%;">
+            <input type="text" class="form-control" id="trip_name" name="trip_name" placeholder="Trip Name">
+          </div>
+
+          <div class="row justify-content-center" style="width:100%; margin-top:10px;">
+            <p class="h5">行程描述</p>
+          </div>
+          <div style="width: 80%;">
+            <input type="text" class="form-control" id="trip_desc" name="trip_desc" placeholder="Trip Description">
+          </div>
+        </div>
+
+        <div class="modal-footer" style="margin-top: 10px;">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
             <button type="submit" class="btn btn-primary">確定</button>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Locations;
 use App\Models\TripLocations;
+use App\Models\TripParticipates;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -93,6 +94,35 @@ class TripManageController extends Controller
 
             $target = $trip->where( 'trip_order', $order_id )->get()[0];
             $target->delete();
+
+            return view('welcome', ['status' => 'Request Valid']);
+        } else {
+            return view('welcome', ['status' => 'Request Invalid']);
+        }
+    }
+
+    public function createTrip(Request $request)
+    {
+        $user = Auth::user();
+        
+        $trip_name = $request->trip_name;
+        $trip_desc = $request->trip_desc;
+
+        $isNameValid = !empty( $trip_name );
+        $isDescValid = !empty( $trip_desc );
+
+        $isRequestValid = $isNameValid && $isDescValid;
+
+        if ( $isRequestValid ) {
+            $trip = new Trips;
+            $trip->name = $trip_name;
+            $trip->description = $trip_desc;
+            $trip->save();
+
+            $trip_participate = new TripParticipates;
+            $trip_participate->trip_id = $trip->id;
+            $trip_participate->participate_id = $user->player()->get()[0]->id;
+            $trip_participate->save();
 
             return view('welcome', ['status' => 'Request Valid']);
         } else {

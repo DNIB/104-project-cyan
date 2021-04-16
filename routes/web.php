@@ -25,6 +25,7 @@ Route::prefix('/trip')->group( function(){
     Route::put('/location', 'TripManageController@updateLocation');
     Route::delete('/location', 'TripManageController@deleteLocation');
 
+    Route::post('/', 'TripManageController@createTrip');
     Route::delete('/', 'TripManageController@deleteTrip');
 });
 
