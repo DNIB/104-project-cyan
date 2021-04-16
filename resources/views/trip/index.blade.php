@@ -19,7 +19,7 @@
             type="button" 
             class="btn btn-success btn-lg disabled" 
             style="margin-right: 5%;"
-            id="{{ $trip_id }}">管理參加</button>
+            onclick="document.location='/trip/viewPlayer/{{ $trip_id }}'">管理參加</button>
 
         <button 
             type="button" 

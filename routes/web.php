@@ -30,6 +30,10 @@ Route::prefix('/trip')->group( function(){
     Route::delete('/', 'TripManageController@deleteTrip');
 
     Route::put('/locationOrder', 'TripManageController@reorderLocation');
+
+    Route::prefix('/viewPlayer')->group( function(){
+        Route::get('/{trip_id}', 'TripPlayerController@index');
+    });
 });
 
 Route::prefix('/location')->group( function(){

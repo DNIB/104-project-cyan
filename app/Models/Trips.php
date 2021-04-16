@@ -52,6 +52,9 @@ class Trips extends Model
         return $locations_info;
     }
 
+    /**
+     * 刪除該資料庫的資料時，一併刪除與此資料關聯的 TripLocations 以及 TripParticipates
+     */
     public function delete()
     {
         $locations = $this->locations();

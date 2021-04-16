@@ -13,6 +13,12 @@ use function PHPUnit\Framework\isEmpty;
 
 class TripManageController extends Controller
 {
+    /**
+     * 回傳管理行程的頁面
+     * 會依 Auth 取得當前登入者的資訊，來顯示相對的資料
+     * 
+     * @return view
+     */
     public function index()
     {
         $isLogin = Auth::check();
@@ -32,6 +38,16 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡新增地點
+     * 請求需有資料：
+     *   (integer) trip_id, 
+     *   (integer) location_id
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function createLocation(Request $request)
     {
         $trip_id = $request->trip_id;
@@ -54,6 +70,17 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡更新地點資訊
+     * 請求需有資料：
+     *   (integer) trip_id, 
+     *   (integer) order_id
+     *   (integer) location_id
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function updateLocation(Request $request)
     {
         $trip_id = $request->trip_id;
@@ -79,6 +106,16 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡刪除指定順序的地點
+     * 請求需有資料：
+     *   (integer) trip_id, 
+     *   (integer) order_id
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function deleteLocation(Request $request)
     {
         $trip_id = $request->trip_id;
@@ -101,6 +138,16 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡新增行程
+     * 請求需有資料： 
+     *   (string) trip_name
+     *   (string) trip_desc
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function createTrip(Request $request)
     {   
         $user = Auth::user();
@@ -130,6 +177,17 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡更新指定行程資訊
+     * 請求需有資料： 
+     *   (integer) trip_id
+     *   (string) trip_name
+     *   (string) trip_desc
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function updateTrip(Request $request)
     {
         $trip_id = $request->trip_id;
@@ -154,6 +212,18 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡移動地點的順序
+     * 請求需有資料： 
+     *   (integer) trip_id
+     *   (integer)) location_order
+     *   (string) change
+     *     - 此值應為 'upper' 或是 'lower'
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function reorderLocation(Request $request)
     {
         $trip_id = $request->trip_id;
@@ -186,16 +256,40 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 傳入行程的地點，以及需要處理的地點順序之編號
+     * 回傳指定順序的地點，以及該地點之前一地點（若存在的話）
+     * 
+     * @param Locations $trip_location
+     * @param integer $location_order
+     * 
+     * @return Locations $trip_location
+     */
     private function upperOrder( $trip_location, $location_order )
     {
         return $trip_exchange = $trip_location->where('trip_order', '<=', $location_order)->orderBy('trip_order', 'desc')->limit(2)->get();
     }
 
+    /**
+     * 傳入行程的地點，以及需要處理的地點順序之編號
+     * 回傳指定順序的地點，以及該地點之後一地點（若存在的話）
+     * 
+     * @param Locations $trip_location
+     * @param integer $location_order
+     * 
+     * @return Locations $trip_location
+     */
     private function lowerOrder( $trip_location, $location_order )
     {
         return $trip_exchange = $trip_location->where('trip_order', '>=', $location_order)->orderBy('trip_order', 'asc')->limit(2)->get();
     }
 
+    /**
+     * 傳入行程的地點，長度應為 <= 2，若長度剛好為 2，則將兩個地點的順序交換
+     * 若長度不為 2，則不做任何處理
+     * 
+     * @param Locations $trip_exchange
+     */
     private function exchangeOrder( $trip_exchange )
     {
         $count = count( $trip_exchange );
@@ -214,6 +308,15 @@ class TripManageController extends Controller
         }
     }
 
+    /**
+     * 依傳入的請求，在資料庫裡刪除指定的行程
+     * 請求需有資料： 
+     *   (integer) trip_id
+     * 
+     * @param Request $request
+     * 
+     * @return view
+     */
     public function deleteTrip(Request $request)
     {
         $trip_id = $request->trip_id;
