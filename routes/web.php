@@ -26,7 +26,10 @@ Route::prefix('/trip')->group( function(){
     Route::delete('/location', 'TripManageController@deleteLocation');
 
     Route::post('/', 'TripManageController@createTrip');
+    Route::put('/', 'TripManageController@updateTrip');
     Route::delete('/', 'TripManageController@deleteTrip');
+
+    Route::put('/locationOrder', 'TripManageController@reorderLocation');
 });
 
 Route::prefix('/location')->group( function(){

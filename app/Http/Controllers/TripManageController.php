@@ -130,6 +130,90 @@ class TripManageController extends Controller
         }
     }
 
+    public function updateTrip(Request $request)
+    {
+        $trip_id = $request->trip_id;
+        $trip_name = $request->trip_name;
+        $trip_desc = $request->trip_desc;
+
+        $isTripIdValid = is_numeric( $trip_id ) && ( !empty( Trips::find( $trip_id ) ) );
+        $isNameValid = !empty( $trip_name );
+        $isDescValid = !empty( $trip_desc );
+
+        $isRequestValid = $isTripIdValid && $isNameValid && $isDescValid;
+
+        if ( $isRequestValid ) {
+            $trip = Trips::find( $trip_id );
+            $trip->name = $trip_name;
+            $trip->description = $trip_desc;
+            $trip->save();
+
+            return $this->index();
+        } else {
+            return view('welcome', ['status' => 'Request Invalid']);
+        }
+    }
+
+    public function reorderLocation(Request $request)
+    {
+        $trip_id = $request->trip_id;
+        $location_order = $request->location_order;
+        $change = $request->change;
+
+        $isTripIdValid = is_numeric( $trip_id ) && ( !empty( Trips::find( $trip_id ) ) );
+        $isLocationOrderValid = is_numeric( $location_order );
+
+        $isRequestValid = $isTripIdValid && $isLocationOrderValid;
+
+        if ( $isRequestValid ) {
+            $trip = Trips::find( $trip_id );
+            $trip_location = $trip->locations();
+            switch ( $change ) {
+            case 'upper':
+                $trip_exchange = $this->upperOrder( $trip_location, $location_order );
+                break;
+            case 'lower':
+                $trip_exchange = $this->lowerOrder( $trip_location, $location_order );
+                break;
+            default:
+                return view('welcome', ['status' => 'Request Invalid']);
+                break;
+            }
+            $this->exchangeOrder( $trip_exchange );
+            return $this->index();
+        } else {
+            return view('welcome', ['status' => 'Request Invalid']);
+        }
+    }
+
+    private function upperOrder( $trip_location, $location_order )
+    {
+        return $trip_exchange = $trip_location->where('trip_order', '<=', $location_order)->orderBy('trip_order', 'desc')->limit(2)->get();
+    }
+
+    private function lowerOrder( $trip_location, $location_order )
+    {
+        return $trip_exchange = $trip_location->where('trip_order', '>=', $location_order)->orderBy('trip_order', 'asc')->limit(2)->get();
+    }
+
+    private function exchangeOrder( $trip_exchange )
+    {
+        $count = count( $trip_exchange );
+        switch ( $count ) {
+        case 1:
+            break;
+        case 2:
+            $order_id_exchange = $trip_exchange[0]->trip_order;
+            $trip_exchange[0]->trip_order = $trip_exchange[1]->trip_order;
+            $trip_exchange[1]->trip_order = $order_id_exchange;
+            $trip_exchange[0]->save();
+            $trip_exchange[1]->save();
+            break;
+        default:
+            break;
+        }
+    }
+
     public function deleteTrip(Request $request)
     {
         $trip_id = $request->trip_id;
