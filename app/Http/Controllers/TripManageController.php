@@ -48,7 +48,7 @@ class TripManageController extends Controller
             $trip_location->location_id = $location_id;
 
             $trip_location->appendLocation();
-            return view('welcome', ['status' => 'Request Valid']);
+            return $this->index();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -73,7 +73,7 @@ class TripManageController extends Controller
 
             $target->location_id = $location_id;
             $target->save();
-            return view('welcome', ['status' => 'Request Valid']);
+            return $this->index();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -95,14 +95,14 @@ class TripManageController extends Controller
             $target = $trip->where( 'trip_order', $order_id )->get()[0];
             $target->delete();
 
-            return view('welcome', ['status' => 'Request Valid']);
+            return $this->index();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
     }
 
     public function createTrip(Request $request)
-    {
+    {   
         $user = Auth::user();
         
         $trip_name = $request->trip_name;
@@ -124,7 +124,7 @@ class TripManageController extends Controller
             $trip_participate->participate_id = $user->player()->get()[0]->id;
             $trip_participate->save();
 
-            return view('welcome', ['status' => 'Request Valid']);
+            return $this->index();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -139,7 +139,7 @@ class TripManageController extends Controller
         if ( $isTripIdValid ) {
             $trip = Trips::find( $trip_id );
             $trip->delete();
-            return view('welcome', ['status' => 'Request Valid']);
+            return $this->index();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
