@@ -33,6 +33,10 @@ Route::prefix('/trip')->group( function(){
 
     Route::prefix('/viewPlayer')->group( function(){
         Route::get('/{trip_id}', 'TripPlayerController@index');
+
+        Route::post('/', 'TripPlayerController@createPlayer');
+        Route::put('/', 'TripPlayerController@updatePlayer');
+        Route::delete('/', 'TripPlayerController@deletePlayer');
     });
 });
 
@@ -40,12 +44,10 @@ Route::prefix('/location')->group( function(){
     Route::get('/{action}', 'LocationManageController@request');
     Route::post('/create', 'LocationManageController@createLocation');
     Route::post('/update', 'LocationManageController@updateLocation');
+    Route::delete('/{target_id', 'LocationManageController@deleteLocation');
 });
 
 Route::prefix('/user')->group( function(){
     Route::put('/', 'SuperUserController@update');
     Route::delete('/', 'SuperUserController@delete');
 });
-
-Route::delete('/location/{target_id}', 'LocationManageController@deleteLocation');
-
