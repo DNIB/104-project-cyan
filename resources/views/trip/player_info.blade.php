@@ -33,33 +33,34 @@
                 </thead>
                 <tbody>
                     <?php $index = 0; ?>
-                    @foreach ( $players as $player)
-                        <?php $player_info = $player->player()->get()[0]; ?>
+                    @foreach ( $players as $player )
                         <?php $index += 1; ?>
                         <tr>
                             <th scope="row">{{ $index }}</th>
-                            <td>{{ $player_info->name }}</td>
-                            <td>{{ $player_info->description ?? "(無敘述資料)" }}</td>
-                            <td>{{ $player_info->email ?? "(無 email 資料)" }}</td>
-                            <td>{{ $player_info->phone ?? "(無電話資料)" }}</td>
+                            <td>{{ $player->name }}</td>
+                            <td>{{ $player->description ?? "(無敘述資料)" }}</td>
+                            <td>{{ $player->email ?? "(無 email 資料)" }}</td>
+                            <td>{{ $player->phone ?? "(無電話資料)" }}</td>
                             <td>
                                 <button 
                                     type="button" 
                                     class="btn btn-primary" 
-                                    id="{{ $player_info->id }}-{{ $player_info->name }}-{{ $player_info->description ?? null }}-{{ $player_info->email ?? null }}-{{ $player_info->phone ?? null }}" 
+                                    id="{{ $player->id }}-{{ $player->name }}-{{ $player->description ?? null }}-{{ $player->email ?? null }}-{{ $player->phone ?? null }}" 
                                     onclick="updateAction( this.id )"
                                     data-toggle="modal" 
                                     data-target="#editPlayer">修改</button>
                             </td>
+                            @if ( !$player->trip_creator )
                             <td>
                                 <button 
                                     type="button" 
                                     class="btn btn-danger" 
-                                    id="{{ $player_info->id }}" 
+                                    id="{{ $player->id }}" 
                                     onclick="deleteAction( this.id )"
                                     data-toggle="modal" 
                                     data-target="#editPlayer">刪除</button>
                             </td>
+                            @endif
                             </form>
                         </tr>
                     @endforeach

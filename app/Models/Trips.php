@@ -58,7 +58,7 @@ class Trips extends Model
     public function delete()
     {
         $locations = $this->locations();
-        $participates = $this->participates();
+        $participates = $this->players();
 
         $locations->delete();
         $participates->delete();
@@ -80,14 +80,14 @@ class Trips extends Model
     }
 
     /**
-     * 建立與 TripParticipates 的一對多關聯
+     * 建立與 Player 的一對多關聯
      * 
-     * @return TripParticipates
+     * @return Players
      */
-    public function participates()
+    public function players()
     {
         return $this->hasMany(
-            TripParticipates::class,
+            Players::class,
             'trip_id',
             'id'
         );

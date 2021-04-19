@@ -173,12 +173,9 @@ class TripManageController extends Controller
             $player->description = "(myself)";
             $player->user_id = $user->id;
             $player->email = $user->email;
+            $player->trip_id = $trip->id;
+            $player->trip_creator = true;
             $player->save();
-
-            $trip_participate = new TripParticipates;
-            $trip_participate->trip_id = $trip->id;
-            $trip_participate->participate_id = $player->id;
-            $trip_participate->save();
 
             return $this->index();
         } else {

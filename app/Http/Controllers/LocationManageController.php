@@ -23,17 +23,17 @@ class LocationManageController extends Controller
      * 
      * @return view
      */
-    public function request( Request $request ,$action )
+    public function request( $action )
     {
         switch ( $action ) {
         case "create":
             return view('map.addLocation', ['api' => $this->google_api]);
             break;
         case "read":
-            return $this->readUserLocation( $request, 'read' );
+            return $this->readUserLocation( 'read' );
             break;
         case "edit":
-            return $this->readUserLocation( $request, 'edit' );
+            return $this->readUserLocation( 'edit' );
             break;
         }
     }
@@ -89,7 +89,7 @@ class LocationManageController extends Controller
      * 
      * @return view
      */
-    public function readUserLocation( Request $request ,$action = 'read' )
+    public function readUserLocation( $action = 'read' )
     {
         $user_id =  Auth::user()->id;
         $user = User::find( $user_id );
@@ -143,7 +143,7 @@ class LocationManageController extends Controller
             $location->lng = $lng;
 
             $location->appendLocation( $user_id );
-            return view('welcome', ['status' => '新增地點成功']);
+            return view('map.addLocation', ['api' => $this->google_api]);
         } else {
             return view('welcome', ['status' => '新增地點失敗']);
         }
@@ -174,7 +174,7 @@ class LocationManageController extends Controller
                 'name' => $name,
                 'description' => $desc,
             ]);
-            return view('welcome', ['status' => '更新地點成功']);
+            return $this->readUserLocation( 'edit' );
         } else {
             return view('welcome', ['status' => '更新地點失敗']);
         }
@@ -215,7 +215,7 @@ class LocationManageController extends Controller
      * 
      * @return array
      */
-    public function showTripLocation( Request $request, $trip_id )
+    public function showTripLocation( $trip_id )
     {        
         $trip = new Trips;
         if ( $trip_id == 0) {
@@ -247,7 +247,7 @@ class LocationManageController extends Controller
      * 
      * @return array
      */
-    public function showUserLocation( Request $request, $user_id )
+    public function showUserLocation( $user_id )
     {   
         $isRequestLoginValid = true;
 

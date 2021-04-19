@@ -12,23 +12,11 @@ class TripSeeder extends Seeder
      */
     public function run()
     {
-        $names = [
-            'Holy Hand Grenade',
-            'Operation Babarossa',
-            'Action One',
-        ];
+        $trip = new Trips;
 
-        $max = count($names);
+        $trip->name = 'Holy Hand Grenade';
+        $trip->description = "SUPER HHG";
 
-        for( $index=0; $index<$max; $index++ ) {
-            $trip = new Trips;
-
-            $trip->name = $names[$index];
-            $trip->description = str_random(20);
-
-            $trip->save();
-        }
-
-        return $max;
+        $trip->save();
     }
 }

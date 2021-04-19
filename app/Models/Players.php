@@ -14,16 +14,6 @@ class Players extends Model
      */
     protected $table = 'player';
 
-    public function trips()
-    {
-        $trips_participated = $this->trip_participate()->get();
-        $trips = [];
-        foreach ($trips_participated as $trip) {
-            $trips[] = $trip->trip;
-        }
-        return $trips;
-    }
-
     /**
      * 建立與會員的關聯
      * 
@@ -31,23 +21,23 @@ class Players extends Model
      */
     public function user()
     {
-        return $this->hasOne(
+        return $this->belongsTo(
             User::class,
-            'id',
-            'user_id'
+            'user_id',
+            'id'
         );
     }
 
     /**
-     *  建立與 TripParticipates 的一對多關聯
+     *  建立與 Trip 的一對一關聯
      * 
-     * @return TripParticipates
+     * @return Trips
      */
-    public function trip_participate()
+    public function trip()
     {
-        return $this->hasMany(
-            TripParticipates::class,
-            'participate_id',
+        return $this->belongsTo(
+            Trips::class,
+            'trip_id',
             'id'
         );
     }

@@ -18,9 +18,11 @@ class CreatePlayer extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('user_id')->nullable();
+            $table->integer('trip_id');
             $table->string('sex')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('trip_creator')->default(false);
             $table->timestamps();
         });
     }

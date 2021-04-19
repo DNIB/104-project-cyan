@@ -25,17 +25,17 @@ class TripPlayerController extends Controller
     {
         $user_id = $this->loginCheck();
         
-        $target_trip_participate = $this->getTripParticipatesFromTripId( $trip_id );
+        $trip_players = Players::where('trip_id', $trip_id);
+        $isRequestValid = $this->checkRequestValid($trip_players, $user_id);
 
-        $isRequestValid = $this->checkRequestValid($target_trip_participate, $user_id);
+        $trip_players = Players::where('trip_id', $trip_id);      
 
         if ( $isRequestValid ) {
-            $trip = Trips::find( $trip_id );
+            $trip = Trips::find( $trip_id )->get()[0];
             $ret = [
-                'players' => $target_trip_participate,
+                'players' => $trip_players->get(),
                 'trip' => $trip,
             ];
-
 
             return view( 'trip.player_info', $ret);
         } else {
@@ -59,39 +59,24 @@ class TripPlayerController extends Controller
     }
 
     /**
-     * 傳入行程的 ID，回傳屬於此行程 ID 的 TripParticipates
-     * 
-     * @param integer $trip_id
-     * 
-     * @return TripParticipates
-     */
-    private function getTripParticipatesFromTripId( $trip_id )
-    {
-        return TripParticipates::where('trip_id', $trip_id )
-            ->orderBy('participate_id', 'asc')
-            ->get();
-    }
-
-    /**
      * 確認以下事項：
      *   - 該行程參加表是否存在
      *   - 該使用者 ID 是否可以存取該行程參加表
      * 若皆成立，回傳 true；反之回傳 false
      * 
-     * @param Object $trip_participate
+     * @param Players $trip_players
      * @param integer $user_id
      * 
      * @return boolean
      */
-    private function checkRequestValid( Object $trip_participate, $user_id )
+    private function checkRequestValid( $trip_players, $user_id )
     {
-        $isNotEmpty = count( $trip_participate ) > 0;
+        $isNotEmpty = count( $trip_players->get() ) > 0;
 
         if ( $isNotEmpty ) {
-            $player_id = Players::where('user_id', $user_id)->get()[0]->id;
-            $find_user_in_target = $trip_participate->where('participate_id', $player_id);
+            $target_player = $trip_players->where('user_id', $user_id)->get();
 
-            return count( $find_user_in_target ) > 0;
+            return count( $target_player ) > 0;
         } else {
             return false;
         }
@@ -128,6 +113,7 @@ class TripPlayerController extends Controller
             $player->description = $desc;
             $player->email = $email;
             $player->phone = $phone;
+            $player->trip_id = $trip_id;
 
             $email_checker = $this->checkEmail( $email );
             if ( $email_checker ) {
@@ -135,12 +121,6 @@ class TripPlayerController extends Controller
             }
 
             $player->save();
-
-            $trip_participate = new TripParticipates;
-            $trip_participate->trip_id = $trip_id;
-            $trip_participate->participate_id = $player->id;
-
-            $trip_participate->save();
 
             return $this->index( $trip_id );
         } else {
@@ -242,11 +222,11 @@ class TripPlayerController extends Controller
         $player_id = $request->player_id;
 
         $player = Players::find( $player_id );
-        $player_id = $player->id;
-        $player_participate = TripParticipates::where('participate_id', $player_id)->get()[0];
 
-        $player->delete();
-        $player_participate->delete();
+        $isNotCreator = !$player->trip_creator;
+        if ( $isNotCreator ) {
+            $player->delete();
+        }
 
         return $this->index( $trip_id );
     }

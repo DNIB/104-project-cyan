@@ -4,7 +4,6 @@ namespace App;
 
 use App\Models\Players;
 use App\Models\LocationEditor;
-use App\Models\TripParticipates;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -98,17 +97,14 @@ class User extends Authenticatable
      */
     public function trips()
     {
-        $user_id = $this->id;
-        $players_of_user = Players::where('user_id', $user_id)->get();
+        $players_of_user = $this->players()->get();
 
-        $ret_trips = [];
+        $ret = [];
         foreach ( $players_of_user as $player ) {
-            $trips = $player->trips();
-            foreach ( $trips as $trip ) {
-                $ret_trips[ $trip->id ] = $trip;
-            }
+            $trip = $player->trip()->get()[0];
+            $ret[ $trip->id ] = $trip;
         }
-        return $ret_trips;
+        return $ret;
     }
 
     /**
@@ -116,7 +112,7 @@ class User extends Authenticatable
      */
     public function delete()
     {
-        $target_player = Players::where('user_id', $this->id);
+        $target_player = $this->players();
         $isTargetNotEmpty = count( $target_player->get() );
 
         if ( $isTargetNotEmpty ) {
@@ -130,12 +126,12 @@ class User extends Authenticatable
      * 
      * @return Players
      */
-    public function player()
+    public function players()
     {
-        return $this->belongsTo(
+        return $this->hasMany(
             Players::class,
-            'id',
-            'user_id'
+            'user_id',
+            'id'
         );
     }
 
