@@ -14,6 +14,8 @@ use function PHPUnit\Framework\isEmpty;
 
 class LocationManageController extends Controller
 {
+    private $google_api = "AIzaSyAJhDKPXNDJXFhtDBL65Cow8MTmcDyY5Wc";
+
     /**
      * 讀入要求動作，並回傳對應的網頁
      * 
@@ -25,7 +27,7 @@ class LocationManageController extends Controller
     {
         switch ( $action ) {
         case "create":
-            return view('map.addLocation');
+            return view('map.addLocation', ['api' => $this->google_api]);
             break;
         case "read":
             return $this->readUserLocation( $request, 'read' );
@@ -65,10 +67,13 @@ class LocationManageController extends Controller
         $isActionValid = ( $action == 'read' ) || ( $action == 'edit' );
         if ( $isActionValid ) {
             $VIEW = 'map.viewLocation';
+
             $locations = Locations::all()->toArray();
             $ret['action'] = $action;
             $ret['locations'] = $locations;
             $ret['trip_id'] = $trip_id;
+            $ret['api'] = $this->google_api;
+
             return view($VIEW, $ret);
         } else {
             abort(404);
@@ -93,9 +98,12 @@ class LocationManageController extends Controller
         $isActionValid = ( $action == 'read' ) || ( $action == 'edit' );
         if ( $isActionValid ) {
             $VIEW = 'map.viewLocation';
+
             $locations = $user->locations();
             $ret['action'] = $action;
             $ret['locations'] = $locations;
+            $ret['api'] = $this->google_api;
+
             return view($VIEW, $ret);
         } else {
             abort(404);
@@ -128,10 +136,12 @@ class LocationManageController extends Controller
 
         if ( $isInputValid ) {
             $location = new Locations;
+
             $location->name = $name;
             $location->description = $desc;
             $location->lat = $lat;
             $location->lng = $lng;
+
             $location->appendLocation( $user_id );
             return view('welcome', ['status' => '新增地點成功']);
         } else {

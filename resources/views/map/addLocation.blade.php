@@ -63,6 +63,19 @@
       .hide {
         display: none;
       }
+
+      .back-index {
+        position: absolute;
+        left: 80%;
+        top: 90%;
+        height: 10%;
+        width: 20%;
+      }
+
+      .back-button {
+        height: 80%;
+        width: 80%;
+      }
     </style>
     <script>
       let map;
@@ -218,9 +231,13 @@
       @endcomponent
       <input type="text" class="search-text" id="search" name="search">
     </div>
+
+      @component ( 'map.unit.backIndex' )
+      @endcomponent
+
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc&callback=initMap&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{ $api }}&callback=initMap&libraries=places&v=weekly"
     async
     ></script>
 

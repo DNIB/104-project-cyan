@@ -75,6 +75,19 @@
         height: 40px;
       }
 
+      .back-index {
+        position: absolute;
+        left: 80%;
+        top: 90%;
+        height: 10%;
+        width: 20%;
+      }
+
+      .back-button {
+        height: 80%;
+        width: 80%;
+      }
+
     </style>
     <script>
         let map;
@@ -192,11 +205,6 @@
          */
         function updateAction( target_id )
         {
-            console.log( "Update" );
-            console.log( target_id );
-
-            console.log( markers[ target_id ] );
-
             document.getElementById( "mapInfo" ).style.display = "none";
             document.getElementById( "editWindows" ).style.display = "initial";
 
@@ -209,6 +217,15 @@
             });
 
             map.panTo( markers[ target_id ].position );
+        }
+
+        /**
+         * 取消修改動作
+         */
+        function cancelUpdateAction()
+        {
+            document.getElementById( "mapInfo" ).style.display = "initial";
+            document.getElementById( "editWindows" ).style.display = "none";
         }
 
         /**
@@ -274,9 +291,12 @@
         @endcomponent
     </div>
 
+    @component ( 'map.unit.backIndex' )
+    @endcomponent
+
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc&callback=initLocation&libraries=places&v=weekly"
+    src="https://maps.googleapis.com/maps/api/js?key={{ $api }}&callback=initLocation&libraries=places&v=weekly"
     async
     ></script>
 
