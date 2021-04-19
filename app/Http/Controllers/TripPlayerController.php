@@ -35,6 +35,8 @@ class TripPlayerController extends Controller
                 'players' => $target_trip_participate,
                 'trip' => $trip,
             ];
+
+
             return view( 'trip.player_info', $ret);
         } else {
             return view( 'error.invalid_request');
@@ -188,9 +190,10 @@ class TripPlayerController extends Controller
      /**
      * 修改指定的 Player 資料
      * 傳入的 Request 應有以下資料：
+     *   - (integer) trip_id
      *   - (integer) player_id
      *   - (string) name 
-     *   - (string) description (可為空)
+     *   - (string) desc (可為空)
      *   - (string) email (可為空)
      *   - (string) phone (可為空)
      * email 若已存在，則不可修改
@@ -198,26 +201,54 @@ class TripPlayerController extends Controller
      * 
      * @return view
      */
-    public function updatePlayer( Request $re)
+    public function updatePlayer( Request $request )
     {
-        return;
+        $trip_id = $request->trip_id;
+
+        $player_id = $request->player_id;
+        $name = $request->name;
+        $desc = $request->desc;
+        $email = $request->email;
+        $phone = $request->phone;
+
+        $player = Players::find( $player_id );
+        $player->name = $name;
+        $player->description = $desc;
+        $player->phone = $phone;
+
+        $isEmailEmpty = ( $player->email == null );
+        if( $isEmailEmpty ) {
+            $player->email = $email;
+        }
+
+        $player->save();
+
+        return $this->index( $trip_id );
     }
 
      /**
      * 刪除指定的 Player 資料
      * 傳入的 Request 應有以下資料：
+     *   - (integer) trip_id
      *   - (integer) player_id
-     *   - (string) name
-     *   - (string) description (可為空)
-     *   - (string) email (可為空)
-     *   - (string) phone (可為空)
-     * 若該 email 帳戶已存在，則應自動連結
      * 
      * @return view
      */
     public function deletePlayer( Request $request )
     {
-        return;
+        
+        $trip_id = $request->trip_id;
+
+        $player_id = $request->player_id;
+
+        $player = Players::find( $player_id );
+        $player_id = $player->id;
+        $player_participate = TripParticipates::where('participate_id', $player_id)->get()[0];
+
+        $player->delete();
+        $player_participate->delete();
+
+        return $this->index( $trip_id );
     }
     
     /**

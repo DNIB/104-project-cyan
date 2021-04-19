@@ -43,11 +43,24 @@
                             <td>{{ $player_info->email ?? "(無 email 資料)" }}</td>
                             <td>{{ $player_info->phone ?? "(無電話資料)" }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary">修改</button>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-primary" 
+                                    id="{{ $player_info->id }}-{{ $player_info->name }}-{{ $player_info->description ?? null }}-{{ $player_info->email ?? null }}-{{ $player_info->phone ?? null }}" 
+                                    onclick="updateAction( this.id )"
+                                    data-toggle="modal" 
+                                    data-target="#editPlayer">修改</button>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger">刪除</button>
+                                <button 
+                                    type="button" 
+                                    class="btn btn-danger" 
+                                    id="{{ $player_info->id }}" 
+                                    onclick="deleteAction( this.id )"
+                                    data-toggle="modal" 
+                                    data-target="#editPlayer">刪除</button>
                             </td>
+                            </form>
                         </tr>
                     @endforeach
                 </tbody>
@@ -72,6 +85,38 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="editPlayer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTitle">noMessage</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="/trip/viewPlayer" method="POST">
+        @csrf
+        <input type="hidden" id="request_method" name="_method" value="PUT">
+        <input type="hidden" name="trip_id" value="{{ $trip->id }}">
+
+        <div class="float-start row justify-content-center">
+            <input class="form-control" id="edit_name" name="name" type="text" style="width: 80%; margin-top: 5px;" placeholder="(name)">
+            <input class="form-control" id="edit_desc" name="desc" type="text" style="width: 80%; margin-top: 5px;" placeholder="(description)">
+            <input class="form-control" id="edit_email" name="email" type="text" style="width: 80%; margin-top: 5px;" placeholder="(email)">
+            <input class="form-control" id="edit_phone" name="phone" type="text" style="width: 80%; margin-top: 5px;" placeholder="(phone)">
+        </div>
+
+        <div class="modal-footer" style="margin-top: 10px;">
+            <input type="hidden" id='player_id' name='player_id' value="-1">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary">確定</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 <script>
@@ -80,9 +125,69 @@ function createPlayer()
     document.getElementById('display_info').style.display = "none";
     document.getElementById('display_creator').style.display = "initial";
 }
+
 function cancelCreate()
 {
     document.getElementById('display_info').style.display = "initial";
     document.getElementById('display_creator').style.display = "none";
+}
+
+function updateAction( player_info )
+{
+    content = player_info.split('-');
+
+    id = content[0];
+    name = content[1];
+    desc = content[2];
+    email = content[3];
+    phone = content[4];
+
+    changeTitle( "編輯參加者資訊" );
+    openDisplay();
+    
+    document.getElementById( 'player_id' ).value = id;
+    document.getElementById( 'edit_name' ).value = name;
+    document.getElementById( 'edit_desc' ).value = (desc) ? desc : "";
+    document.getElementById( 'edit_phone' ).value = (phone) ? phone : "";
+
+    document.getElementById( 'request_method' ).value = "PUT";
+
+    if ( email != "" ) {
+        document.getElementById( 'edit_email' ).value = email;
+        document.getElementById( 'edit_email' ).readOnly = true;
+    } else {
+        document.getElementById( 'edit_email' ).value = "";
+        document.getElementById( 'edit_email' ).readOnly = false;
+    }
+}
+
+function deleteAction( player_info )
+{
+    content = player_info.split('-');
+
+    id = content[0];
+
+    changeTitle( "刪除參加者資訊" );
+    
+    document.getElementById( 'player_id' ).value = id;
+    document.getElementById( 'edit_name' ).type = "hidden";
+    document.getElementById( 'edit_desc' ).type = "hidden";
+    document.getElementById( 'edit_phone' ).type = "hidden";
+    document.getElementById( 'edit_email' ).type = "hidden";
+
+    document.getElementById( 'request_method' ).value = "DELETE";
+}
+
+function openDisplay()
+{
+    document.getElementById( 'edit_name' ).type = "text";
+    document.getElementById( 'edit_desc' ).type = "text";
+    document.getElementById( 'edit_phone' ).type = "text";
+    document.getElementById( 'edit_email' ).type = "text";
+}
+
+function changeTitle( title )
+{
+    document.getElementById( 'editTitle' ).innerHTML = title;
 }
 </script>

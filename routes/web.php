@@ -37,7 +37,6 @@ Route::prefix('/trip')->group( function(){
     Route::prefix('/viewPlayer')->group( function(){
         Route::get('/{trip_id}', 'TripPlayerController@index');
 
-
         // Invalid Request
         Route::get('/', 'HomeController@invalidRequest');
 
