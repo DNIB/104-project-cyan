@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Locations;
+use App\Models\Players;
 use App\Models\TripLocations;
 use App\Models\TripParticipates;
 use App\Models\Trips;
@@ -167,9 +168,16 @@ class TripManageController extends Controller
             $trip->description = $trip_desc;
             $trip->save();
 
+            $player = new Players;
+            $player->name = $user->name;
+            $player->description = "(myself)";
+            $player->user_id = $user->id;
+            $player->email = $user->email;
+            $player->save();
+
             $trip_participate = new TripParticipates;
             $trip_participate->trip_id = $trip->id;
-            $trip_participate->participate_id = $user->player()->get()[0]->id;
+            $trip_participate->participate_id = $player->id;
             $trip_participate->save();
 
             return $this->index();
