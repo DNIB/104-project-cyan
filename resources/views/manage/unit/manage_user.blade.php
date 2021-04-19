@@ -55,6 +55,7 @@
 
         <br>
         <button type="submit" class="btn btn-primary"> 更改會員資料 </button>
+        <button type="button" class="btn btn-danger" onclick="cancelEdit()"> 取消更改 </button>
     </form>
 
     

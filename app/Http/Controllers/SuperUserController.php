@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Locations;
+use App\Models\Trips;
+use App\Models\Players;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class SuperUserController extends Controller
@@ -17,6 +21,11 @@ class SuperUserController extends Controller
      */
     public function update( Request $request )
     {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
         $id = $request->id;
         $name = $request->name;
         $email = $request->email;
@@ -39,7 +48,7 @@ class SuperUserController extends Controller
                 $user->password = Hash::make( $password );
             }
             $user->save();
-            return view('welcome', ['status' => '更新帳號成功']);
+            return view('home');
         } else {
             return view('welcome', ['status' => '存在非法輸入']);
         }
@@ -54,6 +63,11 @@ class SuperUserController extends Controller
      */
     public function delete( Request $request )
     {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
         $id = $request->delete_id;
 
         $isIdValid = is_numeric( $id );
@@ -62,12 +76,73 @@ class SuperUserController extends Controller
             $isUserExist = !empty( $user );
             if ( $isUserExist ) {
                 $user->delete();
-                return view('welcome', ['status' => '刪除帳號成功']);
+                return view('home');
             } else {
                 return view('welcome', ['status' => '無對應帳號']);
             }
         } else {
             return view('welcome', ['status' => '存在非法輸入']);
         }
+    }
+
+    /**
+     * 取得所有行程的資料，並回傳至 view 以供顯示
+     * 
+     * @return view
+     */
+    public function showAllTrips()
+    {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
+        $trips = Trips::all();
+
+        dd( $trips );
+    }
+
+    /**
+     * 取得所有地點的資料，並回傳至 view 以供顯示
+     * 
+     * @return view
+     */
+    public function showAllLocations()
+    {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
+        $locations = Locations::all();
+
+        dd( $locations );
+    }
+
+    /**
+     * 取得所有參加者的資料，並回傳至 view 以供顯示
+     * 
+     * @return view
+     */
+    public function showAllPlayers()
+    {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
+        $players = Players::all();
+
+        dd( $players );
+    }
+
+    /**
+     * 確認當前使用者身份，是否有管理員資格
+     * 
+     * @return boolean
+     */
+    private function isSuperUser()
+    {
+        return ( Auth::check() ) ? ( Auth::user()->super_user ) : false;
     }
 }

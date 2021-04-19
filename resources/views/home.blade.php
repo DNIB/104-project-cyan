@@ -23,6 +23,9 @@
                 @if ( Auth::user()->super_user )
                     @component ( 'manage.unit.manage_user' )
                     @endcomponent
+
+                    @component ( 'manage.unit.ArTar_67')
+                    @endcomponent
                 @else
                     一般使用者
                 @endif
@@ -36,7 +39,6 @@
 <script>
 function editAction( user_id )
 {
-    console.log( "edit" );
     document.getElementById("user_table").style = "display: none;";
     document.getElementById("edit_table").style = "display: initail;";
 
@@ -48,9 +50,14 @@ function editAction( user_id )
     document.getElementById("name").value = name;
 }
 
+function cancelEdit()
+{
+    document.getElementById("user_table").style = "display: initail;";
+    document.getElementById("edit_table").style = "display: none;";
+}
+
 function deleteAction( user_id )
 {
-    console.log( "del" );
     document.getElementById("user_table").style = "display: none;";
     document.getElementById("delete_table").style = "display: initail;";
 
