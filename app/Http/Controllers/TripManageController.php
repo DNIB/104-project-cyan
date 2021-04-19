@@ -25,6 +25,7 @@ class TripManageController extends Controller
         if ( $isLogin ) {
             $user = Auth::user();
             $trips = $user->getTripInfo();
+            
             $locations = $user->locations( true );
 
             $ret = [

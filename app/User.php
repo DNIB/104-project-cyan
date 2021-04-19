@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\Players;
 use App\Models\LocationEditor;
+use App\Models\TripParticipates;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -79,6 +80,7 @@ class User extends Authenticatable
     public function getTripInfo()
     {
         $trips = $this->trips();
+
         $locations  = [];
         foreach ( $trips as $trip ) {
             $locations[] = [
@@ -96,30 +98,17 @@ class User extends Authenticatable
      */
     public function trips()
     {
-        $player = $this->player()->get()[0];
-        $trips = $player->trips();
-        return $trips;
-    }
+        $user_id = $this->id;
+        $players_of_user = Players::where('user_id', $user_id)->get();
 
-    /**
-     * 在呼叫此函式時，一併新增或更新 player 資料庫裡的資料
-     */
-    public function save(array $options = [])
-    {
-        parent::save( $options );
-
-        $target_player = Players::where('user_id', $this->id)->get();
-        $isPlayerExist = count( $target_player ) > 0;
-
-        if ( $isPlayerExist ) {
-            $player = $target_player[0];
-        } else {
-            $player = new Players;
+        $ret_trips = [];
+        foreach ( $players_of_user as $player ) {
+            $trips = $player->trips();
+            foreach ( $trips as $trip ) {
+                $ret_trips[ $trip->id ] = $trip;
+            }
         }
-        $player->name = $this->name;
-        $player->email = $this->email;
-        $player->user_id = $this->id;
-        $player->save();
+        return $ret_trips;
     }
 
     /**
@@ -127,10 +116,12 @@ class User extends Authenticatable
      */
     public function delete()
     {
-        $target_player = Players::where('user_id', $this->id)->get();
-        $player = $target_player[0];
+        $target_player = Players::where('user_id', $this->id);
+        $isTargetNotEmpty = count( $target_player->get() );
 
-        $player->delete();
+        if ( $isTargetNotEmpty ) {
+            $target_player->delete();
+        }
         parent::delete();
     }
 
