@@ -37,7 +37,7 @@
     </table>
 </div>
 <div class="card-body" style="display: none;" id="edit_table" name="edit_table">
-    <form action="/user/" method="POST">
+    <form action="/user" method="POST">
     @method( 'PUT' )
     @csrf
         <input type="hidden" id="id" name="id" value="-1"> 
@@ -61,7 +61,7 @@
 </div>
 
 <div class="card-body" style="display: none;" id="delete_table" name="delete_table">
-    <form action="/user/" method="POST">
+    <form action="/user" method="POST">
     @method( 'DELETE' )
     @csrf
         <input type="hidden" id="delete_id" name="delete_id" value="-1"> 

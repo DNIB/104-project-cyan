@@ -25,6 +25,9 @@ Route::prefix('/trip')->group( function(){
     Route::put('/location', 'TripManageController@updateLocation');
     Route::delete('/location', 'TripManageController@deleteLocation');
 
+    // Invalid Request
+    Route::get('/', 'HomeController@invalidRequest');
+
     Route::post('/', 'TripManageController@createTrip');
     Route::put('/', 'TripManageController@updateTrip');
     Route::delete('/', 'TripManageController@deleteTrip');
@@ -33,6 +36,10 @@ Route::prefix('/trip')->group( function(){
 
     Route::prefix('/viewPlayer')->group( function(){
         Route::get('/{trip_id}', 'TripPlayerController@index');
+
+
+        // Invalid Request
+        Route::get('/', 'HomeController@invalidRequest');
 
         Route::post('/', 'TripPlayerController@createPlayer');
         Route::put('/', 'TripPlayerController@updatePlayer');
@@ -44,10 +51,13 @@ Route::prefix('/location')->group( function(){
     Route::get('/{action}', 'LocationManageController@request');
     Route::post('/create', 'LocationManageController@createLocation');
     Route::post('/update', 'LocationManageController@updateLocation');
-    Route::delete('/{target_id', 'LocationManageController@deleteLocation');
+    Route::delete('/{target_id}', 'LocationManageController@deleteLocation');
 });
 
 Route::prefix('/user')->group( function(){
+    // Invalid Request
+    Route::get('/', 'HomeController@invalidRequest');
+
     Route::put('/', 'SuperUserController@update');
     Route::delete('/', 'SuperUserController@delete');
 });

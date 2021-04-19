@@ -25,4 +25,13 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    /**
+     * 處理不應存在的請求
+     */
+    public function invalidRequest( Request $request )
+    {
+        echo "此請求不應存在，請檢查設定是否錯誤";
+        dd( $request );
+    }
 }

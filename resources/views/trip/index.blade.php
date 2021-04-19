@@ -209,7 +209,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/trip/" method="POST">
+      <form action="/trip" method="POST">
       @csrf
       @method( 'DELETE' )
         <input type="hidden" id="delete_trip" name="trip_id" value="-1">
@@ -233,7 +233,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form action="/trip/" method="POST">
+      <form action="/trip" method="POST">
       <input type="hidden" id="edit_trip_method" name="_method" value="POST">
       @csrf
         <div class="row justify-content-center">
