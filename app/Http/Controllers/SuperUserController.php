@@ -97,9 +97,22 @@ class SuperUserController extends Controller
             return view('error.invalid_request');
         }
 
+        $column = [
+            'id',
+            'name',
+            'descrition',
+            'created_at',
+            'updated_at',
+        ];
         $trips = Trips::all();
 
-        dd( $trips );
+        $ret = [
+            'columns' => $column,
+            'rows' => $trips,
+            'name' => "行程後台管理",
+        ];
+
+        return view('manage.main', $ret);
     }
 
     /**
@@ -114,9 +127,24 @@ class SuperUserController extends Controller
             return view('error.invalid_request');
         }
 
+        $column = [
+            'id',
+            'name',
+            'description',
+            'lat',
+            'lng',
+            'created_at',
+            'updated_at',
+        ];
         $locations = Locations::all();
+        
+        $ret = [
+            'columns' => $column,
+            'rows' => $locations,
+            'name' => "地點後台管理",
+        ];
 
-        dd( $locations );
+        return view('manage.main', $ret);
     }
 
     /**
@@ -131,9 +159,24 @@ class SuperUserController extends Controller
             return view('error.invalid_request');
         }
 
+        $column = [
+            'id',
+            'name',
+            'descriptipn',
+            'user_id',
+            'trip_id',
+            'email',
+            'phone',
+        ];
         $players = Players::all();
 
-        dd( $players );
+        $ret = [
+            'columns' => $column,
+            'rows' => $players,
+            'name' => "參加者後台管理",
+        ];
+
+        return view('manage.main', $ret);
     }
 
     /**

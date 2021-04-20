@@ -15,6 +15,7 @@
 
     <div id="display_info">
         <div class="row justify-content-center" style="margin-bottom: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="back()" style="margin-right: 10px;">返回</button>
             <button type="button" class="btn btn-success" onclick="createPlayer()">新增參加者</button>
         </div>
 
@@ -74,7 +75,7 @@
         @csrf
             <input type="hidden" id="trip_id" name="trip_id" value="{{ $trip->id }}">
 
-            <input class="form-control" type="text" id="name" name="name" placeholder="(name))">
+            <input class="form-control" type="text" id="name" name="name" placeholder="(name)">
             <input class="form-control" type="text" id="desc" name="desc" placeholder="(description)">
             <input type="email" class="form-control" id="email" name="email" placeholder="(name@example.com)">
             <input class="form-control" type="tel" id="phone" name="phone" placeholder="(phone)">
@@ -190,5 +191,10 @@ function openDisplay()
 function changeTitle( title )
 {
     document.getElementById( 'editTitle' ).innerHTML = title;
+}
+
+function back()
+{
+    window.location = '/trip/index';
 }
 </script>

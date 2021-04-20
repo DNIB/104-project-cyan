@@ -112,6 +112,11 @@ class User extends Authenticatable
      */
     public function delete()
     {
+        $isSuperUser = $this->super_user;
+        if ( $isSuperUser ) {
+            return;
+        }
+
         $target_player = $this->players();
         $isTargetNotEmpty = count( $target_player->get() );
 

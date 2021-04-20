@@ -24,7 +24,7 @@
                     @component ( 'manage.unit.manage_user' )
                     @endcomponent
 
-                    @component ( 'manage.unit.ArTar_67')
+                    @component ( 'manage.unit.toward_button')
                     @endcomponent
                 @else
                     一般使用者

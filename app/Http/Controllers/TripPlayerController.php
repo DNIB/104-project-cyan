@@ -31,7 +31,7 @@ class TripPlayerController extends Controller
         $trip_players = Players::where('trip_id', $trip_id);      
 
         if ( $isRequestValid ) {
-            $trip = Trips::find( $trip_id )->get()[0];
+            $trip = Trips::find( $trip_id );
             $ret = [
                 'players' => $trip_players->get(),
                 'trip' => $trip,

@@ -24,6 +24,7 @@
                             id="{{ $user->id }}" 
                             onclick="editAction( this.id )"> Edit </button>
                     </td>
+                    @if ( !$user->super_user )
                     <td>
                         <button 
                             type="button" 
@@ -31,6 +32,7 @@
                             id="{{ $user->id }}" 
                             onclick="deleteAction( this.id )"> Delete </button>
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>
