@@ -6,6 +6,7 @@ use App\Models\Locations;
 use App\Models\Trips;
 use App\Models\Players;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -100,9 +101,7 @@ class SuperUserController extends Controller
         $column = [
             'id',
             'name',
-            'descrition',
-            'created_at',
-            'updated_at',
+            'description',
         ];
         $trips = Trips::all();
 
@@ -110,6 +109,7 @@ class SuperUserController extends Controller
             'columns' => $column,
             'rows' => $trips,
             'name' => "行程後台管理",
+            'type' => 'trip',
         ];
 
         return view('manage.main', $ret);
@@ -133,8 +133,6 @@ class SuperUserController extends Controller
             'description',
             'lat',
             'lng',
-            'created_at',
-            'updated_at',
         ];
         $locations = Locations::all();
         
@@ -142,6 +140,7 @@ class SuperUserController extends Controller
             'columns' => $column,
             'rows' => $locations,
             'name' => "地點後台管理",
+            'type' => 'location',
         ];
 
         return view('manage.main', $ret);
@@ -162,7 +161,7 @@ class SuperUserController extends Controller
         $column = [
             'id',
             'name',
-            'descriptipn',
+            'description',
             'user_id',
             'trip_id',
             'email',
@@ -174,9 +173,126 @@ class SuperUserController extends Controller
             'columns' => $column,
             'rows' => $players,
             'name' => "參加者後台管理",
+            'type' => 'player',
         ];
 
         return view('manage.main', $ret);
+    }
+
+    /**
+     * 按傳入請求及參數，進行資料更新的處理
+     * 
+     * @param Request $request
+     * @param string $type
+     * 
+     * @return view
+     */
+     public function updateData( Request $request, string $type)
+     {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
+        try{
+        $target_type = $this->getTargetElement( $type );
+        $target = $target_type->find( $request->id );
+        $elements = $request->all();
+        
+        foreach ( $elements as $key => $value ) {
+            $isSkip = ( $key == "_token" ) || ( $key == '_method' ) || ( $key == 'id');
+            if ( $isSkip ) {
+                continue;
+            } else {
+                $target->$key = $value;
+            }
+        }
+
+        $target->save();
+
+        switch ( $type ) {
+        case 'trip':
+            return $this->showAllTrips();
+            break;
+        case 'player':
+            return $this->showAllPlayers();
+            break;
+        case 'location':
+            return $this->showAllLocations();
+            break;
+        default:
+            abort(404);
+            break;
+        }
+        } catch (Exception $e) {
+            abort(403);
+        }
+     }
+
+     /**
+     * 按傳入請求及參數，進行資料刪除的處理
+     * 
+     * @param Request $request
+     * @param string $type
+     * 
+     * @return view
+     */
+    public function deleteData( Request $request, string $type)
+    {
+        $isUserInvalid = !$this->isSuperUser();
+        if ( $isUserInvalid ) {
+            return view('error.invalid_request');
+        }
+
+        try{
+            $target_type = $this->getTargetElement( $type );
+            $id = $request->id;
+
+            $target = $target_type->find( $id );
+            $target->delete();
+
+            switch ( $type ) {
+            case 'trip':
+                return $this->showAllTrips();
+                break;
+            case 'player':
+                return $this->showAllPlayers();
+                break;
+            case 'location':
+                return $this->showAllLocations();
+                break;
+            default:
+                abort(404);
+                break;
+            }
+        } catch (Exception $e) {
+            abort(403);
+        }
+    }
+
+    /**
+     * 按傳入的參數，決定回傳的物件種類
+     * 
+     * @param string $type
+     * 
+     * @return Object
+     */
+    private function getTargetElement( string $type )
+    {
+        switch ( $type ) {
+        case 'trip':
+            return new Trips;
+            break;
+        case 'location':
+            return new Locations;
+            break;
+        case 'player':
+            return new Players;
+            break;
+        default:
+            abort(404);
+            break;
+        }
     }
 
     /**

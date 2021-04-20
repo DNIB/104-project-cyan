@@ -63,4 +63,7 @@ Route::prefix('/user')->group( function(){
     Route::get('/location', 'SuperUserController@showAllLocations');
     Route::get('/trip', 'SuperUserController@showAllTrips');
     Route::get('/player', 'SuperUserController@showAllPlayers');
+
+    Route::put('/{type}', 'SuperUserController@updateData');
+    Route::delete('/{type}', 'SuperUserController@deleteData');
 });
