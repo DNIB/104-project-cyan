@@ -22,5 +22,5 @@ Route::prefix('location')->group( function(){
 });
 
 Route::prefix('user')->group( function(){
-    Route::get('/getLocation/{user_id}', 'LocationManageController@showUserLocation');
+    Route::get('/getLocation/{user_id}', 'LocationApiController@showUserLocation');
 });
