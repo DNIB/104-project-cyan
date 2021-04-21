@@ -25,59 +25,22 @@ class LocationManageController extends Controller
      */
     public function request( $action )
     {
+        $this->checkLogin();
+
         switch ( $action ) {
         case "create":
             return view('map.addLocation', ['api' => $this->google_api]);
-            break;
+
         case "read":
             return $this->readUserLocation( 'read' );
-            break;
+
         case "edit":
             return $this->readUserLocation( 'edit' );
-            break;
-        }
-    }
 
-    /**
-     * 回傳行程內的地點，若參數為 0 則是回傳所有地點
-     * 若無對應行程，則傳 -1 至 view
-     * 
-     * @param string action = read
-     * @param integer $trip_id = 0
-     * 
-     * @return view
-     */
-    public function readLocation( $action = 'read', $trip_id = 0 )
-    {
-        switch ( $trip_id ) {
-        case 0:
-            break;
         default:
-            $trip = new Trips;
-            $target = $trip->find( $trip_id );
-            $isTripEmpty = isEmpty( $target );
-            
-            if ( $isTripEmpty ) {
-                $trip_id = -1;
-            }
             break;
         }
-
-        $ret = [];
-        $isActionValid = ( $action == 'read' ) || ( $action == 'edit' );
-        if ( $isActionValid ) {
-            $VIEW = 'map.viewLocation';
-
-            $locations = Locations::all()->toArray();
-            $ret['action'] = $action;
-            $ret['locations'] = $locations;
-            $ret['trip_id'] = $trip_id;
-            $ret['api'] = $this->google_api;
-
-            return view($VIEW, $ret);
-        } else {
-            abort(404);
-        }
+        abort(404);
     }
 
     /**
@@ -91,23 +54,19 @@ class LocationManageController extends Controller
      */
     public function readUserLocation( $action = 'read' )
     {
-        $user_id =  Auth::user()->id;
+        $user_id = Auth::user()->id;
         $user = User::find( $user_id );
 
         $ret = [];
-        $isActionValid = ( $action == 'read' ) || ( $action == 'edit' );
-        if ( $isActionValid ) {
-            $VIEW = 'map.viewLocation';
 
-            $locations = $user->locations();
-            $ret['action'] = $action;
-            $ret['locations'] = $locations;
-            $ret['api'] = $this->google_api;
+        $VIEW = 'map.viewLocation';
 
-            return view($VIEW, $ret);
-        } else {
-            abort(404);
-        }
+        $locations = $user->locations();
+        $ret['action'] = $action;
+        $ret['locations'] = $locations;
+        $ret['api'] = $this->google_api;
+
+        return view($VIEW, $ret);
     }
 
     /**
@@ -119,6 +78,8 @@ class LocationManageController extends Controller
      */
     public function createLocation( Request $request )
     {
+        $this->checkLogin();
+
         $location = new Locations;
 
         $name = $request->select_name;
@@ -126,7 +87,7 @@ class LocationManageController extends Controller
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $user_id = $request->user_id;
+        $user_id = Auth::user()->id;
 
         $isStringValid = !( empty( $name ) || empty( $desc ) );
         $isNumValid = is_numeric( $lat ) && is_numeric( $lng );
@@ -145,7 +106,7 @@ class LocationManageController extends Controller
             $location->appendLocation( $user_id );
             return view('map.addLocation', ['api' => $this->google_api]);
         } else {
-            return view('welcome', ['status' => '新增地點失敗']);
+            abort(400);
         }
     }
 
@@ -176,7 +137,7 @@ class LocationManageController extends Controller
             ]);
             return $this->readUserLocation( 'edit' );
         } else {
-            return view('welcome', ['status' => '更新地點失敗']);
+            abort(400);
         }
     }
 
@@ -208,41 +169,19 @@ class LocationManageController extends Controller
     }
 
     /**
-     * 依傳入的請求以及行程編號，回傳行程中的地點
-     * 
-     * @param Request $request
-     * @param integer $trip_id
-     * 
-     * @return array
+     * 檢查登入狀況，若無登入則回傳 403
      */
-    public function showTripLocation( $trip_id )
-    {        
-        $trip = new Trips;
-        if ( $trip_id == 0) {
-            $locations = new Locations;
-            $locations = $locations->all();
-        } else {
-            $target_trip = $trip->find( $trip_id );
-            $isTargetEmpty = $target_trip === null;
-            
-            if ( $isTargetEmpty ) {
-                abort(404);
-            } else {
-                $locations = $target_trip->getAllLocationInfo();
-            }
+    private function checkLogin()
+    {
+        $isNotLogin = !( Auth::check() );
+        if ( $isNotLogin ) {
+            abort(403);
         }
-
-        $ret = [];
-        foreach ( $locations as $location) {
-            $ret[] = $this->showLocation( $location );
-        }
-        return $ret;
     }
 
     /**
-     * 依傳入的請求以及行程編號，回傳使用者的地點
+     * 依傳入的使用者編號，回傳使用者的地點
      * 
-     * @param Request $request
      * @param integer $user_id
      * 
      * @return array

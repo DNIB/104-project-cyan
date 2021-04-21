@@ -56,4 +56,18 @@ class Locations extends Model
             'id'
         );
     }
+
+    /**
+     * 建立與 LocationEditor 的關聯
+     * 
+     * @return LocationEditor
+     */
+    public function locationEditor()
+    {
+        return $this->belongsTo(
+            LocationEditor::class,
+            'id',
+            'location_id'
+        );
+    }
 }

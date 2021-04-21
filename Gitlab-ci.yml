@@ -1,0 +1,6 @@
+image: lorisleiva/laravel-docker:latest
+
+unit_test:
+  script:
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - ./vendor/bin/phpunit --testsuit Unit --coverage-text --colors=never
