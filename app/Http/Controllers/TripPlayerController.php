@@ -122,7 +122,7 @@ class TripPlayerController extends Controller
 
             $player->save();
 
-            return $this->index( $trip_id );
+            return redirect()->back();
         } else {
             return $this->invalidRequest();
         }
@@ -203,7 +203,7 @@ class TripPlayerController extends Controller
 
         $player->save();
 
-        return $this->index( $trip_id );
+        return redirect()->back();
     }
 
      /**
@@ -228,7 +228,7 @@ class TripPlayerController extends Controller
             $player->delete();
         }
 
-        return $this->index( $trip_id );
+        return redirect()->back();
     }
     
     /**

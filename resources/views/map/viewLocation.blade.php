@@ -99,14 +99,18 @@
         // Get Data from Locations
         function initLocation() { 
             var user_id = document.getElementById('user_id').content;
-            const api_url = '/api/user/getLocation/' + user_id;
+            const api_url = '/api/user/getLocation' + '?api_token={{ $api_token }}';
 
-            fetch(api_url, {method: 'GET'})
+            fetch(api_url, {
+                method: 'GET'
+            })
             .then( res => {
                 return res.json();
             }).then( result => {
                 locations_data = result;
-                initMap();
+                if ( locations_data.length > 0 ) {
+                    initMap();
+                }
             })/*.catch( function (){
                 console.log( 'Get Data from API Failed' );
                 console.log( 'url: ' + api_url );
@@ -124,9 +128,9 @@
         }
 
         // Init Markers on Map
-            function initMarker() {
+        function initMarker() {
             infoWindow = new google.maps.InfoWindow();
-            locations_data_length =  Object.keys(locations_data).length;
+            locations_data_length = Object.keys(locations_data).length;
 
             for ( index=0; index<locations_data_length; index++ ) {
                 addMarker( locations_data[ index ] );

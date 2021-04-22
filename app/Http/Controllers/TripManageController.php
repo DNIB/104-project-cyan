@@ -66,7 +66,8 @@ class TripManageController extends Controller
             $trip_location->location_id = $location_id;
 
             $trip_location->appendLocation();
-            return $this->index();
+
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -102,7 +103,8 @@ class TripManageController extends Controller
 
             $target->location_id = $location_id;
             $target->save();
-            return $this->index();
+
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -134,7 +136,7 @@ class TripManageController extends Controller
             $target = $trip->where( 'trip_order', $order_id )->get()[0];
             $target->delete();
 
-            return $this->index();
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -158,9 +160,8 @@ class TripManageController extends Controller
         $trip_desc = $request->trip_desc;
 
         $isNameValid = !empty( $trip_name );
-        $isDescValid = !empty( $trip_desc );
 
-        $isRequestValid = $isNameValid && $isDescValid;
+        $isRequestValid = $isNameValid;
 
         if ( $isRequestValid ) {
             $trip = new Trips;
@@ -177,7 +178,7 @@ class TripManageController extends Controller
             $player->trip_creator = true;
             $player->save();
 
-            return $this->index();
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -212,7 +213,7 @@ class TripManageController extends Controller
             $trip->description = $trip_desc;
             $trip->save();
 
-            return $this->index();
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -256,7 +257,8 @@ class TripManageController extends Controller
                 break;
             }
             $this->exchangeOrder( $trip_exchange );
-            return $this->index();
+
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }
@@ -332,7 +334,7 @@ class TripManageController extends Controller
         if ( $isTripIdValid ) {
             $trip = Trips::find( $trip_id );
             $trip->delete();
-            return $this->index();
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => 'Request Invalid']);
         }

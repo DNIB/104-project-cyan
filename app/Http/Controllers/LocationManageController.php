@@ -14,7 +14,7 @@ use function PHPUnit\Framework\isEmpty;
 
 class LocationManageController extends Controller
 {
-    private $google_api = "AIzaSyAJhDKPXNDJXFhtDBL65Cow8MTmcDyY5Wc";
+    private $google_api = "AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc";
 
     /**
      * 讀入要求動作，並回傳對應的網頁
@@ -25,8 +25,6 @@ class LocationManageController extends Controller
      */
     public function request( $action )
     {
-        $this->checkLogin();
-
         switch ( $action ) {
         case "create":
             return view('map.addLocation', ['api' => $this->google_api]);
@@ -48,14 +46,12 @@ class LocationManageController extends Controller
      * 若無對應行程，則傳 -1 至 view
      * 
      * @param string action = read
-     * @param integer $user_id
      * 
      * @return view
      */
     public function readUserLocation( $action = 'read' )
     {
-        $user_id = Auth::user()->id;
-        $user = User::find( $user_id );
+        $user = Auth::user();
 
         $ret = [];
 
@@ -65,6 +61,7 @@ class LocationManageController extends Controller
         $ret['action'] = $action;
         $ret['locations'] = $locations;
         $ret['api'] = $this->google_api;
+        $ret['api_token'] = $user->api_token;
 
         return view($VIEW, $ret);
     }
@@ -78,8 +75,6 @@ class LocationManageController extends Controller
      */
     public function createLocation( Request $request )
     {
-        $this->checkLogin();
-
         $location = new Locations;
 
         $name = $request->select_name;
@@ -87,7 +82,7 @@ class LocationManageController extends Controller
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $user_id = Auth::user()->id;
+        $user_id = Auth::id();
 
         $isStringValid = !( empty( $name ) || empty( $desc ) );
         $isNumValid = is_numeric( $lat ) && is_numeric( $lng );
@@ -104,7 +99,7 @@ class LocationManageController extends Controller
             $location->lng = $lng;
 
             $location->appendLocation( $user_id );
-            return view('map.addLocation', ['api' => $this->google_api]);
+            return redirect()->back();
         } else {
             abort(400);
         }
@@ -135,7 +130,7 @@ class LocationManageController extends Controller
                 'name' => $name,
                 'description' => $desc,
             ]);
-            return $this->readUserLocation( 'edit' );
+            return redirect()->back();
         } else {
             abort(400);
         }
@@ -169,13 +164,18 @@ class LocationManageController extends Controller
     }
 
     /**
-     * 檢查登入狀況，若無登入則回傳 403
+     * 傳入行程編號，驗證使用者後回傳資料至 View
+     * 
+     * @param integer $trip_id
+     * 
+     * @return view
      */
-    private function checkLogin()
+    public function tripMap( $trip_id )
     {
-        $isNotLogin = !( Auth::check() );
-        if ( $isNotLogin ) {
-            abort(403);
-        }
+        return view('trip.map_display', [
+            'trip_id' => $trip_id,
+            'api' => $this->google_api,
+            'api_token' => Auth::user()->api_token,
+        ]);
     }
 }

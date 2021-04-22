@@ -6,40 +6,37 @@ use App\Models\Locations;
 use App\User;
 use App\Http\Resources\LocationResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LocationApiController extends Controller
 {
     /**
-     * 依傳入的使用者編號，回傳使用者的地點
+     * 依請求攜帶的使用者資訊，回傳使用者的地點
      * 
-     * @param integer $user_id
-     * 
-     * @return array
+     * @return json
      */
-    public function showUserLocation( $user_id )
+    public function showUserLocation( Request $request )
     {   
-        $isRequestLoginValid = true;
+        $user = Auth::user();
+        $locations = $user->locations();
 
-        if ( $isRequestLoginValid ) {
-            $user = User::find( $user_id );
-            
-            $isUserValid = !empty( $user );
-            if ( $isUserValid ){
-                $locations = $user->locations();
-                $isLocationValid = count($locations) > 0;
-                if ( $isLocationValid ) {
-                    $ret = $locations;
-                } else {
-                    $ret = ['status' => 'failed', 'result' => 'No Location Found'];
-                }
-            } else {
-                $ret = ['status' => 'failed', 'result' => 'No User Found'];
-            }
-        } else {
-            $ret = ['status' => 'failed', 'result' => 'API Request Refused'];
-        }
-        return $ret;
+        return response()->json($locations);
     }
+
+    /**
+     * 依請求攜帶的使用者資訊，回傳使用者行程的地點
+     * 
+     * @return json
+     */
+    public function showTripLocation( Request $request, $trip_id )
+    {   
+        $user = Auth::user();
+        $trip_info = $user->getTripInfo()[0];
+        $locations = $trip_info[ 'locations' ];
+
+        return response()->json($locations);
+    }
+    
 
     public function showLocation( Locations $location ): LocationResource
     {

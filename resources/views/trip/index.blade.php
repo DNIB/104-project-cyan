@@ -15,41 +15,48 @@
         @foreach ( $trips as $trip )
         <?php $trip_id = $trip[ 'trip' ]->id; ?>
 
-        <button 
-            type="button" 
-            class="btn btn-success btn-lg disabled" 
-            style="margin-right: 5%;"
-            onclick="document.location='/trip/viewPlayer/{{ $trip_id }}'">管理參加</button>
+        <div class="row justify-content-center" style="width: 100%;">
+          <button 
+              type="button" 
+              class="btn btn-success btn-lg disabled" 
+              style="margin-right: 5%;"
+              onclick="document.location='/trip/viewPlayer/{{ $trip_id }}'">管理參加</button>
+
+          <button 
+              type="button" 
+              class="btn btn-primary btn-lg disabled" 
+              style="margin-right: 5%;"
+              id="{{ $trip_id }}" 
+              onclick="createAction( this.id )"
+              data-toggle="modal" 
+              data-target="#createLocation">新增地點</button>
+
+          <figure>
+            <blockquote class="blockquote">
+              <h2>{{ $trip[ 'trip' ]->name }}</h2>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              {{ $trip[ 'trip' ]->description }}
+            </figcaption>
+          </figure>
+
+          <button type="button" class="btn btn-warning btn-lg disabled" style="margin-left: 5%;"
+              id="{{ $trip_id }}-{{ $trip[ 'trip' ]->name }}-{{ $trip[ 'trip' ]->description }}" 
+              onclick="updateTrip( this.id )"
+              data-toggle="modal"
+              data-target="#createTrip">編輯行程</button>
+
+          <button type="button" class="btn btn-secondary btn-lg disabled" style="margin-left: 5%;"
+              id="{{ $trip_id }}" 
+              onclick="deleteTrip( this.id )"
+              data-toggle="modal" 
+              data-target="#deleteTrip">刪除行程</button>
+        </div>
 
         <button 
-            type="button" 
-            class="btn btn-primary btn-lg disabled" 
-            style="margin-right: 5%;"
-            id="{{ $trip_id }}" 
-            onclick="createAction( this.id )"
-            data-toggle="modal" 
-            data-target="#createLocation">新增地點</button>
-
-        <figure>
-          <blockquote class="blockquote">
-            <h2>{{ $trip[ 'trip' ]->name }}</h2>
-          </blockquote>
-          <figcaption class="blockquote-footer">
-            {{ $trip[ 'trip' ]->description }}
-          </figcaption>
-        </figure>
-
-        <button type="button" class="btn btn-warning btn-lg disabled" style="margin-left: 5%;"
-            id="{{ $trip_id }}-{{ $trip[ 'trip' ]->name }}-{{ $trip[ 'trip' ]->description }}" 
-            onclick="updateTrip( this.id )"
-            data-toggle="modal"
-            data-target="#createTrip">編輯行程</button>
-
-        <button type="button" class="btn btn-secondary btn-lg disabled" style="margin-left: 5%;"
-            id="{{ $trip_id }}" 
-            onclick="deleteTrip( this.id )"
-            data-toggle="modal" 
-            data-target="#deleteTrip">刪除行程</button>
+          type="button" 
+          class="btn btn-lg btn-primary" 
+          onclick="window.open('/trip/tripMap/{{ $trip_id }}', '_blank');"> 以地圖瀏覽 </button>
 
         <table class="table" style="margin-top: 20px;">
             <thead>

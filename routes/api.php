@@ -17,10 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('location')->group( function(){
-    Route::get('/{location}', 'TripManageController@showLocation');
-});
-
-Route::prefix('user')->group( function(){
-    Route::get('/getLocation/{user_id}', 'LocationApiController@showUserLocation');
+Route::middleware('auth:api')->prefix('user')->group( function(){
+    Route::get('/getTripLocation/{trip_id}', 'LocationApiController@showTripLocation');
+    Route::get('/getLocation', 'LocationApiController@showUserLocation');
 });

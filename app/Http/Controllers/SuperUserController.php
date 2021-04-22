@@ -49,7 +49,7 @@ class SuperUserController extends Controller
                 $user->password = Hash::make( $password );
             }
             $user->save();
-            return view('home');
+            return redirect()->back();
         } else {
             return view('welcome', ['status' => '存在非法輸入']);
         }
@@ -77,7 +77,7 @@ class SuperUserController extends Controller
             $isUserExist = !empty( $user );
             if ( $isUserExist ) {
                 $user->delete();
-                return view('home');
+                return redirect()->back();
             } else {
                 return view('welcome', ['status' => '無對應帳號']);
             }
@@ -187,7 +187,7 @@ class SuperUserController extends Controller
      * 
      * @return view
      */
-     public function updateData( Request $request, string $type)
+     public function updateData( Request $request, string $type )
      {
         $isUserInvalid = !$this->isSuperUser();
         if ( $isUserInvalid ) {
@@ -195,35 +195,23 @@ class SuperUserController extends Controller
         }
 
         try{
-        $target_type = $this->getTargetElement( $type );
-        $target = $target_type->find( $request->id );
-        $elements = $request->all();
-        
-        foreach ( $elements as $key => $value ) {
-            $isSkip = ( $key == "_token" ) || ( $key == '_method' ) || ( $key == 'id');
-            if ( $isSkip ) {
-                continue;
-            } else {
-                $target->$key = $value;
+            $target_type = $this->getTargetElement( $type );
+            $target = $target_type->find( $request->id );
+            $elements = $request->all();
+            
+            foreach ( $elements as $key => $value ) {
+                $isSkip = ( $key == "_token" ) || ( $key == '_method' ) || ( $key == 'id');
+                if ( $isSkip ) {
+                    continue;
+                } else {
+                    $target->$key = $value;
+                }
             }
-        }
 
-        $target->save();
+            $target->save();
+            
+            return redirect()->back();
 
-        switch ( $type ) {
-        case 'trip':
-            return $this->showAllTrips();
-            break;
-        case 'player':
-            return $this->showAllPlayers();
-            break;
-        case 'location':
-            return $this->showAllLocations();
-            break;
-        default:
-            abort(404);
-            break;
-        }
         } catch (Exception $e) {
             abort(403);
         }
@@ -251,20 +239,8 @@ class SuperUserController extends Controller
             $target = $target_type->find( $id );
             $target->delete();
 
-            switch ( $type ) {
-            case 'trip':
-                return $this->showAllTrips();
-                break;
-            case 'player':
-                return $this->showAllPlayers();
-                break;
-            case 'location':
-                return $this->showAllLocations();
-                break;
-            default:
-                abort(404);
-                break;
-            }
+            return redirect()->back();
+
         } catch (Exception $e) {
             abort(403);
         }

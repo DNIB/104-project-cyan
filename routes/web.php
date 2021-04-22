@@ -19,8 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix('/trip')->group( function(){
+Route::middleware('auth')->prefix('/trip')->group( function(){
     Route::get('/index', 'TripManageController@index');
+
+    Route::get('/tripMap/{trip_id}', 'LocationManageController@tripMap');
     
     Route::post('/location', 'TripManageController@createLocation');
     Route::put('/location', 'TripManageController@updateLocation');
@@ -47,14 +49,14 @@ Route::prefix('/trip')->group( function(){
     });
 });
 
-Route::prefix('/location')->group( function(){
+Route::middleware('auth')->prefix('/location')->group( function(){
     Route::get('/{action}', 'LocationManageController@request');
     Route::post('/create', 'LocationManageController@createLocation');
     Route::post('/update', 'LocationManageController@updateLocation');
     Route::delete('/{target_id}', 'LocationManageController@deleteLocation');
 });
 
-Route::prefix('/user')->group( function(){
+Route::middleware('auth')->prefix('/user')->group( function(){
     // Invalid Request
     Route::get('/', 'HomeController@invalidRequest');
 
