@@ -97,8 +97,6 @@ class TripTest extends TestCase
             ]
         );
         $response->assertStatus(400);
-        
-        echo TripLocations::get('trip_order'), "\n";
 
         $response = $this->actingAs( $this->user )->call(
             "PUT",
@@ -110,8 +108,6 @@ class TripTest extends TestCase
             ]
         );
         $response->assertStatus(302);
-
-        echo TripLocations::get('trip_order'), "\n";
 
         $response = $this->actingAs( $this->user )->call(
             "PUT",

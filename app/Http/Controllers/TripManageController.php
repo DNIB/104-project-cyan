@@ -50,8 +50,8 @@ class TripManageController extends Controller
         $trip_id = $request->trip_id;
         $location_id = $request->location_id;
 
-        $isTripIdValid = is_numeric( $trip_id );
-        $isLocationIdValid = is_numeric( $location_id );
+        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id ) );
+        $isLocationIdValid = is_numeric( $location_id ) && ( null !== Locations::find( $location_id ) );
 
         $isRequestValid = $isTripIdValid && $isLocationIdValid;
 
@@ -63,9 +63,8 @@ class TripManageController extends Controller
             $trip_location->appendLocation();
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
@@ -85,9 +84,9 @@ class TripManageController extends Controller
         $order_id = $request->order_id;
         $location_id = $request->location_id;
 
-        $isTripIdValid = is_numeric( $trip_id );
+        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id ) );
         $isOrderIdValid = is_numeric( $order_id );
-        $isLocationIdValid = is_numeric( $location_id );
+        $isLocationIdValid = is_numeric( $location_id ) && ( null !== Locations::find( $location_id ) );
 
         $isRequestValid = $isTripIdValid && $isOrderIdValid && $isLocationIdValid;
 
@@ -100,9 +99,8 @@ class TripManageController extends Controller
             $target->save();
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
@@ -120,8 +118,10 @@ class TripManageController extends Controller
         $trip_id = $request->trip_id;
         $order_id = $request->order_id;
 
-        $isTripIdValid = is_numeric( $trip_id );
-        $isOrderIdValid = is_numeric( $order_id );
+        $isTripIdValid = is_numeric( $trip_id ) && ( null !== ( Trips::find( $trip_id ) ) );
+
+        $target = TripLocations::where( 'trip_order', $order_id )->get();
+        $isOrderIdValid = is_numeric( $order_id ) && ( count( $target ) > 0 );
 
         $isRequestValid = $isTripIdValid && $isOrderIdValid;
 
@@ -132,9 +132,8 @@ class TripManageController extends Controller
             $target->delete();
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
