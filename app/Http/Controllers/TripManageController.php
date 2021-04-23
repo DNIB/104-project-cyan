@@ -22,22 +22,17 @@ class TripManageController extends Controller
      */
     public function index()
     {
-        $isLogin = Auth::check();
-        if ( $isLogin ) {
-            $user = Auth::user();
-            $trips = $user->getTripInfo();
-            
-            $locations = $user->locations( true );
+        $user = Auth::user();
+        $trips = $user->getTripInfo();
+        
+        $locations = $user->locations( true );
 
-            $ret = [
-                'trips' => $trips,
-                'locations' => $locations,
-            ];
-            
-            return view( 'trip.index', $ret);
-        } else {
-            return view( 'error.invalid_request' );
-        }
+        $ret = [
+            'trips' => $trips,
+            'locations' => $locations,
+        ];
+        
+        return view( 'trip.index', $ret);
     }
 
     /**
@@ -160,7 +155,6 @@ class TripManageController extends Controller
         $trip_desc = $request->trip_desc;
 
         $isNameValid = !empty( $trip_name );
-
         $isRequestValid = $isNameValid;
 
         if ( $isRequestValid ) {
@@ -179,9 +173,8 @@ class TripManageController extends Controller
             $player->save();
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
@@ -201,7 +194,7 @@ class TripManageController extends Controller
         $trip_name = $request->trip_name;
         $trip_desc = $request->trip_desc;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( !empty( Trips::find( $trip_id ) ) );
+        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id )  );
         $isNameValid = !empty( $trip_name );
         $isDescValid = !empty( $trip_desc );
 
@@ -214,9 +207,8 @@ class TripManageController extends Controller
             $trip->save();
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
@@ -253,15 +245,13 @@ class TripManageController extends Controller
                 $trip_exchange = $this->lowerOrder( $trip_location, $location_order );
                 break;
             default:
-                return view('welcome', ['status' => 'Request Invalid']);
-                break;
+                abort(400);
             }
             $this->exchangeOrder( $trip_exchange );
 
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 
     /**
@@ -275,7 +265,7 @@ class TripManageController extends Controller
      */
     private function upperOrder( $trip_location, $location_order )
     {
-        return $trip_exchange = $trip_location->where('trip_order', '<=', $location_order)->orderBy('trip_order', 'desc')->limit(2)->get();
+        return $trip_location->where('trip_order', '<=', $location_order)->orderBy('trip_order', 'desc')->limit(2)->get();
     }
 
     /**
@@ -289,7 +279,7 @@ class TripManageController extends Controller
      */
     private function lowerOrder( $trip_location, $location_order )
     {
-        return $trip_exchange = $trip_location->where('trip_order', '>=', $location_order)->orderBy('trip_order', 'asc')->limit(2)->get();
+        return $trip_location->where('trip_order', '>=', $location_order)->orderBy('trip_order', 'asc')->limit(2)->get();
     }
 
     /**
@@ -329,14 +319,14 @@ class TripManageController extends Controller
     {
         $trip_id = $request->trip_id;
 
-        $isTripIdValid = is_numeric( $trip_id );
+        $target_trip = ( is_numeric( $trip_id ) ) ? Trips::find( $trip_id ) : null;
 
-        if ( $isTripIdValid ) {
-            $trip = Trips::find( $trip_id );
-            $trip->delete();
+        $isTargetValid = isset( $target_trip );
+
+        if ( $isTargetValid ) {
+            $target_trip->delete();
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => 'Request Invalid']);
         }
+        abort(400);
     }
 }
