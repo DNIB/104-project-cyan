@@ -20,33 +20,36 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->prefix('/trip')->group( function(){
-    Route::get('/index', 'TripManageController@index');
-
-    Route::get('/tripMap/{trip_id}', 'LocationManageController@tripMap');
-    
-    Route::post('/location', 'TripManageController@createLocation');
-    Route::put('/location', 'TripManageController@updateLocation');
-    Route::delete('/location', 'TripManageController@deleteLocation');
-
-    // Invalid Request
-    Route::get('/', 'HomeController@invalidRequest');
-
+    Route::get('/', function(){
+        abort(404);
+    });
     Route::post('/', 'TripManageController@createTrip');
     Route::put('/', 'TripManageController@updateTrip');
     Route::delete('/', 'TripManageController@deleteTrip');
 
-    Route::put('/locationOrder', 'TripManageController@reorderLocation');
-
     Route::prefix('/viewPlayer')->group( function(){
-        Route::get('/{trip_id}', 'TripPlayerController@index');
-
-        // Invalid Request
-        Route::get('/', 'HomeController@invalidRequest');
-
+        Route::get('/', function(){
+            abort(404);
+        });
         Route::post('/', 'TripPlayerController@createPlayer');
         Route::put('/', 'TripPlayerController@updatePlayer');
         Route::delete('/', 'TripPlayerController@deletePlayer');
+        
+        Route::get('/{trip_id}', 'TripPlayerController@index');
     });
+
+    Route::prefix('/location')->group( function(){
+        Route::get('/', function(){
+            abort(404);
+        });
+        Route::post('/', 'TripManageController@createLocation');
+        Route::put('/', 'TripManageController@updateLocation');
+        Route::delete('/', 'TripManageController@deleteLocation');
+    });
+
+    Route::get('/index', 'TripManageController@index');
+    Route::get('/tripMap/{trip_id}', 'LocationManageController@tripMap');
+    Route::put('/locationOrder', 'TripManageController@reorderLocation');
 });
 
 Route::middleware('auth')->prefix('/location')->group( function(){
