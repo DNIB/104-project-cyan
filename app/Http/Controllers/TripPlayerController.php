@@ -23,7 +23,7 @@ class TripPlayerController extends Controller
      */
     public function index( $trip_id = -1 )
     {
-        $user_id = $this->loginCheck();
+        $user_id = Auth::id();
         
         $trip_players = Players::where('trip_id', $trip_id);
         $isRequestValid = $this->checkRequestValid($trip_players, $user_id);
@@ -38,24 +38,8 @@ class TripPlayerController extends Controller
             ];
 
             return view( 'trip.player_info', $ret);
-        } else {
-            return view( 'error.invalid_request');
         }
-    }
-
-    /**
-     * 檢查登入資訊，若有登入則回傳登入 ID，若無登入則導向錯誤
-     * 
-     * @return integer
-     */
-    private function loginCheck()
-    {
-        $isLogin = Auth::check();
-        if ( $isLogin ) {
-            return Auth::user()->id;
-        } else {
-            abort(404);
-        }
+        abort(403);
     }
 
     /**
@@ -77,9 +61,8 @@ class TripPlayerController extends Controller
             $target_player = $trip_players->where('user_id', $user_id)->get();
 
             return count( $target_player ) > 0;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -102,10 +85,10 @@ class TripPlayerController extends Controller
         $email = $request->email;
         $phone = $request->phone;
 
-        //$isNameValid = !empty( $name );
-        //$isEmailValid = filter_var($email, FILTER_VALIDATE_EMAIL);
+        $isNameValid = !empty( $name );
+        $isTripIdValid = !empty( $trip_id );
 
-        $isRequestValid = true;
+        $isRequestValid =  $isNameValid && $isTripIdValid;
 
         if ( $isRequestValid ) {
             $player = new Players;
@@ -123,11 +106,8 @@ class TripPlayerController extends Controller
             $player->save();
 
             return redirect()->back();
-        } else {
-            return $this->invalidRequest();
         }
-        
-        return;
+        abort(400);
     }
 
     /**
@@ -143,9 +123,8 @@ class TripPlayerController extends Controller
         $isEmailNotEmpty = !empty( $email );
         if ( $isEmailNotEmpty ) {
             return $this->findEmail( $email );
-        } else {
-            return 0;
         }
+        return 0;
     }
 
     /**
@@ -162,15 +141,13 @@ class TripPlayerController extends Controller
         $isUserValid = ( count( $user ) == 1 );
         if ( $isUserValid ) {
             return $user[0]->id;
-        } else {
-            return 0;
         }
+        return 0;
     }
 
      /**
      * 修改指定的 Player 資料
      * 傳入的 Request 應有以下資料：
-     *   - (integer) trip_id
      *   - (integer) player_id
      *   - (string) name 
      *   - (string) desc (可為空)
@@ -183,62 +160,53 @@ class TripPlayerController extends Controller
      */
     public function updatePlayer( Request $request )
     {
-        $trip_id = $request->trip_id;
-
         $player_id = $request->player_id;
         $name = $request->name;
         $desc = $request->desc;
         $email = $request->email;
         $phone = $request->phone;
 
-        $player = Players::find( $player_id );
-        $player->name = $name;
-        $player->description = $desc;
-        $player->phone = $phone;
+        $isNameValid = !empty( $name );
+        $isIdValid = !empty( $player_id ) && ( null !== (Players::find( $player_id )) );
 
-        $isEmailEmpty = ( $player->email == null );
-        if( $isEmailEmpty ) {
-            $player->email = $email;
+        $isRequestValid = $isNameValid && $isIdValid;
+
+        if ( $isRequestValid ) {
+            $player = Players::find( $player_id );
+            $player->name = $name;
+            $player->description = $desc;
+            $player->phone = $phone;
+
+            $isEmailEmpty = ( $player->email == null );
+            if( $isEmailEmpty ) {
+                $player->email = $email;
+            }
+
+            $player->save();
+
+            return redirect()->back();
         }
-
-        $player->save();
-
-        return redirect()->back();
+        abort(400);
     }
 
      /**
      * 刪除指定的 Player 資料
      * 傳入的 Request 應有以下資料：
-     *   - (integer) trip_id
      *   - (integer) player_id
      * 
      * @return view
      */
     public function deletePlayer( Request $request )
     {
-        
-        $trip_id = $request->trip_id;
-
         $player_id = $request->player_id;
-
         $player = Players::find( $player_id );
 
-        $isNotCreator = !$player->trip_creator;
-        if ( $isNotCreator ) {
+        $isRequestValid = isset( $player ) && (!$player->trip_creator);
+
+        if ( $isRequestValid ) {
             $player->delete();
+            return redirect()->back();
         }
-
-        return redirect()->back();
+        abort(400);
     }
-    
-    /**
-     * 當遇上非法輸入時，執行此程式
-     * 
-     * @return view
-     */
-    public function invalidRequest()
-    {
-        return view('welcome', ['status' => 'Request Invalid']);
-    }
-
 }
