@@ -255,7 +255,7 @@
                 } else {
                     alert("刪除資料失敗：資料不存在");
                 }
-                window.location = "/";
+                window.location = "/location/edit";
 
             }).catch( function(){
                 alert("發出請求或解讀資料失敗");
