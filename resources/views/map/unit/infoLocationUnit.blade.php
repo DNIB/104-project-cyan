@@ -1,8 +1,8 @@
-<form action="/location/{{ $action }}" method="{{ $method }}">
+<form action="/location" method="POST">
     @csrf
-    @if ( $action == 'update' )
-        <input type="hidden" id="location_id" name="location_id" value="-1">
-    @else
+    @method( 'PUT' )
+
+    @if ( $action != 'update' )
     <div class="inner">
         <label for="lat_value"> 緯度 </label>
         <h3 name="lat_value" id="lat_value"> (No Value) </h3>
@@ -18,6 +18,8 @@
 
     <label for="select_des" class="inner"> 地點描述 </label>
     <textarea class="inner text-submit" id="select_desc" name="select_desc">（地點描述）</textarea>
+
+    <input type="hidden" id="update_location_id" name="location_id" value="-1">
 
     <input type="submit" class="inner button-submit" value="Submit">
     <input type="button" class="inner button-submit" value="Cancel" onclick="cancelUpdateAction()">

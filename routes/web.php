@@ -54,21 +54,21 @@ Route::middleware('auth')->prefix('/trip')->group( function(){
 
 Route::middleware('auth')->prefix('/location')->group( function(){
     Route::get('/{action}', 'LocationManageController@request');
-    Route::post('/create', 'LocationManageController@createLocation');
-    Route::post('/update', 'LocationManageController@updateLocation');
-    Route::delete('/{target_id}', 'LocationManageController@deleteLocation');
+    Route::post('/', 'LocationManageController@createLocation');
+    Route::put('/', 'LocationManageController@updateLocation');
+    Route::delete('/', 'LocationManageController@deleteLocation');
 });
 
 Route::middleware('auth')->prefix('/user')->group( function(){
     // Invalid Request
     Route::get('/', 'HomeController@invalidRequest');
 
-    Route::put('/', 'SuperUserController@update');
-    Route::delete('/', 'SuperUserController@delete');
-
     Route::get('/location', 'SuperUserController@showAllLocations');
     Route::get('/trip', 'SuperUserController@showAllTrips');
     Route::get('/player', 'SuperUserController@showAllPlayers');
+
+    Route::put('/', 'SuperUserController@update');
+    Route::delete('/', 'SuperUserController@delete');
 
     Route::put('/{type}', 'SuperUserController@updateData');
     Route::delete('/{type}', 'SuperUserController@deleteData');

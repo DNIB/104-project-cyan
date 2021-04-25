@@ -31,6 +31,11 @@ class PlayerTest extends TestCase
         $this->deletePlayer();
     }
 
+    /**
+     * Test Create Action of Players
+     * 
+     * @return void
+     */
     private function createPlayer()
     {
         $response = $this->actingAs( $this->user )->call(
@@ -73,6 +78,11 @@ class PlayerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test Update Action of Players
+     * 
+     * @return void
+     */
     private function updatePlayer()
     {
         $response = $this->actingAs( $this->user )->call(
@@ -107,6 +117,11 @@ class PlayerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test Delete Action of Players
+     * 
+     * @return void
+     */
     private function deletePlayer()
     {
         $response = $this->actingAs( $this->user )->call(

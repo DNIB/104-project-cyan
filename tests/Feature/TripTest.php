@@ -38,6 +38,11 @@ class TripTest extends TestCase
         $this->deleteTest( Trips::limit(1)->get()[0]->id );
     }
 
+    /**
+     * Test Create Action of Trip
+     * 
+     * @return void
+     */
     private function createTest()
     {
         $response = $this->actingAs( $this->user )->call(
@@ -60,6 +65,11 @@ class TripTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test Update Action of Trip
+     * 
+     * @return void
+     */
     private function updateTest()
     {
         $response = $this->actingAs( $this->user )->call(
@@ -85,6 +95,11 @@ class TripTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test Reorder Location of Trip
+     * 
+     * @return void
+     */
     private function updateLocationOfTrip( $target_order )
     {
         $response = $this->actingAs( $this->user )->call(
@@ -121,6 +136,11 @@ class TripTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test Delete Action of Trip
+     * 
+     * @return void
+     */
     private function deleteTest( $id )
     {
         $response = $this->actingAs( $this->user )->call(

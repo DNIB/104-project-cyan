@@ -68,6 +68,11 @@ class LocationManageController extends Controller
 
     /**
      * 依傳入的請求，於資料庫增加地點
+     * 請求應有資料：
+     *   - (string) select_name (must exist)
+     *   - (string) select_desc
+     *   - (float) lat_submit (must exist)
+     *   - (float) lng_submit (must exist)
      * 
      * @param Request $request
      * 
@@ -100,13 +105,16 @@ class LocationManageController extends Controller
 
             $location->appendLocation( $user_id );
             return redirect()->back();
-        } else {
-            abort(400);
         }
+        abort(400);
     }
 
     /**
      * 依傳入的請求，於資料庫更新地點
+     * 請求應有資料：
+     *   - (integer) location_id (must exist)
+     *   - (string) select_name (must exist)
+     *   - (string) select_desc
      * 
      * @param Request $request
      * 
@@ -115,13 +123,13 @@ class LocationManageController extends Controller
     public function updateLocation( Request $request )
     {
         $id = $request->location_id;
-        $location = Locations::where('id', $id);
+        $location = Locations::find( $id );
 
         $name = $request->select_name;
         $desc = $request->select_desc;
 
         $isStringValid = !( empty( $name ) || empty( $desc ) );
-        $isLocationValid = ! empty( $location );
+        $isLocationValid = isset( $location );
 
         $isInputValid = $isStringValid && $isLocationValid;
 
@@ -131,36 +139,33 @@ class LocationManageController extends Controller
                 'description' => $desc,
             ]);
             return redirect()->back();
-        } else {
-            abort(400);
         }
+        abort(400);
     }
 
     /**
      * 依傳入的請求，於資料庫刪除地點
+     * 請求應有資料：
+     *   - (integer) location_id
      * 
      * @param Request $request
      * 
      * @return json
      */
-    public function deleteLocation( $target_id )
+    public function deleteLocation( Request $request )
     {
+        $target_id = $request->location_id;
         $location = Locations::find( $target_id );
-        $isLocationValid = !empty( $location );
+
+        $isLocationValid = isset( $location );
 
         if ( $isLocationValid ) {
             LocationEditor::where('location_id', $target_id)->delete();
             $location->delete();
-            return response()->json([
-                'result' => 'Success',
-                'status' => 'Resource Delete',
-            ]);
-        } else {
-            return response()->json([
-                'result' => 'Fail',
-                'status' => 'Resource Not Exist',
-            ]);
+
+            return redirect()->back();
         }
+        abort(400);
     }
 
     /**
@@ -172,6 +177,7 @@ class LocationManageController extends Controller
      */
     public function tripMap( $trip_id )
     {
+        
         return view('trip.map_display', [
             'trip_id' => $trip_id,
             'api' => $this->google_api,

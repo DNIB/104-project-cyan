@@ -212,7 +212,7 @@
             document.getElementById( "mapInfo" ).style.display = "none";
             document.getElementById( "editWindows" ).style.display = "initial";
 
-            document.getElementById( "location_id").value = target_id;
+            document.getElementById( "update_location_id").value = target_id;
             locations_data.forEach( location => {
                 if ( target_id == location['id'] ) {
                     document.getElementById( "select_name" ).value = location[ "name" ];
@@ -230,36 +230,6 @@
         {
             document.getElementById( "mapInfo" ).style.display = "initial";
             document.getElementById( "editWindows" ).style.display = "none";
-        }
-
-        /**
-         * 刪除對應位置
-         */
-        function deleteAction( target_id )
-        {
-            csfr = document.getElementById('csrf').content;
-            URL = "/location/"+target_id;
-
-            fetch(URL, {
-                headers: {
-                    'X-CSRF-TOKEN': csfr
-                },
-                method: 'DELETE',
-
-            }).then( response => {
-                return response.json();
-
-            }).then( ret => {
-                if ( ret.result == 'Success') {
-                    alert("刪除資料成功");
-                } else {
-                    alert("刪除資料失敗：資料不存在");
-                }
-                window.location = "/location/edit";
-
-            }).catch( function(){
-                alert("發出請求或解讀資料失敗");
-            });
         }
     </script>
   </head>
@@ -288,9 +258,6 @@
         @component ( 'map.unit.infoLocationUnit' )
             @slot ( 'action' )
                 {{ 'update' }}
-            @endslot
-            @slot ( 'method' )
-                {{ 'POST' }}
             @endslot
         @endcomponent
     </div>
