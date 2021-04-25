@@ -36,10 +36,4 @@ class LocationApiController extends Controller
 
         return response()->json($locations);
     }
-    
-
-    public function showLocation( Locations $location ): LocationResource
-    {
-        return new LocationResource ( $location );
-    }
 }
