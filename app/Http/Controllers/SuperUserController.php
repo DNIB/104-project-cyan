@@ -15,6 +15,11 @@ class SuperUserController extends Controller
 {
     /**
      * 依據傳入的請求，更新使用者的資訊
+     * 請求應有資料：
+     *   - (integer) id
+     *   - (string) name
+     *   - (string) email
+     *   - (string) password
      * 
      * @param Request $request
      * 
@@ -22,10 +27,7 @@ class SuperUserController extends Controller
      */
     public function update( Request $request )
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         $id = $request->id;
         $name = $request->name;
@@ -50,13 +52,14 @@ class SuperUserController extends Controller
             }
             $user->save();
             return redirect()->back();
-        } else {
-            return view('welcome', ['status' => '存在非法輸入']);
         }
+        abort(400);
     }
 
     /**
      * 依據傳入的請求，刪除使用者的資訊
+     * 請求應有資料：
+     *   - (integer) delete_id
      * 
      * @param Request $request
      * 
@@ -64,10 +67,7 @@ class SuperUserController extends Controller
      */
     public function delete( Request $request )
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         $id = $request->delete_id;
 
@@ -79,11 +79,10 @@ class SuperUserController extends Controller
                 $user->delete();
                 return redirect()->back();
             } else {
-                return view('welcome', ['status' => '無對應帳號']);
+                abort(400);
             }
-        } else {
-            return view('welcome', ['status' => '存在非法輸入']);
         }
+        abort(400);
     }
 
     /**
@@ -93,10 +92,7 @@ class SuperUserController extends Controller
      */
     public function showAllTrips()
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         $column = [
             'id',
@@ -122,10 +118,7 @@ class SuperUserController extends Controller
      */
     public function showAllLocations()
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         $column = [
             'id',
@@ -153,10 +146,7 @@ class SuperUserController extends Controller
      */
     public function showAllPlayers()
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         $column = [
             'id',
@@ -189,10 +179,7 @@ class SuperUserController extends Controller
      */
      public function updateData( Request $request, string $type )
      {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         try{
             $target_type = $this->getTargetElement( $type );
@@ -227,10 +214,7 @@ class SuperUserController extends Controller
      */
     public function deleteData( Request $request, string $type)
     {
-        $isUserInvalid = !$this->isSuperUser();
-        if ( $isUserInvalid ) {
-            return view('error.invalid_request');
-        }
+        $this->checkSuperUser();
 
         try{
             $target_type = $this->getTargetElement( $type );
@@ -258,26 +242,25 @@ class SuperUserController extends Controller
         switch ( $type ) {
         case 'trip':
             return new Trips;
-            break;
         case 'location':
             return new Locations;
-            break;
         case 'player':
             return new Players;
-            break;
         default:
             abort(404);
-            break;
         }
     }
 
     /**
      * 確認當前使用者身份，是否有管理員資格
      * 
-     * @return boolean
+     * @return void
      */
-    private function isSuperUser()
+    private function checkSuperUser()
     {
-        return ( Auth::check() ) ? ( Auth::user()->super_user ) : false;
+        $isNotSuperUser = !Auth::user()->super_user;
+        if ( $isNotSuperUser ) {
+            abort(403);
+        }
     }
 }

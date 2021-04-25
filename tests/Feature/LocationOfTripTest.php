@@ -21,7 +21,7 @@ class LocationOfTripTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testTripLocation()
     {
         $this->seed();
         $this->user = User::find(1);

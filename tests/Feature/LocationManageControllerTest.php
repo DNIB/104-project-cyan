@@ -18,7 +18,7 @@ class LocationManageControllerTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testLocation()
     {
         $this->seed();
         $this->user = User::find(1);

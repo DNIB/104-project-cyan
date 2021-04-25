@@ -60,9 +60,9 @@ Route::middleware('auth')->prefix('/location')->group( function(){
 });
 
 Route::middleware('auth')->prefix('/user')->group( function(){
-    // Invalid Request
-    Route::get('/', 'HomeController@invalidRequest');
-
+    Route::get('/', function(){
+        abort(404);
+    });
     Route::get('/location', 'SuperUserController@showAllLocations');
     Route::get('/trip', 'SuperUserController@showAllTrips');
     Route::get('/player', 'SuperUserController@showAllPlayers');
