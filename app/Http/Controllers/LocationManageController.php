@@ -80,8 +80,6 @@ class LocationManageController extends Controller
      */
     public function createLocation( Request $request )
     {
-        $location = new Locations;
-
         $name = $request->select_name;
         $desc = $request->select_desc;
         $lat = $request->lat_submit;
