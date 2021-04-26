@@ -30,10 +30,10 @@ class LocationManageController extends Controller
             return view('map.addLocation', ['api' => $this->google_api]);
 
         case "read":
-            return $this->readUserLocation( 'read' );
+            return $this->readUserLocation('read');
 
         case "edit":
-            return $this->readUserLocation( 'edit' );
+            return $this->readUserLocation('edit');
 
         default:
             break;
@@ -87,13 +87,13 @@ class LocationManageController extends Controller
 
         $user_id = Auth::id();
 
-        $isStringValid = !( empty( $name ) || empty( $desc ) );
-        $isNumValid = is_numeric( $lat ) && is_numeric( $lng );
-        $isUserIdValud = is_numeric( $user_id );
+        $isStringValid = !( empty($name) || empty($desc) );
+        $isNumValid = is_numeric($lat) && is_numeric($lng);
+        $isUserIdValud = is_numeric($user_id);
 
         $isInputValid = $isStringValid && $isNumValid && $isUserIdValud;
 
-        if ( $isInputValid ) {
+        if ($isInputValid ) {
             $location = new Locations;
 
             $location->name = $name;
@@ -101,7 +101,7 @@ class LocationManageController extends Controller
             $location->lat = $lat;
             $location->lng = $lng;
 
-            $location->appendLocation( $user_id );
+            $location->appendLocation($user_id);
             return redirect()->back();
         }
         abort(400);
@@ -121,21 +121,23 @@ class LocationManageController extends Controller
     public function updateLocation( Request $request )
     {
         $id = $request->location_id;
-        $location = Locations::find( $id );
+        $location = Locations::find($id);
 
         $name = $request->select_name;
         $desc = $request->select_desc;
 
-        $isStringValid = !( empty( $name ) || empty( $desc ) );
-        $isLocationValid = isset( $location );
+        $isStringValid = !( empty($name) || empty($desc) );
+        $isLocationValid = isset($location);
 
         $isInputValid = $isStringValid && $isLocationValid;
 
-        if ( $isInputValid ) {
-            Locations::where('id', $id)->update([
+        if ($isInputValid ) {
+            Locations::where('id', $id)->update(
+                [
                 'name' => $name,
                 'description' => $desc,
-            ]);
+                ]
+            );
             return redirect()->back();
         }
         abort(400);
@@ -153,11 +155,11 @@ class LocationManageController extends Controller
     public function deleteLocation( Request $request )
     {
         $target_id = $request->location_id;
-        $location = Locations::find( $target_id );
+        $location = Locations::find($target_id);
 
-        $isLocationValid = isset( $location );
+        $isLocationValid = isset($location);
 
-        if ( $isLocationValid ) {
+        if ($isLocationValid ) {
             LocationEditor::where('location_id', $target_id)->delete();
             $location->delete();
 
@@ -176,10 +178,12 @@ class LocationManageController extends Controller
     public function tripMap( $trip_id )
     {
         
-        return view('trip.map_display', [
+        return view(
+            'trip.map_display', [
             'trip_id' => $trip_id,
             'api' => $this->google_api,
             'api_token' => Auth::user()->api_token,
-        ]);
+            ]
+        );
     }
 }

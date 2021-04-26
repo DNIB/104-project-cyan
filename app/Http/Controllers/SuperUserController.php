@@ -34,21 +34,21 @@ class SuperUserController extends Controller
         $email = $request->email;
         $password = $request->password;
 
-        $isPasswordEmpty = empty( $password );
+        $isPasswordEmpty = empty($password);
 
-        $isIdValid = !empty( User::find( $id ) );
-        $isNameValid = !empty( $name );
+        $isIdValid = !empty(User::find($id));
+        $isNameValid = !empty($name);
         $isEmailValid = filter_var($email, FILTER_VALIDATE_EMAIL);
-        $isPasswordValid = ( $isPasswordEmpty || (strlen( $password ) >= 8) );
+        $isPasswordValid = ( $isPasswordEmpty || (strlen($password) >= 8) );
 
         $isRequestValid = $isIdValid && $isNameValid && $isEmailValid && $isPasswordValid;
 
-        if ( $isRequestValid ) {
-            $user = User::find( $id );
+        if ($isRequestValid ) {
+            $user = User::find($id);
             $user->name = $name;
             $user->email = $email;
-            if ( !$isPasswordEmpty ) {
-                $user->password = Hash::make( $password );
+            if (!$isPasswordEmpty ) {
+                $user->password = Hash::make($password);
             }
             $user->save();
             return redirect()->back();
@@ -71,11 +71,11 @@ class SuperUserController extends Controller
 
         $id = $request->delete_id;
 
-        $isIdValid = is_numeric( $id );
-        if ( $isIdValid ) {
-            $user = User::find( $id );
-            $isUserExist = !empty( $user );
-            if ( $isUserExist ) {
+        $isIdValid = is_numeric($id);
+        if ($isIdValid ) {
+            $user = User::find($id);
+            $isUserExist = !empty($user);
+            if ($isUserExist ) {
                 $user->delete();
                 return redirect()->back();
             } else {
@@ -173,22 +173,22 @@ class SuperUserController extends Controller
      * 按傳入請求及參數，進行資料更新的處理
      * 
      * @param Request $request
-     * @param string $type
+     * @param string  $type
      * 
      * @return view
      */
-     public function updateData( Request $request, string $type )
-     {
+    public function updateData( Request $request, string $type )
+    {
         $this->checkSuperUser();
 
         try{
-            $target_type = $this->getTargetElement( $type );
-            $target = $target_type->find( $request->id );
+            $target_type = $this->getTargetElement($type);
+            $target = $target_type->find($request->id);
             $elements = $request->all();
             
             foreach ( $elements as $key => $value ) {
                 $isSkip = ( $key == "_token" ) || ( $key == '_method' ) || ( $key == 'id');
-                if ( $isSkip ) {
+                if ($isSkip ) {
                     continue;
                 } else {
                     $target->$key = $value;
@@ -202,25 +202,25 @@ class SuperUserController extends Controller
         } catch (Exception $e) {
             abort(403);
         }
-     }
+    }
 
      /**
-     * 按傳入請求及參數，進行資料刪除的處理
-     * 
-     * @param Request $request
-     * @param string $type
-     * 
-     * @return view
-     */
+      * 按傳入請求及參數，進行資料刪除的處理
+      * 
+      * @param Request $request
+      * @param string  $type
+      * 
+      * @return view
+      */
     public function deleteData( Request $request, string $type)
     {
         $this->checkSuperUser();
 
         try{
-            $target_type = $this->getTargetElement( $type );
+            $target_type = $this->getTargetElement($type);
             $id = $request->id;
 
-            $target = $target_type->find( $id );
+            $target = $target_type->find($id);
             $target->delete();
 
             return redirect()->back();
@@ -259,7 +259,7 @@ class SuperUserController extends Controller
     private function checkSuperUser()
     {
         $isNotSuperUser = !Auth::user()->super_user;
-        if ( $isNotSuperUser ) {
+        if ($isNotSuperUser ) {
             abort(403);
         }
     }

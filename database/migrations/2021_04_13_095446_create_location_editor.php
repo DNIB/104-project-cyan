@@ -13,13 +13,15 @@ class CreateLocationEditor extends Migration
      */
     public function up()
     {
-        Schema::create('location_editor', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('location_id');
-            $table->integer('user_id');
-            $table->boolean("isEditor")->default(false);
-            $table->timestamps();
-        });
+        Schema::create(
+            'location_editor', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->integer('location_id');
+                $table->integer('user_id');
+                $table->boolean("isEditor")->default(false);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

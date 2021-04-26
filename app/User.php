@@ -50,7 +50,7 @@ class User extends Authenticatable
     public function locations( $isEditor = false )
     {
         $locationRelated = $this->locationRelated();
-        if ( $isEditor ) {
+        if ($isEditor ) {
             $locationRelated = $locationRelated->where('isEditor', $isEditor)->get();
 
         } else {
@@ -113,14 +113,14 @@ class User extends Authenticatable
     public function delete()
     {
         $isSuperUser = $this->super_user;
-        if ( $isSuperUser ) {
+        if ($isSuperUser ) {
             return;
         }
 
         $target_player = $this->players();
-        $isTargetNotEmpty = count( $target_player->get() );
+        $isTargetNotEmpty = count($target_player->get());
 
-        if ( $isTargetNotEmpty ) {
+        if ($isTargetNotEmpty ) {
             $target_player->delete();
         }
         parent::delete();

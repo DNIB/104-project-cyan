@@ -25,14 +25,14 @@ class TripManageController extends Controller
         $user = Auth::user();
         $trips = $user->getTripInfo();
         
-        $locations = $user->locations( true );
+        $locations = $user->locations(true);
 
         $ret = [
             'trips' => $trips,
             'locations' => $locations,
         ];
         
-        return view( 'trip.index', $ret);
+        return view('trip.index', $ret);
     }
 
     /**
@@ -50,12 +50,12 @@ class TripManageController extends Controller
         $trip_id = $request->trip_id;
         $location_id = $request->location_id;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id ) );
-        $isLocationIdValid = is_numeric( $location_id ) && ( null !== Locations::find( $location_id ) );
+        $isTripIdValid = is_numeric($trip_id) && ( null !== Trips::find($trip_id) );
+        $isLocationIdValid = is_numeric($location_id) && ( null !== Locations::find($location_id) );
 
         $isRequestValid = $isTripIdValid && $isLocationIdValid;
 
-        if ( $isRequestValid ){
+        if ($isRequestValid ) {
             $trip_location = new TripLocations();
             $trip_location->trip_id = $trip_id;
             $trip_location->location_id = $location_id;
@@ -84,16 +84,16 @@ class TripManageController extends Controller
         $order_id = $request->order_id;
         $location_id = $request->location_id;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id ) );
-        $isOrderIdValid = is_numeric( $order_id );
-        $isLocationIdValid = is_numeric( $location_id ) && ( null !== Locations::find( $location_id ) );
+        $isTripIdValid = is_numeric($trip_id) && ( null !== Trips::find($trip_id) );
+        $isOrderIdValid = is_numeric($order_id);
+        $isLocationIdValid = is_numeric($location_id) && ( null !== Locations::find($location_id) );
 
         $isRequestValid = $isTripIdValid && $isOrderIdValid && $isLocationIdValid;
 
-        if ( $isRequestValid ){
-            $trip = Trips::find( $trip_id )->locations();
+        if ($isRequestValid ) {
+            $trip = Trips::find($trip_id)->locations();
 
-            $target = $trip->where( 'trip_order', $order_id )->get()[0];
+            $target = $trip->where('trip_order', $order_id)->get()[0];
 
             $target->location_id = $location_id;
             $target->save();
@@ -118,17 +118,17 @@ class TripManageController extends Controller
         $trip_id = $request->trip_id;
         $order_id = $request->order_id;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( null !== ( Trips::find( $trip_id ) ) );
+        $isTripIdValid = is_numeric($trip_id) && ( null !== ( Trips::find($trip_id) ) );
 
-        $target = TripLocations::where( 'trip_order', $order_id )->get();
-        $isOrderIdValid = is_numeric( $order_id ) && ( count( $target ) > 0 );
+        $target = TripLocations::where('trip_order', $order_id)->get();
+        $isOrderIdValid = is_numeric($order_id) && ( count($target) > 0 );
 
         $isRequestValid = $isTripIdValid && $isOrderIdValid;
 
-        if ( $isRequestValid ){
-            $trip = Trips::find( $trip_id )->locations();
+        if ($isRequestValid ) {
+            $trip = Trips::find($trip_id)->locations();
 
-            $target = $trip->where( 'trip_order', $order_id )->get()[0];
+            $target = $trip->where('trip_order', $order_id)->get()[0];
             $target->delete();
 
             return redirect()->back();
@@ -153,10 +153,10 @@ class TripManageController extends Controller
         $trip_name = $request->trip_name;
         $trip_desc = $request->trip_desc;
 
-        $isNameValid = !empty( $trip_name );
+        $isNameValid = !empty($trip_name);
         $isRequestValid = $isNameValid;
 
-        if ( $isRequestValid ) {
+        if ($isRequestValid ) {
             $trip = new Trips;
             $trip->name = $trip_name;
             $trip->description = $trip_desc;
@@ -193,14 +193,14 @@ class TripManageController extends Controller
         $trip_name = $request->trip_name;
         $trip_desc = $request->trip_desc;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( null !== Trips::find( $trip_id )  );
-        $isNameValid = !empty( $trip_name );
-        $isDescValid = !empty( $trip_desc );
+        $isTripIdValid = is_numeric($trip_id) && ( null !== Trips::find($trip_id)  );
+        $isNameValid = !empty($trip_name);
+        $isDescValid = !empty($trip_desc);
 
         $isRequestValid = $isTripIdValid && $isNameValid && $isDescValid;
 
-        if ( $isRequestValid ) {
-            $trip = Trips::find( $trip_id );
+        if ($isRequestValid ) {
+            $trip = Trips::find($trip_id);
             $trip->name = $trip_name;
             $trip->description = $trip_desc;
             $trip->save();
@@ -228,25 +228,25 @@ class TripManageController extends Controller
         $location_order = $request->location_order;
         $change = $request->change;
 
-        $isTripIdValid = is_numeric( $trip_id ) && ( !empty( Trips::find( $trip_id ) ) );
-        $isLocationOrderValid = is_numeric( $location_order );
+        $isTripIdValid = is_numeric($trip_id) && ( !empty(Trips::find($trip_id)) );
+        $isLocationOrderValid = is_numeric($location_order);
 
         $isRequestValid = $isTripIdValid && $isLocationOrderValid;
 
-        if ( $isRequestValid ) {
-            $trip = Trips::find( $trip_id );
+        if ($isRequestValid ) {
+            $trip = Trips::find($trip_id);
             $trip_location = $trip->locations();
             switch ( $change ) {
             case 'upper':
-                $trip_exchange = $this->upperOrder( $trip_location, $location_order );
+                $trip_exchange = $this->upperOrder($trip_location, $location_order);
                 break;
             case 'lower':
-                $trip_exchange = $this->lowerOrder( $trip_location, $location_order );
+                $trip_exchange = $this->lowerOrder($trip_location, $location_order);
                 break;
             default:
                 abort(400);
             }
-            $this->exchangeOrder( $trip_exchange );
+            $this->exchangeOrder($trip_exchange);
 
             return redirect()->back();
         }
@@ -258,7 +258,7 @@ class TripManageController extends Controller
      * 回傳指定順序的地點，以及該地點之前一地點（若存在的話）
      * 
      * @param Locations $trip_location
-     * @param integer $location_order
+     * @param integer   $location_order
      * 
      * @return Locations $trip_location
      */
@@ -272,7 +272,7 @@ class TripManageController extends Controller
      * 回傳指定順序的地點，以及該地點之後一地點（若存在的話）
      * 
      * @param Locations $trip_location
-     * @param integer $location_order
+     * @param integer   $location_order
      * 
      * @return Locations $trip_location
      */
@@ -289,7 +289,7 @@ class TripManageController extends Controller
      */
     private function exchangeOrder( $trip_exchange )
     {
-        $count = count( $trip_exchange );
+        $count = count($trip_exchange);
         switch ( $count ) {
         case 1:
             break;
@@ -318,11 +318,11 @@ class TripManageController extends Controller
     {
         $trip_id = $request->trip_id;
 
-        $target_trip = ( is_numeric( $trip_id ) ) ? Trips::find( $trip_id ) : null;
+        $target_trip = ( is_numeric($trip_id) ) ? Trips::find($trip_id) : null;
 
-        $isTargetValid = isset( $target_trip );
+        $isTargetValid = isset($target_trip);
 
-        if ( $isTargetValid ) {
+        if ($isTargetValid ) {
             $target_trip->delete();
             return redirect()->back();
         }

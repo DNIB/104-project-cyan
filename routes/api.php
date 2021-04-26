@@ -13,11 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get(
+    '/user', function (Request $request) {
+        return $request->user();
+    }
+);
 
-Route::middleware('auth:api')->prefix('user')->group( function(){
-    Route::get('/getTripLocation/{trip_id}', 'LocationApiController@showTripLocation');
-    Route::get('/getLocation', 'LocationApiController@showUserLocation');
-});
+Route::middleware('auth:api')->prefix('user')->group(
+    function () {
+        Route::get('/getTripLocation/{trip_id}', 'LocationApiController@showTripLocation');
+        Route::get('/getLocation', 'LocationApiController@showUserLocation');
+    }
+);

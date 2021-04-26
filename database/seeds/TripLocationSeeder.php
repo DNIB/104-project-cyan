@@ -22,7 +22,7 @@ class TripLocationSeeder extends Seeder
             $trip_location->trip_id = 1;
             $trip_location->location_id = random_int(1, $max_location);
 
-            $trip_location->appendLocation( $trip_location );
+            $trip_location->appendLocation($trip_location);
         }
 
         return;

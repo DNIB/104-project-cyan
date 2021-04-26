@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
 
         $user->name = "Cyan";
         $user->email = "qazs0205@gmail.com";
-        $user->password =  Hash::make( '12345678' );
-        $user->api_token = Hash::make( Str::random(80) );
+        $user->password =  Hash::make('12345678');
+        $user->api_token = Hash::make(Str::random(80));
         $user->super_user = true;
         
 
@@ -29,8 +29,8 @@ class UserSeeder extends Seeder
 
         $user->name = "cTest";
         $user->email = "ctest@gmail.com";
-        $user->password =  Hash::make( '12345678' );
-        $user->api_token = Hash::make( Str::random(80) );
+        $user->password =  Hash::make('12345678');
+        $user->api_token = Hash::make(Str::random(80));
 
         $user->save();
     }

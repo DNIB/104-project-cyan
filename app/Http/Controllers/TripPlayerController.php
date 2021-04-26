@@ -30,14 +30,14 @@ class TripPlayerController extends Controller
 
         $trip_players = Players::where('trip_id', $trip_id);      
 
-        if ( $isRequestValid ) {
-            $trip = Trips::find( $trip_id );
+        if ($isRequestValid ) {
+            $trip = Trips::find($trip_id);
             $ret = [
                 'players' => $trip_players->get(),
                 'trip' => $trip,
             ];
 
-            return view( 'trip.player_info', $ret);
+            return view('trip.player_info', $ret);
         }
         abort(403);
     }
@@ -55,12 +55,12 @@ class TripPlayerController extends Controller
      */
     private function checkRequestValid( $trip_players, $user_id )
     {
-        $isNotEmpty = count( $trip_players->get() ) > 0;
+        $isNotEmpty = count($trip_players->get()) > 0;
 
-        if ( $isNotEmpty ) {
+        if ($isNotEmpty ) {
             $target_player = $trip_players->where('user_id', $user_id)->get();
 
-            return count( $target_player ) > 0;
+            return count($target_player) > 0;
         }
         return false;
     }
@@ -85,12 +85,12 @@ class TripPlayerController extends Controller
         $email = $request->email;
         $phone = $request->phone;
 
-        $isNameValid = !empty( $name );
-        $isTripIdValid = !empty( $trip_id );
+        $isNameValid = !empty($name);
+        $isTripIdValid = !empty($trip_id);
 
         $isRequestValid =  $isNameValid && $isTripIdValid;
 
-        if ( $isRequestValid ) {
+        if ($isRequestValid ) {
             $player = new Players;
             $player->name = $name;
             $player->description = $desc;
@@ -98,8 +98,8 @@ class TripPlayerController extends Controller
             $player->phone = $phone;
             $player->trip_id = $trip_id;
 
-            $email_checker = $this->checkEmail( $email );
-            if ( $email_checker ) {
+            $email_checker = $this->checkEmail($email);
+            if ($email_checker ) {
                 $player->user_id = $email_checker;
             }
 
@@ -120,9 +120,9 @@ class TripPlayerController extends Controller
      */
     private function checkEmail( $email )
     {
-        $isEmailNotEmpty = !empty( $email );
-        if ( $isEmailNotEmpty ) {
-            return $this->findEmail( $email );
+        $isEmailNotEmpty = !empty($email);
+        if ($isEmailNotEmpty ) {
+            return $this->findEmail($email);
         }
         return 0;
     }
@@ -138,26 +138,26 @@ class TripPlayerController extends Controller
     private function findEmail( $email )
     {
         $user = User::where('email', $email)->get();
-        $isUserValid = ( count( $user ) == 1 );
-        if ( $isUserValid ) {
+        $isUserValid = ( count($user) == 1 );
+        if ($isUserValid ) {
             return $user[0]->id;
         }
         return 0;
     }
 
      /**
-     * 修改指定的 Player 資料
-     * 傳入的 Request 應有以下資料：
-     *   - (integer) player_id
-     *   - (string) name 
-     *   - (string) desc (可為空)
-     *   - (string) email (可為空)
-     *   - (string) phone (可為空)
-     * email 若已存在，則不可修改
-     * 若該 email 帳戶已存在，則應自動連結
-     * 
-     * @return view
-     */
+      * 修改指定的 Player 資料
+      * 傳入的 Request 應有以下資料：
+      *   - (integer) player_id
+      *   - (string) name 
+      *   - (string) desc (可為空)
+      *   - (string) email (可為空)
+      *   - (string) phone (可為空)
+      * email 若已存在，則不可修改
+      * 若該 email 帳戶已存在，則應自動連結
+      * 
+      * @return view
+      */
     public function updatePlayer( Request $request )
     {
         $player_id = $request->player_id;
@@ -166,19 +166,19 @@ class TripPlayerController extends Controller
         $email = $request->email;
         $phone = $request->phone;
 
-        $isNameValid = !empty( $name );
-        $isIdValid = !empty( $player_id ) && ( null !== (Players::find( $player_id )) );
+        $isNameValid = !empty($name);
+        $isIdValid = !empty($player_id) && ( null !== (Players::find($player_id)) );
 
         $isRequestValid = $isNameValid && $isIdValid;
 
-        if ( $isRequestValid ) {
-            $player = Players::find( $player_id );
+        if ($isRequestValid ) {
+            $player = Players::find($player_id);
             $player->name = $name;
             $player->description = $desc;
             $player->phone = $phone;
 
             $isEmailEmpty = ( $player->email == null );
-            if( $isEmailEmpty ) {
+            if($isEmailEmpty ) {
                 $player->email = $email;
             }
 
@@ -190,20 +190,20 @@ class TripPlayerController extends Controller
     }
 
      /**
-     * 刪除指定的 Player 資料
-     * 傳入的 Request 應有以下資料：
-     *   - (integer) player_id
-     * 
-     * @return view
-     */
+      * 刪除指定的 Player 資料
+      * 傳入的 Request 應有以下資料：
+      *   - (integer) player_id
+      * 
+      * @return view
+      */
     public function deletePlayer( Request $request )
     {
         $player_id = $request->player_id;
-        $player = Players::find( $player_id );
+        $player = Players::find($player_id);
 
-        $isRequestValid = isset( $player ) && (!$player->trip_creator);
+        $isRequestValid = isset($player) && (!$player->trip_creator);
 
-        if ( $isRequestValid ) {
+        if ($isRequestValid ) {
             $player->delete();
             return redirect()->back();
         }

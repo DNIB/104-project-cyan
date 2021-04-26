@@ -14,3 +14,6 @@ yarn-error.log
 
 /Google_Lab
 .DS_Store
+
+phpcbf.phar
+phpcs.phar
