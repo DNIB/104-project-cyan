@@ -179,7 +179,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">修改地點</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">新增地點</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -248,7 +248,7 @@
             <p class="h5">行程名稱</p>
           </div>
           <div style="width: 80%;">
-            <input type="text" class="form-control" id="trip_name" name="trip_name" placeholder="Trip Name">
+            <input type="text" class="form-control" id="trip_name" name="trip_name" placeholder="Trip Name" required>
           </div>
 
           <div class="row justify-content-center" style="width:100%; margin-top:10px;">

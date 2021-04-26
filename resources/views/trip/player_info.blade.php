@@ -75,7 +75,7 @@
         @csrf
             <input type="hidden" id="trip_id" name="trip_id" value="{{ $trip->id }}">
 
-            <input class="form-control" type="text" id="name" name="name" placeholder="(name)">
+            <input class="form-control" type="text" id="name" name="name" placeholder="(name)" required>
             <input class="form-control" type="text" id="desc" name="desc" placeholder="(description)">
             <input type="email" class="form-control" id="email" name="email" placeholder="(name@example.com)">
             <input class="form-control" type="tel" id="phone" name="phone" placeholder="(phone)">
@@ -103,7 +103,7 @@
         <input type="hidden" name="trip_id" value="{{ $trip->id }}">
 
         <div class="float-start row justify-content-center">
-            <input class="form-control" id="edit_name" name="name" type="text" style="width: 80%; margin-top: 5px;" placeholder="(name)">
+            <input class="form-control" id="edit_name" name="name" type="text" style="width: 80%; margin-top: 5px;" placeholder="(name)" required>
             <input class="form-control" id="edit_desc" name="desc" type="text" style="width: 80%; margin-top: 5px;" placeholder="(description)">
             <input class="form-control" id="edit_email" name="email" type="text" style="width: 80%; margin-top: 5px;" placeholder="(email)">
             <input class="form-control" id="edit_phone" name="phone" type="text" style="width: 80%; margin-top: 5px;" placeholder="(phone)">
