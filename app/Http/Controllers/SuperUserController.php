@@ -100,12 +100,24 @@ class SuperUserController extends Controller
             'description',
         ];
         $trips = Trips::all();
+        $require = [
+            true,
+            true,
+            false,
+        ];
+        $type = [
+            'text',
+            'text',
+            'text',
+        ];
 
         $ret = [
             'columns' => $column,
             'rows' => $trips,
             'name' => "行程後台管理",
             'type' => 'trip',
+            'require' => $require,
+            'input_type' => $type,
         ];
 
         return view('manage.main', $ret);
@@ -128,12 +140,28 @@ class SuperUserController extends Controller
             'lng',
         ];
         $locations = Locations::all();
+        $require = [
+            true,
+            true,
+            false,
+            true,
+            true,
+        ];
+        $type = [
+            'text',
+            'text',
+            'text',
+            'text',
+            'text',
+        ];
         
         $ret = [
             'columns' => $column,
             'rows' => $locations,
             'name' => "地點後台管理",
             'type' => 'location',
+            'require' => $require,
+            'input_type' => $type,
         ];
 
         return view('manage.main', $ret);
@@ -158,12 +186,32 @@ class SuperUserController extends Controller
             'phone',
         ];
         $players = Players::all();
+        $require = [
+            true,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false
+        ];
+        $type = [
+            'text',
+            'text',
+            'text',
+            'number',
+            'number',
+            'email',
+            'tel',
+        ];
 
         $ret = [
             'columns' => $column,
             'rows' => $players,
             'name' => "參加者後台管理",
             'type' => 'player',
+            'require' => $require,
+            'input_type' => $type,
         ];
 
         return view('manage.main', $ret);

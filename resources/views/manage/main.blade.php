@@ -77,15 +77,20 @@
 
         <div id="input_area">
             <div class="row justify-content-center">
-            @foreach ( $columns as $column )
+            @foreach ( $columns as $key => $column )
                 @if ( $column != 'id' )
                     <input 
-                        type="text" 
+                        type="{{ $input_type[ $key ] }}" 
                         class="form-control" 
                         id="{{ $column }}" 
                         name="{{ $column }}" 
                         placeholder="{{ $column }}"
-                        style="margin-top: 5px; margin-bottom: 5px; width: 80%;">
+                        style="margin-top: 5px; margin-bottom: 5px; width: 80%;"
+
+                        @if ( $require[ $key ] )
+                            required
+                        @endif
+                        >
                 @endif
             @endforeach
             </div>

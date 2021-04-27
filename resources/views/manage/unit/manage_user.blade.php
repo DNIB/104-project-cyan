@@ -45,11 +45,11 @@
         <input type="hidden" id="id" name="id" value="-1"> 
 
         <label for="name" class="form-label">Email address</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="name">
+        <input type="text" class="form-control" id="name" name="name" placeholder="name" required>
 
         <br>
         <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+        <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
 
         <br>
         <label for="password" class="form-label">Password（保持為空則維持原密碼）</label>
