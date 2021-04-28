@@ -157,15 +157,6 @@ class LocationManageControllerTest extends TestCase
             "DELETE",
             $this->URL,
             [
-                "location_id" => '999999',
-            ]
-        );
-        $response->assertStatus(400);
-
-        $response = $this->actingAs( $this->user )->call(
-            "DELETE",
-            $this->URL,
-            [
                 "location_id" => '1',
             ]
         );

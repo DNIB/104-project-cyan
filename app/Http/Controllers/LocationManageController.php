@@ -70,23 +70,24 @@ class LocationManageController extends Controller
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $isStringValid = !empty($name);
-        $isNumValid = is_numeric($lat) && is_numeric($lng);
+        $isStringInvalid = empty($name);
+        $isNumInvalid = !(is_numeric($lat) && is_numeric($lng));
 
-        $isInputValid = $isStringValid && $isNumValid;
+        $isInputInvalid = $isStringInvalid || $isNumInvalid;
 
-        if ($isInputValid ) {
-            $location = new Locations;
-
-            $location->name = $name;
-            $location->description = $desc;
-            $location->lat = $lat;
-            $location->lng = $lng;
-
-            $location->appendLocation($user_id);
-            return redirect()->back();
+        if ($isInputInvalid) {
+            abort(400);
         }
-        abort(400);
+
+        $location = new Locations;
+
+        $location->name = $name;
+        $location->description = $desc;
+        $location->lat = $lat;
+        $location->lng = $lng;
+        $location->appendLocation($user_id);
+
+        return redirect()->back();
     }
 
     /**
@@ -108,21 +109,22 @@ class LocationManageController extends Controller
         $name = $request->select_name;
         $desc = $request->select_desc;
 
-        $isStringValid = !( empty($name) || empty($desc) );
-        $isLocationValid = isset($location);
+        $isStringInvalid = empty($name);
+        $isLocationInvalid = !isset($location);
 
-        $isInputValid = $isStringValid && $isLocationValid;
+        $isInputInvalid = $isStringInvalid || $isLocationInvalid;
 
-        if ($isInputValid ) {
-            Locations::where('id', $id)->update(
-                [
-                'name' => $name,
-                'description' => $desc,
-                ]
-            );
-            return redirect()->back();
+        if ( $isInputInvalid ) {
+            abort(400);
         }
-        abort(400);
+
+        Locations::where('id', $id)->update(
+            [
+            'name' => $name,
+            'description' => $desc,
+            ]
+        );
+        return redirect()->back();
     }
 
     /**
@@ -137,16 +139,8 @@ class LocationManageController extends Controller
     public function deleteLocation( Request $request )
     {
         $target_id = $request->location_id;
-        $location = Locations::find($target_id);
-
-        $isLocationValid = isset($location);
-
-        if ($isLocationValid ) { 
-            $location->delete();
-
-            return redirect()->back();
-        }
-        abort(400);
+        Locations::destroy($target_id);
+        return redirect()->back();
     }
 
     /**
