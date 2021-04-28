@@ -68,7 +68,9 @@ Route::middleware('auth')->prefix('/trip')->group(
 
 Route::middleware('auth')->prefix('/location')->group(
     function () {
-        Route::get('/{action}', 'LocationManageController@request');
+        Route::get('/create', 'LocationManageController@createUserLocation');
+        Route::get('/read', 'LocationManageController@readUserLocation');
+ 
         Route::post('/', 'LocationManageController@createLocation');
         Route::put('/', 'LocationManageController@updateLocation');
         Route::delete('/', 'LocationManageController@deleteLocation');

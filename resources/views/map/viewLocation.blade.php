@@ -243,10 +243,7 @@
     <div class="mapInfo" id="mapInfo" name="mapInfo">
         @if ( count( $locations ) )
             @foreach ( $locations as $location)
-                <?php
-                    $target_unit = ( $action == 'edit' ) ? 'map.unit.editLocationUnit' : 'map.unit.showLocationUnit';
-                ?>
-                @component ( $target_unit )
+                @component ( 'map.unit.editLocationUnit' )
                     @slot ( 'id' )
                         {{ $location['id'] }}
                     @endslot

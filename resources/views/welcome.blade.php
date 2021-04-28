@@ -104,8 +104,7 @@
                     </div>
                     <div class="links">
                         <a href="/location/create"> 新增地點 </a>
-                        <a href="/location/read"> 閱覽地點 </a>
-                        <a href="/location/edit"> 編輯地點 </a>
+                        <a href="/location/read"> 閱覽及編輯地點 </a>
                     </div>
                 @else
                     <div class="links">

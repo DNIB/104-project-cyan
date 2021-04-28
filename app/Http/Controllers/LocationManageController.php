@@ -17,51 +17,34 @@ class LocationManageController extends Controller
     private $google_api = "AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc";
 
     /**
-     * 讀入要求動作，並回傳對應的網頁
-     * 
-     * @param string $action
+     * 引導至建立新地點的頁面
      * 
      * @return view
      */
-    public function request( $action )
+    public function createUserLocation()
     {
-        switch ( $action ) {
-        case "create":
-            return view('map.addLocation', ['api' => $this->google_api]);
-
-        case "read":
-            return $this->readUserLocation('read');
-
-        case "edit":
-            return $this->readUserLocation('edit');
-
-        default:
-            break;
-        }
-        abort(404);
+        return view('map.addLocation', ['api' => $this->google_api]);
     }
 
     /**
-     * 回傳使用者的地點
-     * 若無對應行程，則傳 -1 至 view
+     * 回傳使用者的地點及要求動作，至指定的視圖
      * 
      * @param string action = read
      * 
      * @return view
      */
-    public function readUserLocation( $action = 'read' )
+    public function readUserLocation()
     {
-        $user = Auth::user();
-
-        $ret = [];
-
         $VIEW = 'map.viewLocation';
 
+        $user = Auth::user();
         $locations = $user->locations();
-        $ret['action'] = $action;
-        $ret['locations'] = $locations;
-        $ret['api'] = $this->google_api;
-        $ret['api_token'] = $user->api_token;
+
+        $ret = [
+            'locations' => $locations,
+            'api' => $this->google_api,
+            'api_token' => $user->api_token,
+        ];
 
         return view($VIEW, $ret);
     }
@@ -80,18 +63,17 @@ class LocationManageController extends Controller
      */
     public function createLocation( Request $request )
     {
+        $user_id = Auth::id();
+        
         $name = $request->select_name;
         $desc = $request->select_desc;
         $lat = $request->lat_submit;
         $lng = $request->lng_submit;
 
-        $user_id = Auth::id();
-
-        $isStringValid = !( empty($name) || empty($desc) );
+        $isStringValid = !empty($name);
         $isNumValid = is_numeric($lat) && is_numeric($lng);
-        $isUserIdValud = is_numeric($user_id);
 
-        $isInputValid = $isStringValid && $isNumValid && $isUserIdValud;
+        $isInputValid = $isStringValid && $isNumValid;
 
         if ($isInputValid ) {
             $location = new Locations;

@@ -140,7 +140,7 @@ class LocationManageControllerTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->get($this->URL.'/edit');
-        $response->assertStatus(200);
+        $response->assertStatus(404);
 
         $response = $this->get($this->URL.'/none');
         $response->assertStatus(404);
