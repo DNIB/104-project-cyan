@@ -141,8 +141,7 @@ class LocationManageController extends Controller
 
         $isLocationValid = isset($location);
 
-        if ($isLocationValid ) {
-            LocationEditor::where('location_id', $target_id)->delete();
+        if ($isLocationValid ) { 
             $location->delete();
 
             return redirect()->back();

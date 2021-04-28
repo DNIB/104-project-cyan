@@ -40,6 +40,8 @@ class Locations extends Model
     {
         $trip_location = $this->trip_location();
         $trip_location->delete();
+        $editor = $this->locationEditor();
+        $editor->delete();
         parent::delete();
     }
 
