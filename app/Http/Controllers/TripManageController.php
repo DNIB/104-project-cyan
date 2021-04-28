@@ -228,29 +228,27 @@ class TripManageController extends Controller
         $location_order = $request->location_order;
         $change = $request->change;
 
-        $isTripIdValid = is_numeric($trip_id) && ( !empty(Trips::find($trip_id)) );
-        $isLocationOrderValid = is_numeric($location_order);
+        $trip = Trips::find($trip_id);
+        $trip_location = (isset($trip)) ? $trip->locations() : null;
 
-        $isRequestValid = $isTripIdValid && $isLocationOrderValid;
-
-        if ($isRequestValid ) {
-            $trip = Trips::find($trip_id);
-            $trip_location = $trip->locations();
-            switch ( $change ) {
-            case 'upper':
-                $trip_exchange = $this->upperOrder($trip_location, $location_order);
-                break;
-            case 'lower':
-                $trip_exchange = $this->lowerOrder($trip_location, $location_order);
-                break;
-            default:
-                abort(400);
-            }
-            $this->exchangeOrder($trip_exchange);
-
-            return redirect()->back();
+        $isRequestInvalid = !isset($trip_location);
+        if ($isRequestInvalid) {
+            abort(400);
         }
-        abort(400);
+
+        switch ( $change ) {
+        case 'upper':
+            $trip_exchange = $this->upperOrder($trip_location, $location_order);
+            break;
+        case 'lower':
+            $trip_exchange = $this->lowerOrder($trip_location, $location_order);
+            break;
+        default:
+            abort(400);
+        }
+        $this->exchangeOrder($trip_exchange);
+
+        return redirect()->back();
     }
 
     /**
@@ -272,7 +270,7 @@ class TripManageController extends Controller
      * 回傳指定順序的地點，以及該地點之後一地點（若存在的話）
      * 
      * @param Locations $trip_location
-     * @param integer   $location_order
+     * @param int   $location_order
      * 
      * @return Locations $trip_location
      */

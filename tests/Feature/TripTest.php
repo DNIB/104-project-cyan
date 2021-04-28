@@ -117,6 +117,28 @@ class TripTest extends TestCase
             "PUT",
             "/trip/locationOrder",
             [
+                'trip_id' => '999999',
+                "location_order" =>$target_order,
+                "change" => "lower",
+            ]
+        );
+        $response->assertStatus(400);
+
+        $response = $this->actingAs( $this->user )->call(
+            "PUT",
+            "/trip/locationOrder",
+            [
+                'trip_id' => $this->last_trip_id,
+                "location_order" =>'999999',
+                "change" => "lower",
+            ]
+        );
+        $response->assertStatus(302);
+
+        $response = $this->actingAs( $this->user )->call(
+            "PUT",
+            "/trip/locationOrder",
+            [
                 'trip_id' => $this->last_trip_id,
                 "location_order" =>$target_order,
                 "change" => "lower",

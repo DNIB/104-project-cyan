@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1619581008">
-  <project timestamp="1619581008">
+<coverage generated="1619596519">
+  <project timestamp="1619596519">
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Console/Kernel.php">
       <class name="App\Console\Kernel" namespace="global">
         <metrics complexity="2" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="3" elements="6" coveredelements="4"/>
@@ -287,7 +287,7 @@
     </file>
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Http/Controllers/TripManageController.php">
       <class name="App\Http\Controllers\TripManageController" namespace="global">
-        <metrics complexity="40" methods="11" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="126" coveredstatements="118" elements="137" coveredelements="122"/>
+        <metrics complexity="39" methods="11" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="123" coveredstatements="117" elements="134" coveredelements="122"/>
       </class>
       <line num="23" type="method" name="index" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="25" type="stmt" count="1"/>
@@ -378,16 +378,15 @@
       <line num="208" type="stmt" count="1"/>
       <line num="210" type="stmt" count="1"/>
       <line num="211" type="stmt" count="0"/>
-      <line num="225" type="method" name="reorderLocation" visibility="public" complexity="7" crap="7.04" count="1"/>
+      <line num="225" type="method" name="reorderLocation" visibility="public" complexity="6" crap="6" count="1"/>
       <line num="227" type="stmt" count="1"/>
       <line num="228" type="stmt" count="1"/>
       <line num="229" type="stmt" count="1"/>
       <line num="231" type="stmt" count="1"/>
       <line num="232" type="stmt" count="1"/>
       <line num="234" type="stmt" count="1"/>
+      <line num="235" type="stmt" count="1"/>
       <line num="236" type="stmt" count="1"/>
-      <line num="237" type="stmt" count="1"/>
-      <line num="238" type="stmt" count="1"/>
       <line num="239" type="stmt" count="1"/>
       <line num="240" type="stmt" count="1"/>
       <line num="241" type="stmt" count="1"/>
@@ -398,14 +397,14 @@
       <line num="247" type="stmt" count="1"/>
       <line num="249" type="stmt" count="1"/>
       <line num="251" type="stmt" count="1"/>
-      <line num="253" type="stmt" count="0"/>
-      <line num="254" type="stmt" count="0"/>
-      <line num="265" type="method" name="upperOrder" visibility="private" complexity="1" crap="1" count="1"/>
-      <line num="267" type="stmt" count="1"/>
-      <line num="279" type="method" name="lowerOrder" visibility="private" complexity="1" crap="1" count="1"/>
-      <line num="281" type="stmt" count="1"/>
-      <line num="290" type="method" name="exchangeOrder" visibility="private" complexity="4" crap="4" count="1"/>
+      <line num="263" type="method" name="upperOrder" visibility="private" complexity="1" crap="1" count="1"/>
+      <line num="265" type="stmt" count="1"/>
+      <line num="277" type="method" name="lowerOrder" visibility="private" complexity="1" crap="1" count="1"/>
+      <line num="279" type="stmt" count="1"/>
+      <line num="288" type="method" name="exchangeOrder" visibility="private" complexity="4" crap="4" count="1"/>
+      <line num="290" type="stmt" count="1"/>
       <line num="292" type="stmt" count="1"/>
+      <line num="293" type="stmt" count="1"/>
       <line num="294" type="stmt" count="1"/>
       <line num="295" type="stmt" count="1"/>
       <line num="296" type="stmt" count="1"/>
@@ -413,20 +412,18 @@
       <line num="298" type="stmt" count="1"/>
       <line num="299" type="stmt" count="1"/>
       <line num="300" type="stmt" count="1"/>
-      <line num="301" type="stmt" count="1"/>
       <line num="302" type="stmt" count="1"/>
       <line num="304" type="stmt" count="1"/>
-      <line num="306" type="stmt" count="1"/>
-      <line num="317" type="method" name="deleteTrip" visibility="public" complexity="3" crap="3.02" count="1"/>
+      <line num="315" type="method" name="deleteTrip" visibility="public" complexity="3" crap="3.02" count="1"/>
+      <line num="317" type="stmt" count="1"/>
       <line num="319" type="stmt" count="1"/>
       <line num="321" type="stmt" count="1"/>
       <line num="323" type="stmt" count="1"/>
+      <line num="324" type="stmt" count="1"/>
       <line num="325" type="stmt" count="1"/>
-      <line num="326" type="stmt" count="1"/>
       <line num="327" type="stmt" count="1"/>
-      <line num="329" type="stmt" count="1"/>
-      <line num="330" type="stmt" count="0"/>
-      <metrics loc="331" ncloc="228" classes="1" methods="11" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="126" coveredstatements="118" elements="137" coveredelements="122"/>
+      <line num="328" type="stmt" count="0"/>
+      <metrics loc="329" ncloc="226" classes="1" methods="11" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="123" coveredstatements="117" elements="134" coveredelements="122"/>
     </file>
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Http/Controllers/TripPlayerController.php">
       <class name="App\Http\Controllers\TripPlayerController" namespace="global">
@@ -820,6 +817,6 @@
       <line num="153" type="stmt" count="3"/>
       <metrics loc="156" ncloc="105" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="38" coveredstatements="36" elements="44" coveredelements="41"/>
     </file>
-    <metrics files="36" loc="2386" ncloc="1605" classes="26" methods="81" coveredmethods="49" conditionals="0" coveredconditionals="0" statements="522" coveredstatements="470" elements="603" coveredelements="519"/>
+    <metrics files="36" loc="2384" ncloc="1603" classes="26" methods="81" coveredmethods="50" conditionals="0" coveredconditionals="0" statements="519" coveredstatements="469" elements="600" coveredelements="519"/>
   </project>
 </coverage>
