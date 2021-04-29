@@ -20,14 +20,7 @@ class Trips extends Model
      */
     public function getAllLocationInfo()
     {
-        $locations = $this->locations()->get();
-        $locations_info = [];
-
-        foreach ( $locations as $location) {
-            $locations_info[] = $location->location()->get()[0];
-        }
-
-        return $locations_info;
+        return $this->locations()->get()->toArray();
     }
 
     /**
@@ -37,7 +30,7 @@ class Trips extends Model
      */
     public function locationsWithOrder()
     {
-        $locations = $this->locations()->OrderBy('trip_order')->get();
+        $locations = $this->Triplocations()->OrderBy('trip_order')->get();
         $locations_info = [];
 
         foreach ( $locations as $location) {
@@ -59,26 +52,12 @@ class Trips extends Model
      */
     public function delete()
     {
-        $locations = $this->locations();
+        $locations = $this->triplocations();
         $participates = $this->players();
 
         $locations->delete();
         $participates->delete();
         parent::delete();
-    }
-
-    /**
-     * 建立與 TripLocations 的一對多關聯
-     * 
-     * @return TripLocations
-     */
-    public function locations()
-    {
-        return $this->hasMany(
-            TripLocations::class,
-            'trip_id',
-            'id'
-        );
     }
 
     /**
@@ -92,6 +71,38 @@ class Trips extends Model
             Players::class,
             'trip_id',
             'id'
+        );
+    }
+    
+    /**
+     * 建立與 TripLocations 的一對多關聯
+     * 
+     * @return TripLocations
+     */
+    public function triplocations()
+    {
+        return $this->hasMany(
+            TripLocations::class,
+            'trip_id',
+            'id'
+        );
+    }
+
+    /**
+     * Ralation to Location
+     * Many to Many
+     * 
+     * @return Locations
+     */
+    public function locations()
+    {
+        return $this->belongsToMany(
+            Locations::class,
+            TripLocations::class,
+            'trip_id',
+            'location_id',
+            'id',
+            'id',
         );
     }
 }

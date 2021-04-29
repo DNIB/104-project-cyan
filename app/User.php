@@ -47,15 +47,10 @@ class User extends Authenticatable
      * 
      * @return array
      */
-    public function locations( $isEditor = false )
+    public function locations( $isEditor = true )
     {
         $locationRelated = $this->locationRelated();
-        if ($isEditor ) {
-            $locationRelated = $locationRelated->where('isEditor', $isEditor)->get();
-
-        } else {
-            $locationRelated = $locationRelated->get();
-        }
+        $locationRelated = $locationRelated->where('isEditor', $isEditor)->get();
 
         $ret = [];
         foreach ( $locationRelated as $location) {

@@ -25,7 +25,7 @@ class TripManageController extends Controller
         $user = Auth::user();
         $trips = $user->getTripInfo();
         
-        $locations = $user->locations(true);
+        $locations = $user->locations();
 
         $ret = [
             'trips' => $trips,
@@ -91,7 +91,7 @@ class TripManageController extends Controller
         $isRequestValid = $isTripIdValid && $isOrderIdValid && $isLocationIdValid;
 
         if ($isRequestValid ) {
-            $trip = Trips::find($trip_id)->locations();
+            $trip = Trips::find($trip_id)->triplocations();
 
             $target = $trip->where('trip_order', $order_id)->get()[0];
 
@@ -126,7 +126,7 @@ class TripManageController extends Controller
         $isRequestValid = $isTripIdValid && $isOrderIdValid;
 
         if ($isRequestValid ) {
-            $trip = Trips::find($trip_id)->locations();
+            $trip = Trips::find($trip_id)->triplocations();
 
             $target = $trip->where('trip_order', $order_id)->get()[0];
             $target->delete();
@@ -229,7 +229,7 @@ class TripManageController extends Controller
         $change = $request->change;
 
         $trip = Trips::find($trip_id);
-        $trip_location = (isset($trip)) ? $trip->locations() : null;
+        $trip_location = (isset($trip)) ? $trip->triplocations() : null;
 
         $isRequestInvalid = !isset($trip_location);
         if ($isRequestInvalid) {
