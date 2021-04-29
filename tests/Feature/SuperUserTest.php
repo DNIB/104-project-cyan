@@ -41,7 +41,7 @@ class SuperUserTest extends TestCase
     {
         $this->actingAs( $this->normaluser );
         $response = $this->get($this->URL);
-        $response->assertStatus(404);
+        $response->assertStatus(403);
 
         $response = $this->get($this->URL.'/location');
         $response->assertStatus(403);
