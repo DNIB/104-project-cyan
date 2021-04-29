@@ -15,6 +15,13 @@ class Players extends Model
     protected $table = 'player';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'description', 'trip_id', 'sex', 'email', 'phone'];
+
+    /**
      * 建立與會員的關聯
      * 
      * @return User

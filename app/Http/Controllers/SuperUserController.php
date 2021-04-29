@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\ReadRequest;
 use App\Models\Locations;
 use App\Models\Trips;
 use App\Models\Players;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class SuperUserController extends Controller
 {
+    use ReadRequest;
+
     /**
      * 依據傳入的請求，更新使用者的資訊
      * 請求應有資料：

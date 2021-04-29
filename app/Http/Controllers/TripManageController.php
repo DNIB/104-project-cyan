@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\ReadRequest;
 use App\Models\Locations;
 use App\Models\Players;
 use App\Models\TripLocations;
@@ -14,6 +15,8 @@ use function PHPUnit\Framework\isEmpty;
 
 class TripManageController extends Controller
 {
+    use ReadRequest;
+
     /**
      * 回傳管理行程的頁面
      * 會依 Auth 取得當前登入者的資訊，來顯示相對的資料

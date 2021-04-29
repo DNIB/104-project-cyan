@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\ReadRequest;
 use App\Models\Locations;
 use App\Models\Trips;
 use App\Http\Resources\LocationResource;
@@ -14,6 +15,8 @@ use function PHPUnit\Framework\isEmpty;
 
 class LocationManageController extends Controller
 {
+    use ReadRequest;
+
     private $google_api = "AIzaSyBODGF_8AvOjpKPhy5DMPPe9CsajdlWWTc";
 
     /**
@@ -136,25 +139,6 @@ class LocationManageController extends Controller
 
         $location->update($datas);
         return redirect()->back();
-    }
-
-    /**
-     * Get Data from Request by request_key
-     * 
-     * @param Request $request
-     * @param array $database_keys
-     * @param array $request_keys
-     * 
-     * @return array
-     */
-    private function getData( Request $request, $database_keys = [], $request_keys = [] )
-    {
-        $ret = [];
-        foreach ($database_keys as $index => $key) {
-            $request_key = $request_keys[$index];
-            $ret[$key] = $request->$request_key;
-        }
-        return $ret;
     }
 
     /**

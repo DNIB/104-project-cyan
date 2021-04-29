@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\ReadRequest;
 use App\Models\Players;
 use App\Models\TripParticipates;
 use App\Models\Trips;
@@ -11,8 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use phpDocumentor\Reflection\Types\Integer;
 use PhpParser\Node\Expr\Cast\Object_;
 
+use function PHPSTORM_META\map;
+
 class TripPlayerController extends Controller
 {
+    use ReadRequest;
+
     /**
      * 按傳入的行程編號，回傳行程的參加者的資料，以用來顯示網頁
      * 若登入者無訪問此行程的權限，則回傳錯誤頁面
@@ -26,20 +31,21 @@ class TripPlayerController extends Controller
         $user_id = Auth::id();
         
         $trip_players = Players::where('trip_id', $trip_id);
-        $isRequestValid = $this->checkRequestValid($trip_players, $user_id);
+        $isRequestInvalid = !($this->checkRequestValid($trip_players, $user_id));
 
-        $trip_players = Players::where('trip_id', $trip_id);      
+        $trip_players = Players::where('trip_id', $trip_id);
 
-        if ($isRequestValid ) {
-            $trip = Trips::find($trip_id);
-            $ret = [
-                'players' => $trip_players->get(),
-                'trip' => $trip,
-            ];
-
-            return view('trip.player_info', $ret);
+        if ($isRequestInvalid) {
+            abort(403);
         }
-        abort(403);
+
+        $trip = Trips::find($trip_id);
+        $ret = [
+            'players' => $trip_players->get(),
+            'trip' => $trip,
+        ];
+
+        return view('trip.player_info', $ret);
     }
 
     /**
@@ -79,35 +85,42 @@ class TripPlayerController extends Controller
      */
     public function createPlayer( Request $request )
     {
-        $trip_id = $request->trip_id;
-        $name = $request->name;
-        $desc = $request->desc;
-        $email = $request->email;
-        $phone = $request->phone;
+        $datas = $this->getData(
+            $request,
+            [
+                'trip_id',
+                'name',
+                'description',
+                'email',
+                'phone',
+            ],
+            [
+                'trip_id',
+                'name',
+                'desc',
+                'email',
+                'phone',
+            ],
+        );
 
-        $isNameValid = !empty($name);
-        $isTripIdValid = !empty($trip_id);
+        $isNameInvalid = empty($datas['name']);
+        $isTripIdInvalid = empty($datas['trip_id']);
 
-        $isRequestValid =  $isNameValid && $isTripIdValid;
+        $isRequestInvalid =  $isNameInvalid || $isTripIdInvalid;
 
-        if ($isRequestValid ) {
-            $player = new Players;
-            $player->name = $name;
-            $player->description = $desc;
-            $player->email = $email;
-            $player->phone = $phone;
-            $player->trip_id = $trip_id;
-
-            $email_checker = $this->checkEmail($email);
-            if ($email_checker ) {
-                $player->user_id = $email_checker;
-            }
-
-            $player->save();
-
-            return redirect()->back();
+        if ($isRequestInvalid) {
+            abort(400);
         }
-        abort(400);
+
+        $player = new Players;
+        $player->fill($datas);
+
+        $email_checker = $this->checkEmail($datas['email']);
+        $player->user_id = ($email_checker) ? : null;
+
+        $player->save();
+
+        return redirect()->back();
     }
 
     /**
@@ -161,32 +174,46 @@ class TripPlayerController extends Controller
     public function updatePlayer( Request $request )
     {
         $player_id = $request->player_id;
-        $name = $request->name;
-        $desc = $request->desc;
         $email = $request->email;
-        $phone = $request->phone;
 
-        $isNameValid = !empty($name);
-        $isIdValid = !empty($player_id) && ( null !== (Players::find($player_id)) );
+        $datas = $this->getData(
+            $request,
+            [
+                'name',
+                'description',
+                'phone',
+            ],
+            [
+                'name',
+                'desc',
+                'phone',
+            ],
+        );
 
-        $isRequestValid = $isNameValid && $isIdValid;
+        $isNameInvalid = empty($datas['name']);
+        
+        $player = Players::find($player_id);
+        $isPlayerInvalid = !isset($player);
 
-        if ($isRequestValid ) {
-            $player = Players::find($player_id);
-            $player->name = $name;
-            $player->description = $desc;
-            $player->phone = $phone;
+        $isRequestInvalid = $isNameInvalid || $isPlayerInvalid;
 
-            $isEmailEmpty = ( $player->email == null );
-            if($isEmailEmpty ) {
-                $player->email = $email;
-            }
-
-            $player->save();
-
-            return redirect()->back();
+        if ($isRequestInvalid) {
+            abort(400);
         }
-        abort(400);
+
+        $player = Players::find($player_id);
+        $player->fill($datas);
+
+        $isEmailEmpty = ( $player->email == null );
+        if($isEmailEmpty ) {
+            $player->email = $email;
+            $email_checker = $this->checkEmail($email);
+            $player->user_id = ($email_checker) ? : null;
+        }
+
+        $player->save();
+
+        return redirect()->back();
     }
 
      /**
@@ -201,12 +228,13 @@ class TripPlayerController extends Controller
         $player_id = $request->player_id;
         $player = Players::find($player_id);
 
-        $isRequestValid = isset($player) && (!$player->trip_creator);
+        $isRequestInvalid = !( isset($player) && (!$player->trip_creator) );
 
-        if ($isRequestValid ) {
-            $player->delete();
-            return redirect()->back();
+        if ($isRequestInvalid) {
+            abort(400);
         }
-        abort(400);
+
+        $player->delete();
+        return redirect()->back();
     }
 }
