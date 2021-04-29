@@ -77,7 +77,7 @@ Route::middleware('auth')->prefix('/location')->group(
     }
 );
 
-Route::middleware('auth')->prefix('/user')->group(
+Route::middleware('auth')->middleware('auth.superuser')->prefix('/user')->group(
     function () {
         Route::get(
             '/', function () {

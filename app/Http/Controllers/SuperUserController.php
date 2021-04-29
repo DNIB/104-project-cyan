@@ -27,8 +27,6 @@ class SuperUserController extends Controller
      */
     public function update( Request $request )
     {
-        $this->checkSuperUser();
-
         $id = $request->id;
         $name = $request->name;
         $email = $request->email;
@@ -67,8 +65,6 @@ class SuperUserController extends Controller
      */
     public function delete( Request $request )
     {
-        $this->checkSuperUser();
-
         $id = $request->delete_id;
 
         $isIdValid = is_numeric($id);
@@ -92,8 +88,6 @@ class SuperUserController extends Controller
      */
     public function showAllTrips()
     {
-        $this->checkSuperUser();
-
         $column = [
             'id',
             'name',
@@ -130,8 +124,6 @@ class SuperUserController extends Controller
      */
     public function showAllLocations()
     {
-        $this->checkSuperUser();
-
         $column = [
             'id',
             'name',
@@ -174,8 +166,6 @@ class SuperUserController extends Controller
      */
     public function showAllPlayers()
     {
-        $this->checkSuperUser();
-
         $column = [
             'id',
             'name',
@@ -227,8 +217,6 @@ class SuperUserController extends Controller
      */
     public function updateData( Request $request, string $type )
     {
-        $this->checkSuperUser();
-
         try{
             $target_type = $this->getTargetElement($type);
             $target = $target_type->find($request->id);
@@ -262,8 +250,6 @@ class SuperUserController extends Controller
       */
     public function deleteData( Request $request, string $type)
     {
-        $this->checkSuperUser();
-
         try{
             $target_type = $this->getTargetElement($type);
             $id = $request->id;
@@ -296,19 +282,6 @@ class SuperUserController extends Controller
             return new Players;
         default:
             abort(404);
-        }
-    }
-
-    /**
-     * 確認當前使用者身份，是否有管理員資格
-     * 
-     * @return void
-     */
-    private function checkSuperUser()
-    {
-        $isNotSuperUser = !Auth::user()->super_user;
-        if ($isNotSuperUser ) {
-            abort(403);
         }
     }
 }
