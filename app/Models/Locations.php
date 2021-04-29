@@ -5,6 +5,7 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class Locations extends Model
 {
@@ -14,6 +15,13 @@ class Locations extends Model
      * @var string
      */
     protected $table = 'location';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'description', 'lat', 'lng'];
 
     /**
      * 按傳入的作者編號，儲存作者資訊進 Location 裏

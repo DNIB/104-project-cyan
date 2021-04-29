@@ -65,13 +65,24 @@ class LocationManageController extends Controller
     {
         $user_id = Auth::id();
         
-        $name = $request->select_name;
-        $desc = $request->select_desc;
-        $lat = $request->lat_submit;
-        $lng = $request->lng_submit;
+        $datas = $this->getData(
+            $request, 
+            [
+                'name',
+                'description',
+                'lat',
+                'lng',
+            ],
+            [
+                'select_name',
+                'select_desc',
+                'lat_submit',
+                'lng_submit',
+            ],
+        );
 
-        $isStringInvalid = empty($name);
-        $isNumInvalid = !(is_numeric($lat) && is_numeric($lng));
+        $isStringInvalid = empty($datas['name']);
+        $isNumInvalid = !(is_numeric($datas['lat']) && is_numeric($datas['lng']));
 
         $isInputInvalid = $isStringInvalid || $isNumInvalid;
 
@@ -80,11 +91,7 @@ class LocationManageController extends Controller
         }
 
         $location = new Locations;
-
-        $location->name = $name;
-        $location->description = $desc;
-        $location->lat = $lat;
-        $location->lng = $lng;
+        $location->fill($datas);
         $location->appendLocation($user_id);
 
         return redirect()->back();
@@ -106,10 +113,19 @@ class LocationManageController extends Controller
         $id = $request->location_id;
         $location = Locations::find($id);
 
-        $name = $request->select_name;
-        $desc = $request->select_desc;
+        $datas = $this->getData(
+            $request, 
+            [
+                'name',
+                'description',
+            ],
+            [
+                'select_name',
+                'select_desc',
+            ],
+        );
 
-        $isStringInvalid = empty($name);
+        $isStringInvalid = empty($datas['name']);
         $isLocationInvalid = !isset($location);
 
         $isInputInvalid = $isStringInvalid || $isLocationInvalid;
@@ -118,13 +134,27 @@ class LocationManageController extends Controller
             abort(400);
         }
 
-        Locations::where('id', $id)->update(
-            [
-            'name' => $name,
-            'description' => $desc,
-            ]
-        );
+        $location->update($datas);
         return redirect()->back();
+    }
+
+    /**
+     * Get Data from Request by request_key
+     * 
+     * @param Request $request
+     * @param array $database_keys
+     * @param array $request_keys
+     * 
+     * @return array
+     */
+    private function getData( Request $request, $database_keys = [], $request_keys = [] )
+    {
+        $ret = [];
+        foreach ($database_keys as $index => $key) {
+            $request_key = $request_keys[$index];
+            $ret[$key] = $request->$request_key;
+        }
+        return $ret;
     }
 
     /**

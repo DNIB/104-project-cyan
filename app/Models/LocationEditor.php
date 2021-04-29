@@ -14,6 +14,13 @@ class LocationEditor extends Model
     protected $table = 'location_editor';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['location_id', 'user_id', 'isEditor'];
+
+    /**
      * 用來建立與 Location 對應的一對一關聯
      * 
      * @return Locations
