@@ -101,7 +101,7 @@ class LocationManageControllerTest extends TestCase
                 "select_desc" => 'test_desc_update',
             ]
         );
-        $response->assertStatus(400);
+        $response->assertStatus(403);
         
         $response = $this->actingAs( $this->user )->call(
             "PUT",
@@ -113,6 +113,17 @@ class LocationManageControllerTest extends TestCase
             ]
         );
         $response->assertStatus(400);
+
+        $response = $this->actingAs( User::find(2) )->call(
+            "PUT",
+            $this->URL,
+            [
+                'location_id' => '1',
+                "select_name" => 'test_trip_update',
+                "select_desc" => 'test_desc_update',
+            ]
+        );
+        $response->assertStatus(403);
 
         $response = $this->actingAs( $this->user )->call(
             "PUT",
@@ -153,6 +164,15 @@ class LocationManageControllerTest extends TestCase
      */
     private function deleteTest()
     {
+        $response = $this->actingAs( User::find(2) )->call(
+            "DELETE",
+            $this->URL,
+            [
+                "location_id" => '1',
+            ]
+        );
+        $response->assertStatus(403);
+
         $response = $this->actingAs( $this->user )->call(
             "DELETE",
             $this->URL,

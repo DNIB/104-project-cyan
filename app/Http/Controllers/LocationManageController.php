@@ -38,8 +38,6 @@ class LocationManageController extends Controller
      */
     public function readUserLocation()
     {
-        $VIEW = 'map.viewLocation';
-
         $user = Auth::user();
         $locations = $user->locations();
 
@@ -49,7 +47,7 @@ class LocationManageController extends Controller
             'api_token' => $user->api_token,
         ];
 
-        return view($VIEW, $ret);
+        return view('map.viewLocation', $ret);
     }
 
     /**
@@ -116,6 +114,8 @@ class LocationManageController extends Controller
         $id = $request->location_id;
         $location = Locations::find($id);
 
+        $this->authorize('update', $location);
+
         $datas = $this->getData(
             $request, 
             [
@@ -153,7 +153,9 @@ class LocationManageController extends Controller
     public function deleteLocation( Request $request )
     {
         $target_id = $request->location_id;
-        Locations::destroy($target_id);
+        $location = Locations::find($target_id);
+        $this->authorize('delete', $location);
+        $location->delete($target_id);
         return redirect()->back();
     }
 
@@ -166,7 +168,6 @@ class LocationManageController extends Controller
      */
     public function tripMap( $trip_id )
     {
-        
         return view(
             'trip.map_display', [
             'trip_id' => $trip_id,
