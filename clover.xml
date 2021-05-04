@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1619766063">
-  <project timestamp="1619766063">
+<coverage generated="1619766795">
+  <project timestamp="1619766795">
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Console/Kernel.php">
       <class name="App\Console\Kernel" namespace="global">
         <metrics complexity="2" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="3" elements="6" coveredelements="4"/>
@@ -109,61 +109,60 @@
     </file>
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Http/Controllers/LocationManageController.php">
       <class name="App\Http\Controllers\LocationManageController" namespace="global">
-        <metrics complexity="11" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="46" elements="52" coveredelements="52"/>
+        <metrics complexity="11" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="45" coveredstatements="45" elements="51" coveredelements="51"/>
       </class>
       <line num="27" type="method" name="createUserLocation" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="29" type="stmt" count="1"/>
       <line num="39" type="method" name="readUserLocation" visibility="public" complexity="1" crap="1" count="1"/>
       <line num="41" type="stmt" count="1"/>
-      <line num="43" type="stmt" count="1"/>
-      <line num="44" type="stmt" count="1"/>
+      <line num="42" type="stmt" count="1"/>
+      <line num="45" type="stmt" count="1"/>
+      <line num="46" type="stmt" count="1"/>
       <line num="47" type="stmt" count="1"/>
-      <line num="48" type="stmt" count="1"/>
-      <line num="49" type="stmt" count="1"/>
-      <line num="52" type="stmt" count="1"/>
-      <line num="67" type="method" name="createLocation" visibility="public" complexity="4" crap="4" count="1"/>
+      <line num="50" type="stmt" count="1"/>
+      <line num="65" type="method" name="createLocation" visibility="public" complexity="4" crap="4" count="1"/>
+      <line num="67" type="stmt" count="1"/>
       <line num="69" type="stmt" count="1"/>
-      <line num="71" type="stmt" count="1"/>
+      <line num="70" type="stmt" count="1"/>
       <line num="72" type="stmt" count="1"/>
-      <line num="74" type="stmt" count="1"/>
-      <line num="80" type="stmt" count="1"/>
-      <line num="87" type="stmt" count="1"/>
+      <line num="78" type="stmt" count="1"/>
+      <line num="85" type="stmt" count="1"/>
+      <line num="86" type="stmt" count="1"/>
       <line num="88" type="stmt" count="1"/>
       <line num="90" type="stmt" count="1"/>
-      <line num="92" type="stmt" count="1"/>
-      <line num="93" type="stmt" count="1"/>
+      <line num="91" type="stmt" count="1"/>
+      <line num="94" type="stmt" count="1"/>
+      <line num="95" type="stmt" count="1"/>
       <line num="96" type="stmt" count="1"/>
-      <line num="97" type="stmt" count="1"/>
       <line num="98" type="stmt" count="1"/>
-      <line num="100" type="stmt" count="1"/>
-      <line num="114" type="method" name="updateLocation" visibility="public" complexity="3" crap="3" count="1"/>
-      <line num="116" type="stmt" count="1"/>
+      <line num="112" type="method" name="updateLocation" visibility="public" complexity="3" crap="3" count="1"/>
+      <line num="114" type="stmt" count="1"/>
+      <line num="115" type="stmt" count="1"/>
       <line num="117" type="stmt" count="1"/>
       <line num="119" type="stmt" count="1"/>
-      <line num="121" type="stmt" count="1"/>
+      <line num="120" type="stmt" count="1"/>
       <line num="122" type="stmt" count="1"/>
-      <line num="124" type="stmt" count="1"/>
-      <line num="128" type="stmt" count="1"/>
-      <line num="133" type="stmt" count="1"/>
+      <line num="126" type="stmt" count="1"/>
+      <line num="131" type="stmt" count="1"/>
+      <line num="132" type="stmt" count="1"/>
       <line num="134" type="stmt" count="1"/>
       <line num="136" type="stmt" count="1"/>
-      <line num="138" type="stmt" count="1"/>
-      <line num="139" type="stmt" count="1"/>
-      <line num="142" type="stmt" count="1"/>
-      <line num="143" type="stmt" count="1"/>
-      <line num="155" type="method" name="deleteLocation" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="137" type="stmt" count="1"/>
+      <line num="140" type="stmt" count="1"/>
+      <line num="141" type="stmt" count="1"/>
+      <line num="153" type="method" name="deleteLocation" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="155" type="stmt" count="1"/>
+      <line num="156" type="stmt" count="1"/>
       <line num="157" type="stmt" count="1"/>
       <line num="158" type="stmt" count="1"/>
       <line num="159" type="stmt" count="1"/>
-      <line num="160" type="stmt" count="1"/>
-      <line num="161" type="stmt" count="1"/>
-      <line num="171" type="method" name="tripMap" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="169" type="method" name="tripMap" visibility="public" complexity="1" crap="1" count="1"/>
+      <line num="171" type="stmt" count="1"/>
+      <line num="172" type="stmt" count="1"/>
+      <line num="173" type="stmt" count="1"/>
       <line num="174" type="stmt" count="1"/>
       <line num="175" type="stmt" count="1"/>
-      <line num="176" type="stmt" count="1"/>
-      <line num="177" type="stmt" count="1"/>
-      <line num="178" type="stmt" count="1"/>
-      <metrics loc="182" ncloc="131" classes="1" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="46" coveredstatements="46" elements="52" coveredelements="52"/>
+      <metrics loc="179" ncloc="128" classes="1" methods="6" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="45" coveredstatements="45" elements="51" coveredelements="51"/>
     </file>
     <file name="/Users/cyan.tseng/Documents/Github_Repo/104-cyan-project/app/Http/Controllers/SuperUserController.php">
       <class name="App\Http\Controllers\SuperUserController" namespace="global">
@@ -828,6 +827,6 @@
       <line num="148" type="stmt" count="3"/>
       <metrics loc="151" ncloc="100" classes="1" methods="6" coveredmethods="5" conditionals="0" coveredconditionals="0" statements="36" coveredstatements="34" elements="42" coveredelements="39"/>
     </file>
-    <metrics files="38" loc="2523" ncloc="1693" classes="28" methods="85" coveredmethods="59" conditionals="0" coveredconditionals="0" statements="514" coveredstatements="473" elements="599" coveredelements="532"/>
+    <metrics files="38" loc="2520" ncloc="1690" classes="28" methods="85" coveredmethods="59" conditionals="0" coveredconditionals="0" statements="513" coveredstatements="472" elements="598" coveredelements="531"/>
   </project>
 </coverage>
