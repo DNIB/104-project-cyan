@@ -33,5 +33,3 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
-    - name: Try to run server on github action
-      run: php artisan serve --port 8080
