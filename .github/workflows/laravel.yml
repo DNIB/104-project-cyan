@@ -33,3 +33,7 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: vendor/bin/phpunit
+    - name: Initial Database
+      run: php artisan migrate:fresh
+    - name: Initial Database Seeding
+      run: php artisan db:seed
